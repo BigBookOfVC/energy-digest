@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Startups: Breakthrough vs Incremental Map</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0C0F14;
+  --surface: #151921;
+  --surface2: #1C222E;
+  --border: #2A3142;
+  --text: #E8ECF4;
+  --text2: #9AA3B8;
+  --text3: #5E6781;
+  --accent: #FF6B35;
+  --gen: #34D399;
+  --storage: #60A5FA;
+  --grid: #FBBF24;
+  --efficiency: #A78BFA;
+  --trading: #F472B6;
+  --transport: #FB923C;
+  --ops: #38BDF8;
+  --carbon: #4ADE80;
+  --data: #E879F9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.grain {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  z-index: 9999;
+}
+
+header {
+  padding: 48px 48px 0;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+header h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+}
+
+header h1 span { color: var(--accent); }
+
+header p {
+  font-size: 15px;
+  color: var(--text2);
+  max-width: 700px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 0 48px;
+  max-width: 1400px;
+  margin: 0 auto 24px;
+}
+
+.filter-btn {
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-btn:hover { border-color: var(--text3); color: var(--text); }
+.filter-btn.active { background: var(--surface2); border-color: var(--text3); color: var(--text); }
+
+.filter-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 0;
+  margin-left: auto;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.view-btn {
+  padding: 7px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text3);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-btn.active { background: var(--surface2); color: var(--text); }
+
+.main-container {
+  padding: 0 48px 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Scatter plot view */
+.chart-container {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 48px 48px 60px 72px;
+  margin-left: 56px;
+  min-height: 600px;
+  overflow: visible;
+}
+
+.axis-label-x {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.axis-label-y {
+  position: absolute;
+  left: -60px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  font-size: 12px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.axis-end-left {
+  position: absolute;
+  bottom: 36px;
+  left: 72px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+.axis-end-right {
+  position: absolute;
+  bottom: 36px;
+  right: 48px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gen);
+  opacity: 0.7;
+}
+
+.axis-end-top {
+  position: absolute;
+  top: 24px;
+  left: 72px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text3);
+  opacity: 0.7;
+}
+
+.axis-end-bottom {
+  position: absolute;
+  bottom: 56px;
+  left: 72px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text3);
+  opacity: 0.7;
+}
+
+.plot-area {
+  position: relative;
+  width: 100%;
+  height: 520px;
+}
+
+.grid-line-h, .grid-line-v {
+  position: absolute;
+  background: var(--border);
+  opacity: 0.3;
+}
+
+.grid-line-h { width: 100%; height: 1px; }
+.grid-line-v { width: 1px; height: 100%; }
+
+.center-line-v {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--accent);
+  opacity: 0.15;
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.3s, box-shadow 0.2s;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bubble:hover {
+  transform: scale(1.15);
+  opacity: 1;
+  z-index: 100 !important;
+  box-shadow: 0 0 20px rgba(255,255,255,0.15);
+}
+
+.bubble.dimmed { opacity: 0.1 !important; }
+
+.bubble-label {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9.5px;
+  color: var(--text2);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  text-align: center;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bubble:hover .bubble-label { opacity: 1; }
+
+/* Tooltip */
+.tooltip {
+  position: fixed;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  width: 340px;
+  z-index: 10000;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  backdrop-filter: blur(12px);
+}
+
+.tooltip.visible { opacity: 1; }
+
+.tooltip-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.tooltip-sector {
+  font-size: 11px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+}
+
+.tooltip-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.tooltip-item label {
+  display: block;
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.tooltip-item span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.tooltip-classification {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.tooltip-startups-label {
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.tooltip-startups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.startup-tag {
+  padding: 2px 8px;
+  background: var(--surface2);
+  border-radius: 10px;
+  font-size: 11px;
+  color: var(--text2);
+}
+
+/* Table view */
+.table-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+thead th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+thead th:hover { color: var(--text2); }
+
+tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tbody tr:hover { background: var(--surface2); }
+
+.class-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.class-breakthrough { background: rgba(255,107,53,0.15); color: var(--accent); }
+.class-incremental { background: rgba(52,211,153,0.15); color: var(--gen); }
+.class-hybrid { background: rgba(251,191,36,0.15); color: var(--grid); }
+
+.startup-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.startup-pill {
+  padding: 1px 7px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 10.5px;
+  color: var(--text2);
+  white-space: nowrap;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.legend-title {
+  font-size: 11px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--text2);
+}
+
+.legend-circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.size-legend {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  margin-left: 24px;
+}
+
+.size-circle {
+  border-radius: 50%;
+  border: 1px solid var(--text3);
+  opacity: 0.5;
+}
+
+.size-label {
+  font-size: 10px;
+  color: var(--text3);
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 24px 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.stat-value {
+  font-family: 'Instrument Serif', serif;
+  font-size: 32px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+@media (max-width: 768px) {
+  header, .controls, .main-container, .legend-row, .stats-row { padding-left: 20px; padding-right: 20px; }
+  header h1 { font-size: 28px; }
+  .chart-container { padding: 32px 24px 50px 48px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .tooltip { width: 280px; }
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header>
+  <h1>Energy Startups: <span>Breakthrough</span> vs Incremental</h1>
+  <p>Mapping 80+ energy technology areas across the innovation spectrum. Bubble size represents total funding, vertical position reflects maturity (years since first startups). Click any bubble for details.</p>
+</header>
+
+<div class="stats-row" id="stats-row"></div>
+
+<div class="controls" id="controls"></div>
+
+<div class="legend-row">
+  <span class="legend-title">Bubble size = Funding</span>
+  <div class="size-legend">
+    <div class="size-circle" style="width:12px;height:12px"></div>
+    <span class="size-label">&lt;$100M</span>
+    <div class="size-circle" style="width:22px;height:22px"></div>
+    <span class="size-label">$1B</span>
+    <div class="size-circle" style="width:36px;height:36px"></div>
+    <span class="size-label">$5B+</span>
+  </div>
+</div>
+
+<div class="main-container">
+  <div class="chart-container" id="chart-view">
+    <div class="axis-label-x">Breakthrough vs Incremental Spectrum</div>
+    <div class="axis-label-y">Years Since First Startups</div>
+    <div class="axis-end-left">Breakthrough</div>
+    <div class="axis-end-right">Incremental</div>
+    <div class="axis-end-top">Newer (0-5 yrs)</div>
+    <div class="axis-end-bottom">Mature (20+ yrs)</div>
+    <div class="plot-area" id="plot-area"></div>
+  </div>
+  <div class="table-container" id="table-view" style="display:none"></div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const SECTORS = {
+  'Generation & Production': { color: '#34D399', short: 'Gen' },
+  'Energy Storage': { color: '#60A5FA', short: 'Storage' },
+  'Transmission & Distribution': { color: '#FBBF24', short: 'T&D' },
+  'Energy Efficiency & Demand': { color: '#A78BFA', short: 'Efficiency' },
+  'Energy Trading & Markets': { color: '#F472B6', short: 'Trading' },
+  'Electrification & Transport': { color: '#FB923C', short: 'Transport' },
+  'Operations & Services': { color: '#38BDF8', short: 'Ops' },
+  'Carbon Management': { color: '#4ADE80', short: 'Carbon' },
+  'Data, Software & Fintech': { color: '#E879F9', short: 'Data' }
+};
+
+// classification: 1 = breakthrough, 2 = hybrid, 3 = incremental
+// breakthroughScore: 0 (pure breakthrough) to 100 (pure incremental)
+// maturityYears: approx years since first startups
+// fundingM: total sector funding in $M (approximate)
+// startupCount: approximate number of active startups
+// prominent: notable startups/companies
+
+const DATA = [
+  // GENERATION
+  { name: "Perovskite / Tandem Cells", sector: "Generation & Production", sub: "Solar", bs: 18, maturity: 12, funding: 800, count: 35, classification: 1, prominent: ["Oxford PV","Tandem PV","Swift Solar","CubicPV","Caelux"] },
+  { name: "Building-Integrated PV", sector: "Generation & Production", sub: "Solar", bs: 55, maturity: 18, funding: 400, count: 25, classification: 2, prominent: ["Ubiquitous Energy","Mitrex","SunMan","Heliatek"] },
+  { name: "Floating Solar", sector: "Generation & Production", sub: "Solar", bs: 65, maturity: 12, funding: 300, count: 20, classification: 3, prominent: ["Ciel & Terre","Ocean Sun","SolarDuck","Swimsol"] },
+  { name: "Solar Panel Recycling", sector: "Generation & Production", sub: "Solar", bs: 70, maturity: 8, funding: 150, count: 15, classification: 3, prominent: ["SOLARCYCLE","We Recycle Solar","Envaris","TG Companies"] },
+  { name: "Offshore Floating Turbines", sector: "Generation & Production", sub: "Wind", bs: 35, maturity: 15, funding: 600, count: 12, classification: 2, prominent: ["Principle Power","BW Ideol","Gazelle Wind","Hexicon"] },
+  { name: "Airborne / Kite Wind", sector: "Generation & Production", sub: "Wind", bs: 12, maturity: 18, funding: 250, count: 8, classification: 1, prominent: ["Makani (ended)","Kitepower","SkySails","Windlift"] },
+  { name: "Blade Recycling", sector: "Generation & Production", sub: "Wind", bs: 75, maturity: 7, funding: 80, count: 10, classification: 3, prominent: ["REGEN Fiber","Global Fiberglass","Carbon Rivers"] },
+  { name: "Enhanced Geothermal (EGS)", sector: "Generation & Production", sub: "Geothermal", bs: 20, maturity: 10, funding: 2200, count: 18, classification: 1, prominent: ["Fervo Energy","Eavor","Quaise","Sage Geosystems","Zanskar"] },
+  { name: "Closed-Loop Geothermal", sector: "Generation & Production", sub: "Geothermal", bs: 22, maturity: 8, funding: 500, count: 8, classification: 1, prominent: ["Eavor","GreenFire Energy","CeraPhi"] },
+  { name: "Tidal & Wave Energy", sector: "Generation & Production", sub: "Marine", bs: 15, maturity: 22, funding: 400, count: 15, classification: 1, prominent: ["Orbital Marine","CalWave","Eco Wave Power","Mocean Energy"] },
+  { name: "Small / Micro Hydro", sector: "Generation & Production", sub: "Marine", bs: 72, maturity: 25, funding: 200, count: 20, classification: 3, prominent: ["Natel Energy","Turbulent"] },
+  { name: "Osmotic Power", sector: "Generation & Production", sub: "Marine", bs: 5, maturity: 15, funding: 50, count: 4, classification: 1, prominent: ["Sweetch Energy","REDstack"] },
+  { name: "Waste-to-Energy Gasification", sector: "Generation & Production", sub: "Biomass", bs: 45, maturity: 20, funding: 600, count: 30, classification: 2, prominent: ["Sierra Energy","Aries Clean","Synova","PowerHouse Energy"] },
+  { name: "Algae Biofuels", sector: "Generation & Production", sub: "Biomass", bs: 10, maturity: 20, funding: 400, count: 12, classification: 1, prominent: ["Viridos","Algenol","Sapphire (ended)","Solazyme"] },
+  { name: "Biochar & Pyrolysis", sector: "Generation & Production", sub: "Biomass", bs: 50, maturity: 15, funding: 300, count: 25, classification: 2, prominent: ["Pacific Biochar","Charm Industrial","Carbon Gold"] },
+  { name: "Methane Leak Detection", sector: "Generation & Production", sub: "Gas", bs: 62, maturity: 10, funding: 500, count: 20, classification: 3, prominent: ["Kairos Aerospace","GHGSat","Qube Technologies","Kuva Systems"] },
+  { name: "Flare Gas Capture", sector: "Generation & Production", sub: "Gas", bs: 55, maturity: 8, funding: 300, count: 12, classification: 2, prominent: ["Crusoe Energy"] },
+  { name: "Small Modular Reactors", sector: "Generation & Production", sub: "Nuclear", bs: 25, maturity: 15, funding: 3500, count: 25, classification: 1, prominent: ["NuScale","Kairos Power","X-energy","Oklo","TerraPower","Last Energy"] },
+  { name: "Nuclear Fusion", sector: "Generation & Production", sub: "Nuclear", bs: 5, maturity: 20, funding: 9800, count: 77, classification: 1, prominent: ["Commonwealth Fusion","Helion","TAE Tech","Pacific Fusion","Tokamak Energy"] },
+  { name: "Advanced Fuel Cycle", sector: "Generation & Production", sub: "Nuclear", bs: 20, maturity: 12, funding: 400, count: 10, classification: 1, prominent: ["Curio","Deep Isolation","Moltex","Transmutex"] },
+  { name: "Green Electrolysis", sector: "Generation & Production", sub: "Hydrogen", bs: 30, maturity: 15, funding: 5000, count: 60, classification: 2, prominent: ["Plug Power","ITM Power","Nel ASA","Electric Hydrogen","Ohmium"] },
+  { name: "Turquoise Hydrogen", sector: "Generation & Production", sub: "Hydrogen", bs: 15, maturity: 8, funding: 500, count: 10, classification: 1, prominent: ["Monolith","C-Zero","Modern Hydrogen","Ekona"] },
+  { name: "Space-Based Solar", sector: "Generation & Production", sub: "Emerging", bs: 2, maturity: 5, funding: 100, count: 5, classification: 1, prominent: ["Virtus Solis","Space Solar","Solaris"] },
+  { name: "Thermoelectric / Waste Heat", sector: "Generation & Production", sub: "Emerging", bs: 30, maturity: 18, funding: 200, count: 15, classification: 2, prominent: ["Alphabet Energy","Gentherm","Evident Thermoelectrics"] },
+
+  // STORAGE
+  { name: "Solid-State Batteries", sector: "Energy Storage", sub: "Li-Ion", bs: 12, maturity: 15, funding: 4200, count: 40, classification: 1, prominent: ["QuantumScape","Solid Power","SES AI","Factorial","Ilika","ProLogium"] },
+  { name: "Silicon Anode R&D", sector: "Energy Storage", sub: "Li-Ion", bs: 28, maturity: 12, funding: 2500, count: 20, classification: 2, prominent: ["Sila Nano","Enovix","Enevate","Group14","Amprius"] },
+  { name: "Battery Mgmt Systems", sector: "Energy Storage", sub: "Li-Ion", bs: 72, maturity: 18, funding: 600, count: 40, classification: 3, prominent: ["Qnovo","Dukosi","Brill Power","Twaice"] },
+  { name: "Sodium-Ion Batteries", sector: "Energy Storage", sub: "Beyond Li", bs: 25, maturity: 10, funding: 800, count: 25, classification: 2, prominent: ["Natron Energy","Tiamat Energy","Peak Energy","HiNa Battery"] },
+  { name: "Iron-Air Batteries", sector: "Energy Storage", sub: "Beyond Li", bs: 10, maturity: 8, funding: 1500, count: 10, classification: 1, prominent: ["Form Energy","Ore Energy"] },
+  { name: "Flow Batteries (Zinc/Vanadium)", sector: "Energy Storage", sub: "Beyond Li", bs: 22, maturity: 22, funding: 700, count: 20, classification: 2, prominent: ["Eos Energy","Invinity","ESS Inc.","Primus Power","CellCube"] },
+  { name: "Compressed Air (CAES)", sector: "Energy Storage", sub: "Mechanical", bs: 35, maturity: 20, funding: 300, count: 8, classification: 2, prominent: ["Hydrostor","Augwind","Storelectric"] },
+  { name: "Gravity-Based Storage", sector: "Energy Storage", sub: "Mechanical", bs: 18, maturity: 10, funding: 1300, count: 15, classification: 1, prominent: ["Energy Vault","Gravitricity","Advanced Rail Energy","ARES","Gravity Power","Gravity Storage (Germany)"] },
+  { name: "Thermal storage / Industrial heat storage", sector: "Energy Storage", sub: "Mechanical", bs: 32, maturity: 18, funding: 600, count: 15, classification: 2, prominent: ["Rondo Energy","Antora Energy","Brenmiller"] },
+  { name: "Liquid Air (LAES)", sector: "Energy Storage", sub: "Mechanical", bs: 20, maturity: 12, funding: 200, count: 4, classification: 1, prominent: ["Highview Power","Sumitomo SHI"] },
+  { name: "Hydrogen Underground Storage", sector: "Energy Storage", sub: "Long Duration", bs: 25, maturity: 8, funding: 400, count: 10, classification: 1, prominent: ["Storengy","H2 Energy"] },
+  { name: "Ammonia as Carrier", sector: "Energy Storage", sub: "Long Duration", bs: 20, maturity: 10, funding: 500, count: 12, classification: 1, prominent: ["Starfire Energy","Amogy","GenH2","First Ammonia"] },
+  { name: "Second-Life Batteries", sector: "Energy Storage", sub: "Lifecycle", bs: 65, maturity: 10, funding: 300, count: 20, classification: 3, prominent: ["Moment Energy","B2U Storage","ReJoule","RePurpose Energy"] },
+  { name: "Battery Recycling", sector: "Energy Storage", sub: "Lifecycle", bs: 55, maturity: 12, funding: 5000, count: 30, classification: 2, prominent: ["Redwood Materials","Li-Cycle","Ascend Elements","Battery Resources"] },
+  { name: "Battery-as-a-Service", sector: "Energy Storage", sub: "Lifecycle", bs: 68, maturity: 8, funding: 400, count: 15, classification: 3, prominent: ["Ample","Gogoro","Zoomo","BATT","Oyika"] },
+
+  // TRANSMISSION & DISTRIBUTION
+  { name: "HVDC Technology", sector: "Transmission & Distribution", sub: "Grid Infra", bs: 30, maturity: 15, funding: 300, count: 8, classification: 2, prominent: ["SuperNode"] },
+  { name: "Grid-Enhancing Tech (DLR)", sector: "Transmission & Distribution", sub: "Grid Infra", bs: 50, maturity: 10, funding: 400, count: 12, classification: 2, prominent: ["LineVision","Ampacimon","Heimdall Power","Smart Wires"] },
+  { name: "Superconducting Cables", sector: "Transmission & Distribution", sub: "Grid Infra", bs: 10, maturity: 20, funding: 200, count: 6, classification: 1, prominent: ["VEIR","SuperOx"] },
+  { name: "AI Grid Balancing", sector: "Transmission & Distribution", sub: "Software", bs: 55, maturity: 10, funding: 800, count: 30, classification: 2, prominent: ["Camus Energy","Utilidata","Kevala","GridBeyond"] },
+  { name: "Digital Twin Grid Ops", sector: "Transmission & Distribution", sub: "Software", bs: 48, maturity: 8, funding: 300, count: 15, classification: 2, prominent: ["Camus Energy","Kevala","GridOS"] },
+  { name: "DERMS", sector: "Transmission & Distribution", sub: "Software", bs: 62, maturity: 12, funding: 600, count: 25, classification: 3, prominent: ["Camus Energy","Leap","Virtual Peaker"] },
+  { name: "Renewable Forecasting", sector: "Transmission & Distribution", sub: "Software", bs: 58, maturity: 12, funding: 400, count: 15, classification: 2, prominent: ["Tomorrow.io","Reuniwatt","Solcast","Nnergix"] },
+  { name: "Microgrid-as-a-Service", sector: "Transmission & Distribution", sub: "Distributed", bs: 52, maturity: 12, funding: 500, count: 20, classification: 2, prominent: ["Scale Microgrid","Enchanted Rock","BoxPower","Odyssey"] },
+  { name: "P2P Energy Trading", sector: "Transmission & Distribution", sub: "Distributed", bs: 28, maturity: 8, funding: 150, count: 5, classification: 1, prominent: ["Power Ledger"] },
+  { name: "Virtual Power Plants", sector: "Transmission & Distribution", sub: "Distributed", bs: 48, maturity: 10, funding: 700, count: 25, classification: 2, prominent: ["Leap","Voltus","GridBeyond"] },
+
+  // EFFICIENCY
+  { name: "Smart Building Energy", sector: "Energy Efficiency & Demand", sub: "Buildings", bs: 65, maturity: 15, funding: 800, count: 40, classification: 3, prominent: ["BrainBox AI","Parity","Measurabl"] },
+  { name: "Heat Pump Optimization", sector: "Energy Efficiency & Demand", sub: "Buildings", bs: 55, maturity: 10, funding: 400, count: 20, classification: 2, prominent: ["BlocPower","Sealed"] },
+  { name: "Intelligent Insulation", sector: "Energy Efficiency & Demand", sub: "Buildings", bs: 30, maturity: 8, funding: 150, count: 10, classification: 2, prominent: ["Hempitecture"] },
+  { name: "Occupancy-Aware HVAC", sector: "Energy Efficiency & Demand", sub: "Buildings", bs: 62, maturity: 10, funding: 300, count: 15, classification: 3, prominent: ["Brainbox AI"] },
+  { name: "Industrial Electrification", sector: "Energy Efficiency & Demand", sub: "Industrial", bs: 22, maturity: 8, funding: 800, count: 15, classification: 1, prominent: ["Rondo Energy","Antora Energy","Electra"] },
+  { name: "Waste Heat Recovery", sector: "Energy Efficiency & Demand", sub: "Industrial", bs: 42, maturity: 18, funding: 300, count: 15, classification: 2, prominent: ["Echogen","Orcan Energy","Kanin Energy"] },
+  { name: "AI Energy Auditing", sector: "Energy Efficiency & Demand", sub: "Industrial", bs: 68, maturity: 8, funding: 200, count: 20, classification: 3, prominent: ["Verdigris","Enertiv","GridPoint"] },
+  { name: "Demand Response Platforms", sector: "Energy Efficiency & Demand", sub: "DR", bs: 65, maturity: 15, funding: 600, count: 25, classification: 3, prominent: ["Voltus"] },
+  { name: "EV Smart Charging / V2G", sector: "Energy Efficiency & Demand", sub: "DR", bs: 42, maturity: 10, funding: 500, count: 25, classification: 2, prominent: ["Fermata Energy","Nuvve","ev.energy"] },
+  { name: "Time-of-Use SaaS", sector: "Energy Efficiency & Demand", sub: "DR", bs: 72, maturity: 8, funding: 150, count: 12, classification: 3, prominent: ["Arcadia"] },
+
+  // TRADING
+  { name: "AI Energy Trading", sector: "Energy Trading & Markets", sub: "Wholesale", bs: 50, maturity: 10, funding: 400, count: 15, classification: 2, prominent: ["GridBeyond"] },
+  { name: "Retail Electricity Marketplace", sector: "Energy Trading & Markets", sub: "Wholesale", bs: 72, maturity: 12, funding: 300, count: 15, classification: 3, prominent: ["Energy Ogre"] },
+  { name: "PPA Platforms", sector: "Energy Trading & Markets", sub: "Wholesale", bs: 68, maturity: 10, funding: 200, count: 10, classification: 3, prominent: ["LevelTen","Pexapark"] },
+  { name: "Carbon Credit / MRV", sector: "Energy Trading & Markets", sub: "Carbon", bs: 48, maturity: 10, funding: 800, count: 40, classification: 2, prominent: ["Pachama","Sylvera","BeZero","Isometric"] },
+  { name: "REC Platforms", sector: "Energy Trading & Markets", sub: "Carbon", bs: 72, maturity: 12, funding: 150, count: 10, classification: 3, prominent: ["REsurety","M-RETS","FlexiDAO"] },
+  { name: "Scope 3 Tracking SaaS", sector: "Energy Trading & Markets", sub: "Carbon", bs: 62, maturity: 7, funding: 400, count: 25, classification: 3, prominent: ["Watershed","Persefoni","Carbonfact","Plan A"] },
+
+  // TRANSPORT
+  { name: "Ultra-Fast Charging", sector: "Electrification & Transport", sub: "EV Infra", bs: 60, maturity: 10, funding: 1500, count: 35, classification: 3, prominent: ["Kempower","Electra","Gravity"] },
+  { name: "Charging Mgmt Software", sector: "Electrification & Transport", sub: "EV Infra", bs: 70, maturity: 10, funding: 500, count: 30, classification: 3, prominent: ["ChargeLab","Ampcontrol"] },
+  { name: "Wireless Charging", sector: "Electrification & Transport", sub: "EV Infra", bs: 18, maturity: 12, funding: 300, count: 10, classification: 1, prominent: ["WiTricity","Electreon","HEVO","Momentum Dynamics"] },
+  { name: "Fleet Electrification", sector: "Electrification & Transport", sub: "EV Infra", bs: 58, maturity: 8, funding: 600, count: 20, classification: 2, prominent: ["Zeem Solutions","Synop","RideCo"] },
+  { name: "H2 Refueling Stations", sector: "Electrification & Transport", sub: "H2 Mobility", bs: 38, maturity: 12, funding: 500, count: 15, classification: 2, prominent: ["FirstElement Fuel","H2 Mobility","Hydrogen Refueling Solutions"] },
+  { name: "Fuel Cells Heavy Transport", sector: "Electrification & Transport", sub: "H2 Mobility", bs: 28, maturity: 15, funding: 1500, count: 20, classification: 2, prominent: ["Loop Energy","Hyvia"] },
+  { name: "Sustainable Aviation Fuel", sector: "Electrification & Transport", sub: "Aviation", bs: 22, maturity: 12, funding: 2000, count: 25, classification: 1, prominent: ["LanzaJet","Twelve","Alder Fuels","SynHelion"] },
+  { name: "Electric Marine Propulsion", sector: "Electrification & Transport", sub: "Aviation", bs: 25, maturity: 10, funding: 400, count: 15, classification: 1, prominent: ["Boundary Layer","Candela","Corvus Energy","Fleetzero"] },
+  { name: "E-Fuels (Power-to-Liquid)", sector: "Electrification & Transport", sub: "Aviation", bs: 12, maturity: 8, funding: 600, count: 12, classification: 1, prominent: ["HIF Global","Infinium","Synhelion","INERATEC"] },
+
+  // OPS
+  { name: "Drone/Satellite Inspection", sector: "Operations & Services", sub: "Monitoring", bs: 60, maturity: 10, funding: 400, count: 25, classification: 3, prominent: ["Raptor Maps","DroneDeploy","SkySpecs","Above Surveying"] },
+  { name: "Predictive Maintenance AI", sector: "Operations & Services", sub: "Monitoring", bs: 58, maturity: 12, funding: 500, count: 30, classification: 2, prominent: ["Presight","Sedge","Augury"] },
+  { name: "Digital Twin Energy Assets", sector: "Operations & Services", sub: "Monitoring", bs: 48, maturity: 8, funding: 300, count: 15, classification: 2, prominent: ["Akselos","Cosmo Tech"] },
+  { name: "AR Field Technician Tools", sector: "Operations & Services", sub: "Field", bs: 50, maturity: 8, funding: 150, count: 10, classification: 2, prominent: ["Fieldbit","Librestream","ScopeAR"] },
+  { name: "Robotic Inspection", sector: "Operations & Services", sub: "Field", bs: 38, maturity: 10, funding: 300, count: 12, classification: 2, prominent: ["Gecko Robotics","Invert Robotics","ANYbotics"] },
+  { name: "Energy Workforce Mgmt", sector: "Operations & Services", sub: "Field", bs: 75, maturity: 12, funding: 200, count: 15, classification: 3, prominent: ["Grid4C","FieldRoutes"] },
+  { name: "OT/SCADA Security", sector: "Operations & Services", sub: "Cyber", bs: 52, maturity: 12, funding: 1000, count: 20, classification: 2, prominent: ["Dragos","Claroty","Nozomi Networks","Xage Security"] },
+  { name: "Grid Resilience / Threat", sector: "Operations & Services", sub: "Cyber", bs: 48, maturity: 8, funding: 300, count: 12, classification: 2, prominent: ["Fortress Info"] },
+
+  // CARBON
+  { name: "Direct Air Capture (DAC)", sector: "Carbon Management", sub: "Capture", bs: 8, maturity: 15, funding: 2300, count: 40, classification: 1, prominent: ["Climeworks","Carbon Engineering","Heirloom","Aircapture","Noya"] },
+  { name: "Point-Source Capture", sector: "Carbon Management", sub: "Capture", bs: 40, maturity: 20, funding: 1200, count: 30, classification: 2, prominent: ["Carbon Clean","Svante","ION Clean Energy","Aker Carbon"] },
+  { name: "Ocean Carbon Removal", sector: "Carbon Management", sub: "Capture", bs: 5, maturity: 5, funding: 200, count: 15, classification: 1, prominent: ["Ebb Carbon","Equatic","Vesta"] },
+  { name: "CO2 to Building Materials", sector: "Carbon Management", sub: "Utilization", bs: 22, maturity: 12, funding: 600, count: 15, classification: 1, prominent: ["CarbonCure","Solidia","CarbiCrete","Cambridge Electric Cement"] },
+  { name: "CO2 to Chemicals/Fuels", sector: "Carbon Management", sub: "Utilization", bs: 15, maturity: 12, funding: 500, count: 12, classification: 1, prominent: ["Twelve","LanzaTech"] },
+  { name: "Carbon Mineralization", sector: "Carbon Management", sub: "Utilization", bs: 12, maturity: 8, funding: 500, count: 18, classification: 1, prominent: ["44.01","CarbonBuilt","Carbfix"] },
+  { name: "Geological Sequestration", sector: "Carbon Management", sub: "Storage", bs: 40, maturity: 18, funding: 500, count: 12, classification: 2, prominent: ["Storegga"] },
+  { name: "Enhanced Weathering", sector: "Carbon Management", sub: "Storage", bs: 10, maturity: 6, funding: 200, count: 12, classification: 1, prominent: ["Lithos Carbon","UNDO","Eion","Mati Carbon"] },
+  { name: "Biochar Sequestration", sector: "Carbon Management", sub: "Storage", bs: 38, maturity: 12, funding: 250, count: 20, classification: 2, prominent: ["Charm Industrial","Pacific Biochar","Carbon Gold","Carbofex"] },
+
+  // DATA
+  { name: "Utility Data Aggregation", sector: "Data, Software & Fintech", sub: "Data", bs: 65, maturity: 12, funding: 300, count: 15, classification: 3, prominent: ["UtilityAPI","Pelm"] },
+  { name: "Energy Analytics (C&I)", sector: "Data, Software & Fintech", sub: "Data", bs: 62, maturity: 12, funding: 400, count: 20, classification: 3, prominent: ["Parity","EnergyCAP","Facilio"] },
+  { name: "Geospatial Energy Siting", sector: "Data, Software & Fintech", sub: "Data", bs: 52, maturity: 8, funding: 200, count: 10, classification: 2, prominent: ["Anderson Optimization","Siteline"] },
+  { name: "Climate Project Finance", sector: "Data, Software & Fintech", sub: "Fintech", bs: 55, maturity: 10, funding: 500, count: 20, classification: 2, prominent: ["Banyan Infrastructure","Crux","Kyte"] },
+  { name: "Green Bond / Debt", sector: "Data, Software & Fintech", sub: "Fintech", bs: 62, maturity: 10, funding: 200, count: 10, classification: 3, prominent: ["Aligned Climate"] },
+  { name: "Community Solar Finance", sector: "Data, Software & Fintech", sub: "Fintech", bs: 65, maturity: 10, funding: 2000, count: 15, classification: 3, prominent: ["Arcadia","Perch Energy","Nexamp","Common Energy"] },
+  { name: "Energy Asset Tokenization", sector: "Data, Software & Fintech", sub: "Fintech", bs: 18, maturity: 5, funding: 80, count: 8, classification: 1, prominent: ["WePower","SunExchange"] },
+  { name: "Permitting Automation", sector: "Data, Software & Fintech", sub: "Regulatory", bs: 60, maturity: 6, funding: 200, count: 12, classification: 3, prominent: ["Paces"] },
+  { name: "ESG Reporting SaaS", sector: "Data, Software & Fintech", sub: "Regulatory", bs: 68, maturity: 8, funding: 800, count: 40, classification: 3, prominent: ["Watershed","Persefoni","Plan A","Sweep","Normative","Greenly"] },
+  { name: "Tariff Analysis Tools", sector: "Data, Software & Fintech", sub: "Regulatory", bs: 72, maturity: 10, funding: 100, count: 8, classification: 3, prominent: ["GridX"] }
+];
+
+let activeFilters = new Set();
+let currentView = 'scatter';
+let activeBubble = null;
+
+function init() {
+  renderStats();
+  renderControls();
+  renderScatter();
+  renderTable();
+  setupTooltip();
+}
+
+function renderStats() {
+  const totalFunding = DATA.reduce((s, d) => s + d.funding, 0);
+  const totalStartups = DATA.reduce((s, d) => s + d.count, 0);
+  const breakthroughCount = DATA.filter(d => d.classification === 1).length;
+  const incrementalCount = DATA.filter(d => d.classification === 3).length;
+
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-card"><div class="stat-value">${DATA.length}</div><div class="stat-label">Technology Areas Mapped</div></div>
+    <div class="stat-card"><div class="stat-value">$${Math.round(totalFunding/1000)}B+</div><div class="stat-label">Total Funding Tracked</div></div>
+    <div class="stat-card"><div class="stat-value">${breakthroughCount}</div><div class="stat-label">Breakthrough Areas</div></div>
+    <div class="stat-card"><div class="stat-value">${incrementalCount}</div><div class="stat-label">Incremental Areas</div></div>
+  `;
+}
+
+function renderControls() {
+  const container = document.getElementById('controls');
+  let html = `<button class="filter-btn active" data-filter="all">All Sectors</button>`;
+  for (const [name, info] of Object.entries(SECTORS)) {
+    html += `<button class="filter-btn" data-filter="${name}"><span class="filter-dot" style="background:${info.color}"></span>${info.short}</button>`;
+  }
+  html += `<div class="view-toggle">
+    <button class="view-btn active" data-view="scatter">Scatter</button>
+    <button class="view-btn" data-view="table">Table</button>
+  </div>`;
+  container.innerHTML = html;
+
+  container.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      if (filter === 'all') {
+        activeFilters.clear();
+        container.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      } else {
+        container.querySelector('[data-filter="all"]').classList.remove('active');
+        if (activeFilters.has(filter)) {
+          activeFilters.delete(filter);
+          btn.classList.remove('active');
+          if (activeFilters.size === 0) {
+            container.querySelector('[data-filter="all"]').classList.add('active');
+          }
+        } else {
+          activeFilters.add(filter);
+          btn.classList.add('active');
+        }
+      }
+      updateVisibility();
+    });
+  });
+
+  container.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      container.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentView = btn.dataset.view;
+      document.getElementById('chart-view').style.display = currentView === 'scatter' ? 'block' : 'none';
+      document.getElementById('table-view').style.display = currentView === 'table' ? 'block' : 'none';
+    });
+  });
+}
+
+function isVisible(d) {
+  if (activeFilters.size === 0) return true;
+  return activeFilters.has(d.sector);
+}
+
+function updateVisibility() {
+  document.querySelectorAll('.bubble').forEach(el => {
+    const idx = parseInt(el.dataset.idx);
+    const d = DATA[idx];
+    el.classList.toggle('dimmed', !isVisible(d));
+  });
+
+  document.querySelectorAll('#table-view tbody tr').forEach(tr => {
+    const idx = parseInt(tr.dataset.idx);
+    const d = DATA[idx];
+    tr.style.display = isVisible(d) ? '' : 'none';
+  });
+}
+
+function fundingToSize(f) {
+  return Math.max(10, Math.min(48, 8 + Math.sqrt(f) * 0.55));
+}
+
+function renderScatter() {
+  const plot = document.getElementById('plot-area');
+  plot.innerHTML = '';
+
+  // grid lines
+  for (let i = 0; i <= 4; i++) {
+    const h = document.createElement('div');
+    h.className = 'grid-line-h';
+    h.style.top = (i * 25) + '%';
+    plot.appendChild(h);
+  }
+  for (let i = 0; i <= 4; i++) {
+    const v = document.createElement('div');
+    v.className = 'grid-line-v';
+    v.style.left = (i * 25) + '%';
+    plot.appendChild(v);
+  }
+
+  const center = document.createElement('div');
+  center.className = 'center-line-v';
+  plot.appendChild(center);
+
+  // Jitter for overlapping
+  const positions = [];
+  DATA.forEach((d, i) => {
+    const baseX = d.bs;
+    const baseY = d.maturity;
+    let x = baseX;
+    let y = baseY;
+
+    // simple collision avoidance
+    for (let attempt = 0; attempt < 10; attempt++) {
+      let collision = false;
+      for (const p of positions) {
+        const dx = (x - p.x);
+        const dy = (y - p.y) * 2;
+        if (Math.sqrt(dx*dx + dy*dy) < 4) {
+          collision = true;
+          break;
+        }
+      }
+      if (!collision) break;
+      x = baseX + (Math.random() - 0.5) * 6;
+      y = baseY + (Math.random() - 0.5) * 2;
+    }
+    positions.push({ x, y });
+
+    const size = fundingToSize(d.funding);
+    const color = SECTORS[d.sector]?.color || '#888';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.dataset.idx = i;
+    bubble.style.width = size + 'px';
+    bubble.style.height = size + 'px';
+    bubble.style.left = `calc(${x}% - ${size/2}px)`;
+    // maturity: 0 = top (newer), 25 = bottom (mature)
+    const yPct = Math.min(95, Math.max(2, (d.maturity / 28) * 100));
+    bubble.style.top = `calc(${yPct}% - ${size/2}px)`;
+    bubble.style.background = `radial-gradient(circle at 35% 35%, ${color}dd, ${color}88)`;
+    bubble.style.border = `1.5px solid ${color}`;
+    bubble.style.zIndex = Math.round(100 - size);
+
+    const label = document.createElement('span');
+    label.className = 'bubble-label';
+    label.textContent = d.name.length > 22 ? d.name.slice(0,20) + '...' : d.name;
+    bubble.appendChild(label);
+
+    bubble.addEventListener('mouseenter', (e) => showTooltip(e, d));
+    bubble.addEventListener('mousemove', (e) => moveTooltip(e));
+    bubble.addEventListener('mouseleave', hideTooltip);
+
+    plot.appendChild(bubble);
+  });
+}
+
+function renderTable() {
+  const container = document.getElementById('table-view');
+  const sorted = DATA.map((d,i) => ({...d, idx: i})).sort((a,b) => a.bs - b.bs);
+
+  let html = `<div class="table-wrapper"><table>
+    <thead><tr>
+      <th>Technology</th>
+      <th>Sector</th>
+      <th>Classification</th>
+      <th>Score</th>
+      <th>Maturity (Yrs)</th>
+      <th>Funding</th>
+      <th>Startups</th>
+      <th>Prominent Players</th>
+    </tr></thead><tbody>`;
+
+  sorted.forEach(d => {
+    const classLabel = d.classification === 1 ? 'Breakthrough' : d.classification === 3 ? 'Incremental' : 'Hybrid';
+    const classCSS = d.classification === 1 ? 'class-breakthrough' : d.classification === 3 ? 'class-incremental' : 'class-hybrid';
+
+    html += `<tr data-idx="${d.idx}">
+      <td style="font-weight:500">${d.name}</td>
+      <td><span style="color:${SECTORS[d.sector]?.color}">${SECTORS[d.sector]?.short}</span></td>
+      <td><span class="class-badge ${classCSS}">${classLabel}</span></td>
+      <td>${d.bs}/100</td>
+      <td>~${d.maturity} yrs</td>
+      <td>$${d.funding >= 1000 ? (d.funding/1000).toFixed(1) + 'B' : d.funding + 'M'}</td>
+      <td>~${d.count}</td>
+      <td><div class="startup-list">${d.prominent.map(s => `<span class="startup-pill">${s}</span>`).join('')}</div></td>
+    </tr>`;
+  });
+
+  html += '</tbody></table></div>';
+  container.innerHTML = html;
+}
+
+function setupTooltip() {}
+
+function showTooltip(e, d) {
+  const tip = document.getElementById('tooltip');
+  const classLabel = d.classification === 1 ? 'Breakthrough' : d.classification === 3 ? 'Incremental' : 'Hybrid';
+  const classCSS = d.classification === 1 ? 'class-breakthrough' : d.classification === 3 ? 'class-incremental' : 'class-hybrid';
+  const color = SECTORS[d.sector]?.color || '#888';
+
+  tip.innerHTML = `
+    <div class="tooltip-classification ${classCSS}">${classLabel}</div>
+    <div class="tooltip-name">${d.name}</div>
+    <div class="tooltip-sector" style="color:${color}">${d.sector} / ${d.sub}</div>
+    <div class="tooltip-grid">
+      <div class="tooltip-item"><label>Spectrum Score</label><span>${d.bs}/100</span></div>
+      <div class="tooltip-item"><label>Maturity</label><span>~${d.maturity} yrs</span></div>
+      <div class="tooltip-item"><label>Total Funding</label><span>$${d.funding >= 1000 ? (d.funding/1000).toFixed(1) + 'B' : d.funding + 'M'}</span></div>
+      <div class="tooltip-item"><label>Active Startups</label><span>~${d.count}</span></div>
+    </div>
+    <div class="tooltip-startups-label">Prominent Players</div>
+    <div class="tooltip-startups">${d.prominent.map(s => `<span class="startup-tag">${s}</span>`).join('')}</div>
+  `;
+
+  tip.classList.add('visible');
+  moveTooltip(e);
+}
+
+function moveTooltip(e) {
+  const tip = document.getElementById('tooltip');
+  const w = tip.offsetWidth;
+  const h = tip.offsetHeight;
+  let x = e.clientX + 16;
+  let y = e.clientY - 20;
+  if (x + w > window.innerWidth - 20) x = e.clientX - w - 16;
+  if (y + h > window.innerHeight - 20) y = window.innerHeight - h - 20;
+  if (y < 10) y = 10;
+  tip.style.left = x + 'px';
+  tip.style.top = y + 'px';
+}
+
+function hideTooltip() {
+  document.getElementById('tooltip').classList.remove('visible');
+}
+
+init();
+</script>
+</body>
+</html>
