@@ -1,951 +1,440 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Energy Startups: Breakthrough vs Incremental Map</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Energy Digest — Startup Funding Tracker</title>
+<meta name="description" content="A curated feed of 115 energy-technology startup funding rounds across the US, Europe, UK and India, 2025-07-28 to 2026-07-27.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0C0F14;
-  --surface: #151921;
-  --surface2: #1C222E;
-  --border: #2A3142;
-  --text: #E8ECF4;
-  --text2: #9AA3B8;
-  --text3: #5E6781;
-  --accent: #FF6B35;
-  --gen: #34D399;
-  --storage: #60A5FA;
-  --grid: #FBBF24;
-  --efficiency: #A78BFA;
-  --trading: #F472B6;
-  --transport: #FB923C;
-  --ops: #38BDF8;
-  --carbon: #4ADE80;
-  --data: #E879F9;
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Palette: 012A4A 013A63 01497C 014F86 2A6F97 2C7DA0 468FAF 61A5C2 89C2D9 A9D6E5 */
+  --cream:#DDEDF4; --card:#F5FAFD; --navy:#012A4A; --teal:#2A6F97;
+  --orange:#89C2D9;       /* accent for use ON dark surfaces */
+  --accent-deep:#01497C;  /* accent for use ON light surfaces */
+  --brown:#013A63;
+  --mid:#61A5C2;          /* chart fills */
+  --hair:rgba(42,111,151,0.24); --hair-strong:rgba(42,111,151,0.52);
+  --tint:rgba(42,111,151,0.08); --soft:rgba(1,42,74,0.62);
+  --shadow:0 1px 2px rgba(1,42,74,.06),0 8px 24px -12px rgba(1,42,74,.20);
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-.grain {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  opacity: 0.03;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  z-index: 9999;
-}
-
-header {
-  padding: 48px 48px 0;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-header h1 {
-  font-family: 'Instrument Serif', serif;
-  font-size: 42px;
-  font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: -0.5px;
-  margin-bottom: 12px;
-}
-
-header h1 span { color: var(--accent); }
-
-header p {
-  font-size: 15px;
-  color: var(--text2);
-  max-width: 700px;
-  line-height: 1.6;
-  margin-bottom: 32px;
-}
-
-.controls {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 0 48px;
-  max-width: 1400px;
-  margin: 0 auto 24px;
-}
-
-.filter-btn {
-  padding: 7px 16px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text2);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12.5px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.filter-btn:hover { border-color: var(--text3); color: var(--text); }
-.filter-btn.active { background: var(--surface2); border-color: var(--text3); color: var(--text); }
-
-.filter-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.view-toggle {
-  display: flex;
-  gap: 0;
-  margin-left: auto;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.view-btn {
-  padding: 7px 16px;
-  border: none;
-  background: transparent;
-  color: var(--text3);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12.5px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.view-btn.active { background: var(--surface2); color: var(--text); }
-
-.main-container {
-  padding: 0 48px 48px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-/* Scatter plot view */
-.chart-container {
-  position: relative;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 48px 48px 60px 72px;
-  margin-left: 56px;
-  min-height: 600px;
-  overflow: visible;
-}
-
-.axis-label-x {
-  position: absolute;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 12px;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.axis-label-y {
-  position: absolute;
-  left: -60px;
-  top: 50%;
-  transform: translateY(-50%) rotate(-90deg);
-  font-size: 12px;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  white-space: nowrap;
-}
-
-.axis-end-left {
-  position: absolute;
-  bottom: 36px;
-  left: 72px;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--accent);
-  opacity: 0.7;
-}
-
-.axis-end-right {
-  position: absolute;
-  bottom: 36px;
-  right: 48px;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--gen);
-  opacity: 0.7;
-}
-
-.axis-end-top {
-  position: absolute;
-  top: 24px;
-  left: 72px;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text3);
-  opacity: 0.7;
-}
-
-.axis-end-bottom {
-  position: absolute;
-  bottom: 56px;
-  left: 72px;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text3);
-  opacity: 0.7;
-}
-
-.plot-area {
-  position: relative;
-  width: 100%;
-  height: 520px;
-}
-
-.grid-line-h, .grid-line-v {
-  position: absolute;
-  background: var(--border);
-  opacity: 0.3;
-}
-
-.grid-line-h { width: 100%; height: 1px; }
-.grid-line-v { width: 1px; height: 100%; }
-
-.center-line-v {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 1px;
-  height: 100%;
-  background: var(--accent);
-  opacity: 0.15;
-}
-
-.bubble {
-  position: absolute;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: transform 0.2s, opacity 0.3s, box-shadow 0.2s;
-  opacity: 0.8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.bubble:hover {
-  transform: scale(1.15);
-  opacity: 1;
-  z-index: 100 !important;
-  box-shadow: 0 0 20px rgba(255,255,255,0.15);
-}
-
-.bubble.dimmed { opacity: 0.1 !important; }
-
-.bubble-label {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 9.5px;
-  color: var(--text2);
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s;
-  text-align: center;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.bubble:hover .bubble-label { opacity: 1; }
-
-/* Tooltip */
-.tooltip {
-  position: fixed;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-  width: 340px;
-  z-index: 10000;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.15s;
-  backdrop-filter: blur(12px);
-}
-
-.tooltip.visible { opacity: 1; }
-
-.tooltip-name {
-  font-family: 'Instrument Serif', serif;
-  font-size: 18px;
-  margin-bottom: 4px;
-}
-
-.tooltip-sector {
-  font-size: 11px;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 14px;
-}
-
-.tooltip-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.tooltip-item label {
-  display: block;
-  font-size: 10px;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 2px;
-}
-
-.tooltip-item span {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.tooltip-classification {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 500;
-  margin-bottom: 12px;
-}
-
-.tooltip-startups-label {
-  font-size: 10px;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
-}
-
-.tooltip-startups {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.startup-tag {
-  padding: 2px 8px;
-  background: var(--surface2);
-  border-radius: 10px;
-  font-size: 11px;
-  color: var(--text2);
-}
-
-/* Table view */
-.table-container {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-.table-wrapper {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-
-thead th {
-  padding: 14px 16px;
-  text-align: left;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface2);
-  cursor: pointer;
-  user-select: none;
-  white-space: nowrap;
-}
-
-thead th:hover { color: var(--text2); }
-
-tbody td {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  vertical-align: top;
-}
-
-tbody tr:hover { background: var(--surface2); }
-
-.class-badge {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.class-breakthrough { background: rgba(255,107,53,0.15); color: var(--accent); }
-.class-incremental { background: rgba(52,211,153,0.15); color: var(--gen); }
-.class-hybrid { background: rgba(251,191,36,0.15); color: var(--grid); }
-
-.startup-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3px;
-}
-
-.startup-pill {
-  padding: 1px 7px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 10.5px;
-  color: var(--text2);
-  white-space: nowrap;
-}
-
-.legend-row {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  padding: 16px 48px;
-  max-width: 1400px;
-  margin: 0 auto;
-  flex-wrap: wrap;
-}
-
-.legend-title {
-  font-size: 11px;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11.5px;
-  color: var(--text2);
-}
-
-.legend-circle {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.size-legend {
-  display: flex;
-  align-items: flex-end;
-  gap: 6px;
-  margin-left: 24px;
-}
-
-.size-circle {
-  border-radius: 50%;
-  border: 1px solid var(--text3);
-  opacity: 0.5;
-}
-
-.size-label {
-  font-size: 10px;
-  color: var(--text3);
-}
-
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  padding: 24px 48px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.stat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-}
-
-.stat-value {
-  font-family: 'Instrument Serif', serif;
-  font-size: 32px;
-  color: var(--text);
-  margin-bottom: 4px;
-}
-
-.stat-label {
-  font-size: 12px;
-  color: var(--text3);
-}
-
-@media (max-width: 768px) {
-  header, .controls, .main-container, .legend-row, .stats-row { padding-left: 20px; padding-right: 20px; }
-  header h1 { font-size: 28px; }
-  .chart-container { padding: 32px 24px 50px 48px; }
-  .stats-row { grid-template-columns: repeat(2, 1fr); }
-  .tooltip { width: 280px; }
-}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--navy);font-family:'Inter',system-ui,sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--teal);text-decoration:none}
+a:hover{color:var(--brown)}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* NAV */
+.nav{background:var(--navy);color:var(--cream);position:sticky;top:0;z-index:60;
+  border-bottom:1px solid rgba(221,237,244,.14)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',Georgia,serif;
+  font-weight:600;font-size:1.24rem;color:var(--cream)}
+.brand .mark{width:12px;height:12px;background:var(--orange);border-radius:2px;transform:rotate(45deg)}
+.nav .tag{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(221,237,244,.62)}
+@media(max-width:720px){.nav .tag{display:none}}
+
+/* HERO */
+.hero{background:var(--navy);color:var(--cream);padding:clamp(44px,7vw,80px) 0 0;overflow:hidden;position:relative}
+.hero:after{content:"";position:absolute;right:-160px;top:-120px;width:520px;height:520px;
+  border-radius:50%;background:radial-gradient(circle,rgba(137,194,217,.22),transparent 68%)}
+.hero .inner{position:relative;z-index:2}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+.hero h1{font-family:'Fraunces',Georgia,serif;font-weight:600;
+  font-size:clamp(2.5rem,6.2vw,4.4rem);line-height:1.03;letter-spacing:-.5px;max-width:17ch}
+.hero .lede{margin-top:20px;max-width:58ch;color:rgba(221,237,244,.82);font-size:1.03rem}
+.hero .lede strong{color:var(--cream);font-weight:600}
+
+/* STAT STRIP */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:40px;
+  background:rgba(221,237,244,.16);border-top:1px solid rgba(221,237,244,.16)}
+.stat{background:var(--navy);padding:20px 4px 26px}
+.stat .k{font-family:'Fraunces',Georgia,serif;font-size:clamp(1.5rem,3.4vw,2.15rem);
+  font-weight:600;line-height:1;color:var(--cream)}
+.stat .k em{font-style:normal;color:var(--orange)}
+.stat .l{font-family:'IBM Plex Mono',monospace;font-size:.64rem;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(221,237,244,.62);margin-top:9px}
+@media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* CONTROL BAR */
+.controls{background:var(--cream);border-bottom:1px solid var(--hair);
+  position:sticky;top:58px;z-index:50;padding:16px 0 14px}
+.ctlrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ctlrow + .ctlrow{margin-top:11px}
+.ctllab{font-family:'IBM Plex Mono',monospace;font-size:.63rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--soft);min-width:56px}
+.chip{font-family:'Inter',sans-serif;font-size:.83rem;font-weight:500;cursor:pointer;
+  background:transparent;border:1px solid var(--hair);color:var(--navy);
+  padding:6px 13px;border-radius:999px;display:inline-flex;align-items:center;gap:7px;
+  transition:.14s}
+.chip:hover{border-color:var(--hair-strong);background:var(--tint)}
+.chip .n{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--soft)}
+.chip.on{background:var(--navy);border-color:var(--navy);color:var(--cream)}
+.chip.on .n{color:var(--orange)}
+.chip.rg.on{background:var(--teal);border-color:var(--teal)}
+.chip.rg.on .n{color:#A9D6E5}
+
+.search{flex:1;min-width:210px;position:relative}
+.search input{width:100%;font-family:'Inter',sans-serif;font-size:.88rem;color:var(--navy);
+  background:var(--card);border:1px solid var(--hair);border-radius:999px;
+  padding:8px 34px 8px 15px;outline:none;transition:.14s}
+.search input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(42,111,151,.12)}
+.search input::placeholder{color:var(--soft)}
+.search .clr{position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  border:0;background:transparent;cursor:pointer;color:var(--soft);
+  font-size:1.05rem;line-height:1;padding:4px 7px;border-radius:50%}
+.search .clr:hover{color:var(--brown)}
+select.sort{font-family:'Inter',sans-serif;font-size:.83rem;font-weight:500;color:var(--navy);
+  background:var(--card);border:1px solid var(--hair);border-radius:999px;
+  padding:7px 13px;cursor:pointer;outline:none}
+select.sort:focus{border-color:var(--teal)}
+.tgl{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;
+  text-transform:uppercase;cursor:pointer;background:transparent;
+  border:1px solid var(--hair);color:var(--teal);padding:7px 13px;border-radius:999px;transition:.14s}
+.tgl:hover{border-color:var(--teal);background:var(--tint)}
+.tgl.on{background:var(--teal);border-color:var(--teal);color:var(--cream)}
+
+/* CHARTS */
+.charts{background:var(--card);border-bottom:1px solid var(--hair);display:none}
+.charts.show{display:block}
+.chartgrid{display:grid;grid-template-columns:1.4fr 1fr;gap:34px;padding:30px 0 34px}
+@media(max-width:860px){.chartgrid{grid-template-columns:1fr;gap:26px}}
+.chartbox h3{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--soft);margin-bottom:16px;font-weight:500}
+.bar{display:grid;grid-template-columns:96px 1fr 58px;align-items:center;gap:11px;margin-bottom:8px}
+.bar .nm{font-size:.79rem;font-weight:500}
+.bar .track{height:17px;background:var(--tint);border-radius:3px;overflow:hidden}
+.bar .fill{height:100%;background:var(--mid);border-radius:3px;transition:width .35s ease}
+.bar.top .fill{background:var(--accent-deep)}
+.bar .vl{font-family:'IBM Plex Mono',monospace;font-size:.71rem;color:var(--soft);text-align:right}
+.spark{display:flex;align-items:flex-end;gap:3px;height:96px;
+  border-bottom:1px solid var(--hair);padding-bottom:2px}
+.spark .col{flex:1;background:var(--mid);border-radius:2px 2px 0 0;min-height:2px;
+  opacity:.75;transition:.2s;position:relative}
+.spark .col:hover{opacity:1;background:var(--accent-deep)}
+.sparklab{display:flex;justify-content:space-between;margin-top:7px;
+  font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--soft)}
+
+/* RESULTS */
+.results{padding:26px 0 10px}
+.resline{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--soft);margin-bottom:20px}
+.resline b{color:var(--navy);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(316px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--hair);border-radius:9px;
+  padding:20px 20px 17px;display:flex;flex-direction:column;transition:.16s;box-shadow:var(--shadow)}
+.card:hover{border-color:var(--hair-strong);transform:translateY(-2px)}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:11px}
+.card h2{font-family:'Fraunces',Georgia,serif;font-size:1.2rem;font-weight:600;line-height:1.2}
+.amt{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:.94rem;
+  color:var(--brown);white-space:nowrap}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.pill{font-family:'IBM Plex Mono',monospace;font-size:.63rem;letter-spacing:.08em;
+  text-transform:uppercase;padding:3px 8px;border-radius:3px;border:1px solid var(--hair)}
+.pill.sec{background:var(--teal);border-color:var(--teal);color:var(--cream)}
+.pill.stg{background:transparent;color:var(--teal)}
+.pill.rgn{background:transparent;color:var(--soft)}
+.card .desc{font-size:.875rem;color:rgba(1,42,74,.84);flex:1;margin-bottom:14px}
+.card .inv{font-size:.775rem;color:var(--soft);border-top:1px solid var(--hair);
+  padding-top:11px;margin-bottom:11px;line-height:1.45}
+.card .inv b{color:var(--teal);font-weight:600;font-family:'IBM Plex Mono',monospace;
+  font-size:.62rem;letter-spacing:.11em;text-transform:uppercase;display:block;margin-bottom:3px}
+.note{font-size:.735rem;color:var(--brown);background:rgba(1,73,124,.09);
+  border-left:2px solid var(--accent-deep);padding:7px 10px;border-radius:0 3px 3px 0;margin-bottom:11px}
+.card .foot{display:flex;justify-content:space-between;align-items:center;
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--soft)}
+.card .foot a{color:var(--teal);font-weight:500}
+.card .foot a:hover{color:var(--brown);text-decoration:underline}
+.empty{text-align:center;padding:60px 20px;color:var(--soft)}
+.empty h3{font-family:'Fraunces',Georgia,serif;font-size:1.4rem;color:var(--navy);margin-bottom:8px}
+
+/* PAGER */
+.pager{display:flex;justify-content:center;align-items:center;gap:6px;
+  padding:34px 0 46px;flex-wrap:wrap}
+.pgbtn{font-family:'IBM Plex Mono',monospace;font-size:.76rem;cursor:pointer;
+  background:transparent;border:1px solid var(--hair);color:var(--navy);
+  min-width:34px;height:34px;padding:0 11px;border-radius:5px;transition:.14s}
+.pgbtn:hover:not(:disabled){border-color:var(--teal);background:var(--tint)}
+.pgbtn.on{background:var(--accent-deep);border-color:var(--accent-deep);color:var(--cream);font-weight:600}
+.pgbtn:disabled{opacity:.32;cursor:not-allowed}
+.gap{color:var(--soft);padding:0 3px}
+
+/* FOOTER */
+footer{background:var(--navy);color:rgba(221,237,244,.74);padding:44px 0 52px;font-size:.83rem}
+footer h4{font-family:'Fraunces',Georgia,serif;color:var(--cream);font-size:1.05rem;
+  font-weight:600;margin-bottom:11px}
+footer .cols{display:grid;grid-template-columns:1.6fr 1fr;gap:38px}
+@media(max-width:720px){footer .cols{grid-template-columns:1fr;gap:26px}}
+footer ul{list-style:none}
+footer li{margin-bottom:6px;padding-left:14px;position:relative}
+footer li:before{content:"";position:absolute;left:0;top:9px;width:4px;height:4px;
+  background:var(--orange);border-radius:50%}
+footer .rule{height:1px;background:rgba(221,237,244,.16);margin:30px 0 20px}
+footer .fine{font-family:'IBM Plex Mono',monospace;font-size:.66rem;
+  letter-spacing:.06em;color:rgba(221,237,244,.48);line-height:1.7}
 </style>
 </head>
 <body>
-<div class="grain"></div>
 
-<header>
-  <h1>Energy Startups: <span>Breakthrough</span> vs Incremental</h1>
-  <p>Mapping 80+ energy technology areas across the innovation spectrum. Bubble size represents total funding, vertical position reflects maturity (years since first startups). Click any bubble for details.</p>
-</header>
+<nav class="nav"><div class="wrap">
+  <span class="brand"><span class="mark"></span>The Energy Digest</span>
+  <span class="tag">Funding tracker &middot; 115 rounds</span>
+</div></nav>
 
-<div class="stats-row" id="stats-row"></div>
-
-<div class="controls" id="controls"></div>
-
-<div class="legend-row">
-  <span class="legend-title">Bubble size = Funding</span>
-  <div class="size-legend">
-    <div class="size-circle" style="width:12px;height:12px"></div>
-    <span class="size-label">&lt;$100M</span>
-    <div class="size-circle" style="width:22px;height:22px"></div>
-    <span class="size-label">$1B</span>
-    <div class="size-circle" style="width:36px;height:36px"></div>
-    <span class="size-label">$5B+</span>
+<header class="hero"><div class="wrap inner">
+  <p class="eyebrow">Trailing twelve months &middot; 28 Jul 2025 — 27 Jul 2026</p>
+  <h1>Where energy capital actually went.</h1>
+  <p class="lede">Every disclosed <strong>Seed-and-later</strong> venture round raised by an energy-technology
+  startup headquartered in the <strong>US, Europe, UK or India</strong> over the last twelve months —
+  classified into twelve sectors, each traceable to a named source.</p>
+  <div class="stats">
+    <div class="stat"><div class="k">115</div><div class="l">Rounds</div></div>
+    <div class="stat"><div class="k"><em>$5.89B</em></div><div class="l">Disclosed capital</div></div>
+    <div class="stat"><div class="k">12</div><div class="l">Sectors</div></div>
+    <div class="stat"><div class="k">4</div><div class="l">Regions</div></div>
   </div>
-</div>
+</div></header>
 
-<div class="main-container">
-  <div class="chart-container" id="chart-view">
-    <div class="axis-label-x">Breakthrough vs Incremental Spectrum</div>
-    <div class="axis-label-y">Years Since First Startups</div>
-    <div class="axis-end-left">Breakthrough</div>
-    <div class="axis-end-right">Incremental</div>
-    <div class="axis-end-top">Newer (0-5 yrs)</div>
-    <div class="axis-end-bottom">Mature (20+ yrs)</div>
-    <div class="plot-area" id="plot-area"></div>
+<section class="controls"><div class="wrap">
+  <div class="ctlrow">
+    <span class="ctllab">Sector</span>
+    <span id="cats" style="display:flex;gap:7px;flex-wrap:wrap"></span>
   </div>
-  <div class="table-container" id="table-view" style="display:none"></div>
-</div>
+  <div class="ctlrow">
+    <span class="ctllab">Region</span>
+    <span id="regs" style="display:flex;gap:7px;flex-wrap:wrap"></span>
+  </div>
+  <div class="ctlrow">
+    <span class="ctllab">Find</span>
+    <span class="search">
+      <input id="q" type="search" placeholder="Search company, investor, city or technology…" autocomplete="off">
+      <button class="clr" id="clr" aria-label="Clear search">&times;</button>
+    </span>
+    <select class="sort" id="sort" aria-label="Sort rounds">
+      <option value="latest">Newest first</option>
+      <option value="oldest">Oldest first</option>
+      <option value="largest">Largest round</option>
+      <option value="smallest">Smallest round</option>
+      <option value="az">Company A–Z</option>
+    </select>
+    <button class="tgl" id="ctgl">Show charts</button>
+  </div>
+</div></section>
 
-<div class="tooltip" id="tooltip"></div>
+<section class="charts" id="charts"><div class="wrap"><div class="chartgrid">
+  <div class="chartbox"><h3>Disclosed capital by sector</h3><div id="c1"></div></div>
+  <div class="chartbox"><h3>Deal flow by month</h3><div id="c2"></div></div>
+</div></div></section>
+
+<main class="results" id="results"><div class="wrap">
+  <p class="resline" id="resline"></p>
+  <div class="grid" id="grid"></div>
+  <div class="pager" id="pager"></div>
+</div></main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div>
+      <h4>Method &amp; scope</h4>
+      <ul>
+        <li>Window: 28 Jul 2025 to 27 Jul 2026, trailing twelve months.</li>
+        <li>Seed stage and later only. Pre-seed, angel-only rounds, grants and pure debt are excluded.</li>
+        <li>Headquarters in the US, Europe, UK or India only.</li>
+        <li>Each round sits in exactly one of eight sectors, assigned by what the company sells.</li>
+        <li>Every card links to a named source. Amounts are the equity raised, not cumulative totals.</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Sector tests</h4>
+      <ul>
+        <li><b style="color:var(--cream)">Supply chain</b> — sells to another manufacturer</li>
+        <li><b style="color:var(--cream)">Gen</b> — the output is electricity</li>
+        <li><b style="color:var(--cream)">Storage</b> — sells a deployed storage asset</li>
+        <li><b style="color:var(--cream)">Fuels</b> — the output is a molecule</li>
+        <li><b style="color:var(--cream)">T&amp;D</b> — moving electrons</li>
+        <li><b style="color:var(--cream)">Trading</b> — monetising electrons in a market</li>
+        <li><b style="color:var(--cream)">Efficiency</b> — reduces energy at the load</li>
+        <li><b style="color:var(--cream)">Transport</b> — energy for mobility</li>
+        <li><b style="color:var(--cream)">Industry &amp; heat</b> — decarbonising process heat</li>
+        <li><b style="color:var(--cream)">Ops</b> — running energy assets better</li>
+        <li><b style="color:var(--cream)">Software &amp; fintech</b> — financing and transacting energy</li>
+        <li><b style="color:var(--cream)">Carbon</b> — the output is removed or reused CO2</li>
+      </ul>
+    </div>
+  </div>
+  <div class="rule"></div>
+  <p class="fine">Static snapshot compiled 27 Jul 2026. Figures are as disclosed at announcement and are
+  not adjusted for currency movement; USD equivalents are approximate. Rounds carrying a flagged note involve a
+  reporting ambiguity — read the note before citing the figure. This page is a reference tool, not investment advice.</p>
+</div></footer>
 
 <script>
-const SECTORS = {
-  'Generation & Production': { color: '#34D399', short: 'Gen' },
-  'Energy Storage': { color: '#60A5FA', short: 'Storage' },
-  'Transmission & Distribution': { color: '#FBBF24', short: 'T&D' },
-  'Energy Efficiency & Demand': { color: '#A78BFA', short: 'Efficiency' },
-  'Energy Trading & Markets': { color: '#F472B6', short: 'Trading' },
-  'Electrification & Transport': { color: '#FB923C', short: 'Transport' },
-  'Operations & Services': { color: '#38BDF8', short: 'Ops' },
-  'Carbon Management': { color: '#4ADE80', short: 'Carbon' },
-  'Data, Software & Fintech': { color: '#E879F9', short: 'Data' }
-};
+const DEALS = [{"name": "Nuclear Turbines", "sector": "Gen", "stage": "Seed", "amount": "£15M", "amount_usd_m": 19, "date": "2026-07-27", "hq_city": "Manchester", "hq_country": "UK", "region": "UK", "investors": "IQ Capital (lead), Rhapsody Venture Partners, Zero Carbon Capital, Empirical Ventures", "description": "BAE Systems spin-out developing compact modular nuclear turbines it says could generate electricity at a fraction of the cost of conventional nuclear plants.", "source_url": "https://thenextweb.com/news/nuclear-turbines-15m-raise-compact-reactors", "source_name": "The Next Web", "note": "Announced on the closing date of this window."}, {"name": "Sila", "sector": "Supply chain", "stage": "Growth", "amount": "$300M", "amount_usd_m": 300, "date": "2026-07-21", "hq_city": "Alameda, CA", "hq_country": "USA", "region": "US", "investors": "Atreides Management + Sutter Hill Ventures (co-lead), 8VC, Bessemer, T. Rowe Price", "description": "Battery-materials company scaling US production of its silicon-carbon Titan Silicon anode at a Moses Lake, WA gigafactory to cut reliance on Chinese graphite.", "source_url": "https://techcrunch.com/2026/07/21/bucking-ev-slowdown-sila-raises-300m-to-expand-battery-materials-factory/", "source_name": "TechCrunch"}, {"name": "Gritt", "sector": "Gen", "stage": "Series A", "amount": "$26M", "amount_usd_m": 26, "date": "2026-07-21", "hq_city": "San Francisco, CA", "hq_country": "USA", "region": "US", "investors": "Obvious Ventures (lead), Union Square Ventures, Active Impact Investments", "description": "Physical-AI robotics startup attaching intelligent systems to off-the-shelf construction equipment to autonomously install solar panels far faster per crew.", "source_url": "https://techcrunch.com/2026/07/21/gritt-exits-stealth-with-34-million-for-robots-to-build-solar-plants-then-everything-else/", "source_name": "TechCrunch", "note": "Series A only. Total funding including pre-seed is $32.4M."}, {"name": "Circular Materials", "sector": "Supply chain", "stage": "Seed", "amount": "€11.8M", "amount_usd_m": 13, "date": "2026-07-21", "hq_city": "Cadoneghe", "hq_country": "Italy", "region": "Europe", "investors": "CDP Venture Capital, European Innovation Council Fund, EIT RawMaterials, 360 Capital", "description": "Italian cleantech company scaling its SWaP technology that recovers critical metals from industrial wastewater, supporting circular supply chains for batteries and electronics.", "source_url": "https://tech.eu/2026/07/21/circular-materials-secures-eur118m-to-scale-critical-raw-material-recovery-technology/", "source_name": "Tech.eu"}, {"name": "Gridcog", "sector": "T&D", "stage": "Series A", "amount": "£7M", "amount_usd_m": 10, "date": "2026-07-15", "hq_city": "London", "hq_country": "UK", "region": "UK", "investors": "ABB Electrification Ventures (lead), Axpo Ventures, DNV Ventures, AlbionVC", "description": "Energy-project modelling SaaS that simulates generation, storage, flexible load and grid constraints for developers and utilities including Shell and Octopus.", "source_url": "https://www.ess-news.com/2026/07/14/gridcog-raises-10-million-to-model-storage-and-hybrid-energy-projects/", "source_name": "ESS News"}, {"name": "Barocal", "sector": "Efficiency", "stage": "Seed", "amount": "$10M", "amount_usd_m": 10, "date": "2026-07-14", "hq_city": "Cambridge", "hq_country": "UK", "region": "UK", "investors": "World Fund, Breakthrough Energy Discovery, IP Group, Cambridge Enterprise Ventures", "description": "Cambridge spin-out developing solid-state barocaloric cooling that uses pressure-responsive materials as a refrigerant-free alternative for data centres and buildings.", "source_url": "https://www.datacenterdynamics.com/en/news/barocal-raises-10m-to-fund-solid-state-cooling-system-for-data-centers/", "source_name": "DCD"}, {"name": "Axle Energy", "sector": "Trading", "stage": "Series A", "amount": "£18.7M", "amount_usd_m": 25, "date": "2026-07-09", "hq_city": "London", "hq_country": "UK", "region": "UK", "investors": "Energize Capital (lead), Accel, Picus Capital, Eka Ventures", "description": "Virtual-power-plant software platform aggregating 300,000+ distributed assets (EV chargers, batteries, heat pumps) into grid-balancing flexibility.", "source_url": "https://www.startupmag.co.uk/funding/axle-energy-2026-growth-funding/", "source_name": "Startup Magazine"}, {"name": "Piq Energy", "sector": "T&D", "stage": "Seed", "amount": "$5M", "amount_usd_m": 5, "date": "2026-07-08", "hq_city": "San Francisco, CA", "hq_country": "USA", "region": "US", "investors": "Active Impact Investments (lead), New Climate Ventures, Ascent Energy Ventures", "description": "Agentic grid-planning platform automating interconnection engineering workflows to help utilities and developers connect new energy projects faster.", "source_url": "https://www.globenewswire.com/news-release/2026/07/08/3324265/0/en/Piq-Energy-Raises-Oversubscribed-5-Million-Seed-Round-to-Help-Unlock-North-America-s-Grid-Bottleneck.html", "source_name": "GlobeNewswire"}, {"name": "Bohr Energie", "sector": "Trading", "stage": "Series A", "amount": "€10M", "amount_usd_m": 11, "date": "2026-07-08", "hq_city": "Toulouse", "hq_country": "France", "region": "Europe", "investors": "Suma Capital / SC Net Zero Ventures (lead), Credit Agricole, Founders Future", "description": "French independent aggregator expanding its AI-powered management platform for solar, wind, hydro and batteries into Spain and Italy.", "source_url": "https://sumacapital.com/en/bohr-energie-secures-a-e10-million-series-a-round-led-by-suma-capital-to-accelerate-its-european-expansion/", "source_name": "Suma Capital"}, {"name": "Proxima Fusion", "sector": "Gen", "stage": "Series B", "amount": "€411M", "amount_usd_m": 468, "date": "2026-07-07", "hq_city": "Munich", "hq_country": "Germany", "region": "Europe", "investors": "XTX Ventures + East X Ventures (lead), RWE, Google, Balderton, Lightspeed", "description": "Stellarator fusion company that raised Europe's largest private fusion round to fund its net-energy demonstrator Alpha near Munich, targeting commercial fusion in the 2030s.", "source_url": "https://www.proximafusion.com/press-news/proxima-fusion-raises-eu411-million-to-build-europes-commercial-fusion-champion", "source_name": "Proxima Fusion", "note": "Company release labels this Series B; some trackers list it as Series A."}, {"name": "TaiSan", "sector": "Supply chain", "stage": "Seed", "amount": "£4.65M", "amount_usd_m": 6, "date": "2026-07-07", "hq_city": "Cambridge", "hq_country": "UK", "region": "UK", "investors": "Eos Advisory + Mercia Ventures (co-lead), AFI Ventures, InnoEnergy", "description": "Sodium-ion battery-materials startup developing a low-temperature process to replace lithium-ion anode materials for e-bikes, vehicles and power tools.", "source_url": "https://www.mercia.co.uk/taisan-raises-4-65m-to-bring-sodium-ion-batteries-to-mass-market/", "source_name": "Mercia Ventures"}, {"name": "BatX Energies", "sector": "Supply chain", "stage": "Series A", "amount": "$12.2M", "amount_usd_m": 12.2, "date": "2026-07-01", "hq_city": "Gurugram", "hq_country": "India", "region": "India", "investors": "IvyCap Ventures (lead), Zephyr Peacock, Mankind Pharma Family Office, JITO", "description": "Battery-recycling and critical-mineral recovery startup raising Rs 105 crore Series A to expand recovery of lithium, cobalt, nickel and graphite from end-of-life EV batteries.", "source_url": "https://yourstory.com/2026/07/cleantech-startup-batx-raises-rs-105-cr-series-a-ivycap-ventures", "source_name": "YourStory"}, {"name": "NeoCem", "sector": "Industry & heat", "stage": "Growth", "amount": "€17M", "amount_usd_m": 19, "date": "2026-07-01", "hq_city": "Hallennes-lez-Haubourdin", "hq_country": "France", "region": "Europe", "investors": "Fonds Révolution Environnementale et Solidaire / Crédit Mutuel Impact (lead), Rev3 Capital, Nord France Amorçage, Finorpa, CB Green", "description": "Low-carbon cement producer supplying ready-mix, precast, road binders and mortars. First production unit started in November 2025 and is ramping toward 200,000 t/yr.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Month-level date; exact announcement day not disclosed."}, {"name": "Omen AI", "sector": "Efficiency", "stage": "Series A", "amount": "$31M", "amount_usd_m": 31, "date": "2026-06-30", "hq_city": "San Francisco, CA", "hq_country": "USA", "region": "US", "investors": "Nava Ventures (lead), CRV, Sheryl Sandberg, Mann+Hummel, LMNT Ventures", "description": "Continuous fluid-analysis startup whose spectroscopic rack sensors monitor coolant chemistry in liquid-cooled AI data centres in real time to prevent costly GPU-rack failures.", "source_url": "https://www.prnewswire.com/news-releases/omen-ai-raises-31m-series-a-to-bring-continuous-fluid-intelligence-to-the-machines-powering-the-ai-economy-302814262.html", "source_name": "PR Newswire"}, {"name": "Gaussion", "sector": "Supply chain", "stage": "Series B", "amount": "$28M", "amount_usd_m": 28, "date": "2026-06-29", "hq_city": "London", "hq_country": "UK", "region": "UK", "investors": "BGF + AlbionVC (co-lead), Autotech Ventures, UCL Technology Fund, Future Ventures", "description": "UCL and Faraday Institution spin-out commercialising magnetic-field battery technology to speed charging and extend lifespan across automotive, aerospace and data-centre packs.", "source_url": "https://www.bgf.co.uk/posts/news/gaussion-28m/", "source_name": "BGF"}, {"name": "H2SITE", "sector": "Fuels", "stage": "Series B", "amount": "€42M+", "amount_usd_m": 48, "date": "2026-06-25", "hq_city": "Bilbao", "hq_country": "Spain", "region": "Europe", "investors": "EIC Fund (2nd close), Breakthrough Energy Ventures, Suma Capital, Hy24, Enagas Emprende", "description": "Spanish hydrogen-tech company that completed its Series B second close to scale membrane-reactor ammonia cracking and hydrogen separation for industrial clean-hydrogen supply.", "source_url": "https://h2site.eu/blog/h2site-secures-new-strategic-investment-to-accelerate-industrial-deployment-of-hydrogen-production-and-separation-solutions/", "source_name": "H2SITE"}, {"name": "Verse", "sector": "T&D", "stage": "Series B", "amount": "$54M", "amount_usd_m": 54, "date": "2026-06-18", "hq_city": "San Francisco, CA", "hq_country": "USA", "region": "US", "investors": "Bessemer Venture Partners (lead), NVIDIA, GV, Norrsken VC", "description": "Grid-software startup whose Dispatch Intelligence orchestrates on-site batteries and solar at AI data centres to cut grid draw and win interconnection approvals faster.", "source_url": "https://mgrid.org/2026/06/18/verse-raises-54-million-series-b-backed-by-nvidia-to-cut-data-center-grid-connection-waits-by-three-years/", "source_name": "mGrid"}, {"name": "Kvasir Technologies", "sector": "Fuels", "stage": "Series A", "amount": "€10M", "amount_usd_m": 11, "date": "2026-06-18", "hq_city": "Copenhagen", "hq_country": "Denmark", "region": "Europe", "investors": "European Energy (strategic), EIFO, Maersk Growth, Footprint Fund", "description": "Danish biofuel startup scaling a patented process that converts agricultural and forestry residues into climate-neutral marine fuel via the KVEEN Biofuels venture.", "source_url": "https://tech.eu/2026/06/18/kvasir-technologies-fuels-growth-with-eur10m-round/", "source_name": "Tech.eu"}, {"name": "Critical Energy", "sector": "Gen", "stage": "Seed", "amount": "$19M", "amount_usd_m": 19, "date": "2026-06-17", "hq_city": "Los Angeles, CA", "hq_country": "USA", "region": "US", "investors": "Susa Ventures + Upfront Ventures (co-lead), MaC Venture Capital, Humba Ventures", "description": "SpaceX-alum-founded geothermal startup building factory-made container-sized turbomachinery inspired by rocket engines to generate always-on power from existing geothermal resources.", "source_url": "https://techcrunch.com/2026/06/17/spacex-alum-nabs-22m-to-turn-rocket-engines-into-geothermal-power-plants/", "source_name": "TechCrunch", "note": "Seed tranche; some coverage cites a $22M total."}, {"name": "eMabler", "sector": "Transport", "stage": "Series A", "amount": "€5.5M", "amount_usd_m": 6, "date": "2026-06-16", "hq_city": "Helsinki", "hq_country": "Finland", "region": "Europe", "investors": "Greencode Ventures (lead), Swiss Post Ventures, Rethink Ventures", "description": "Finnish EV-charging software platform expanding its grid-aware, hardware-agnostic charging solution into Germany and developing smart charging as a flexible grid asset.", "source_url": "https://tech.eu/2026/06/16/emabler-secures-eur55m-to-scale-ev-charging-software/", "source_name": "Tech.eu"}, {"name": "SolarSquare", "sector": "Gen", "stage": "Series C", "amount": "$53M", "amount_usd_m": 53, "date": "2026-06-16", "hq_city": "Mumbai", "hq_country": "India", "region": "India", "investors": "B Capital (lead), Lightspeed, Elevation Capital, Lowercarbon Capital, Rainmatter", "description": "Residential rooftop-solar company raising Series C to expand from 25 cities to dozens more, taking total funding past $100M at a roughly $500M valuation.", "source_url": "https://yourstory.com/2026/06/solarsquare-raises-53-million-expand-residential-solar-footprint-india", "source_name": "YourStory"}, {"name": "Mantle Energy", "sector": "Gen", "stage": "Seed", "amount": "$5M", "amount_usd_m": 5, "date": "2026-06-16", "hq_city": "Dallas, TX", "hq_country": "USA", "region": "US", "investors": "17Shoals Inc. (lead); spun out of Hunt Energy Company", "description": "Performs controlled combustion of hydrocarbons left in depleted shale formations to manufacture geothermal-grade heat for power generation, while enabling enhanced oil recovery from the same reservoir.", "source_url": "https://mantle.energy/", "source_name": "PR Newswire / ThinkGeoEnergy", "note": "Produces incremental oil alongside low-carbon baseload; the carbon-sequestration claim is unproven at seed stage."}, {"name": "Endurance Energy", "sector": "Gen", "stage": "Series A", "amount": "$54M", "amount_usd_m": 54, "date": "2026-06-11", "hq_city": "Seattle, WA", "hq_country": "USA", "region": "US", "investors": "Founders Fund (lead), Construct Capital, Felicis, First Round, Point72 Ventures", "description": "Subsea geothermal startup developing offshore systems that harvest heat from deep-ocean hydrothermal environments to deliver always-on zero-emission baseload power.", "source_url": "https://techcrunch.com/2026/06/11/endurance-energy-raises-54m-to-harness-a-massive-untapped-energy-source/", "source_name": "TechCrunch"}, {"name": "Exponent Energy", "sector": "Transport", "stage": "Series B", "amount": "$21.1M", "amount_usd_m": 21.1, "date": "2026-06-10", "hq_city": "Bengaluru", "hq_country": "India", "region": "India", "investors": "360 ONE Asset + TDK Ventures (lead), Hitachi Ventures, Eight Roads, Lightspeed", "description": "Rapid EV-charging startup raising a Rs 200 crore Series B extension to scale its fast-charging network for commercial vehicles across Indian cities and highways.", "source_url": "https://www.livemint.com/companies/start-ups/exponent-energy-raises-rs-200-crore-to-expand-ev-charging-network-11780980978982.html", "source_name": "Livemint"}, {"name": "Eclipse", "sector": "Storage", "stage": "Series A", "amount": "€20M", "amount_usd_m": 23, "date": "2026-06-08", "hq_city": "Paris", "hq_country": "France", "region": "Europe", "investors": "BNP Paribas + Noria (co-lead), Wind Capital", "description": "French utility-scale battery-storage developer funding its first proprietary BESS projects and scaling its Flowstream optimisation-and-trading platform across Europe.", "source_url": "https://www.ess-news.com/2026/06/09/eclipse-raises-e20-million-series-a-for-european-battery-storage-expansion/", "source_name": "ESS News"}, {"name": "Companion.energy", "sector": "Trading", "stage": "Seed", "amount": "€7.8M", "amount_usd_m": 9, "date": "2026-06-08", "hq_city": "Ghent", "hq_country": "Belgium", "region": "Europe", "investors": "Realyze Ventures + Pi Labs (co-lead), Asterion Ventures", "description": "Belgian real-time energy-management platform for large industrial enterprises, raising seed capital to deepen multi-asset optimisation and expand into Germany and Spain.", "source_url": "https://www.eu-startups.com/2026/06/ghents-companion-energy-raises-e7-8-million-to-help-large-enterprises-manage-energy-in-real-time/", "source_name": "EU-Startups"}, {"name": "GALVANY", "sector": "Efficiency", "stage": "Seed", "amount": "€10M", "amount_usd_m": 11, "date": "2026-06-08", "hq_city": "Berlin", "hq_country": "Germany", "region": "Europe", "investors": "SET Ventures (lead), AENU (co-lead)", "description": "Berlin heat-pump platform that raised a profitable seed round after strong revenue growth, targeting multi-family housing and AI-driven building energy management.", "source_url": "https://techfundingnews.com/galvany-10m-seed-profitable-heat-pumps-germany/", "source_name": "TechFundingNews"}, {"name": "GPS Renewables", "sector": "Fuels", "stage": "Series C", "amount": "$14.5M", "amount_usd_m": 14.5, "date": "2026-06-08", "hq_city": "Bengaluru", "hq_country": "India", "region": "India", "investors": "PixelSky Capital (lead), Spectrum Impact Family Office, SVL-SME Neev Fund", "description": "Compressed-biogas project developer and EPC firm raising a Rs 125 crore equity Series C to accelerate a large CBG project pipeline with Indian Oil and BPCL.", "source_url": "https://urjadaily.com/gps-renewables-raises-%E2%82%B9635-crore-in-series-c-funding/", "source_name": "Urja Daily", "note": "Equity tranche only. The Rs 635 crore headline bundles a Rs 200 crore asset-platform tie-up and a prior Rs 310 crore Sojitz investment."}, {"name": "Hygenco Green Energies", "sector": "Fuels", "stage": "Growth", "amount": "$105M", "amount_usd_m": 105, "date": "2026-06-05", "hq_city": "Gurugram", "hq_country": "India", "region": "India", "investors": "IFC (lead), Siemens Financial Services, Fullerton Carbon Action Fund, Clean Technology Fund", "description": "Green hydrogen and ammonia producer that secured $105M equity from an IFC-led consortium to build commercial green-hydrogen plants and pioneer Hydrogen-as-a-Service.", "source_url": "https://www.fortuneindia.com/economy/hygenco-secures-105-million-from-ifc-led-consortium-to-scale-green-hydrogen-capacity-targets-1000-jobs/141783", "source_name": "Fortune India"}, {"name": "Helion", "sector": "Gen", "stage": "Series G", "amount": "$465M", "amount_usd_m": 465, "date": "2026-06-04", "hq_city": "Everett, WA", "hq_country": "USA", "region": "US", "investors": "Thrive Capital (lead), Lightspeed, Lux Capital, SoftBank Vision Fund 2, Peak XV", "description": "Fusion energy company building its Orion power plant under a Microsoft power deal, with its Polaris prototype running deuterium-tritium fuel above 150 million degrees C.", "source_url": "https://www.helionenergy.com/newsroom/helion-raises-465-million-series-g-funding-round-to-meet-surging-global-demand-for-power", "source_name": "Helion Energy"}, {"name": "Fuse Energy", "sector": "Trading", "stage": "Series B", "amount": "€25M", "amount_usd_m": 30, "date": "2026-06-04", "hq_city": "London", "hq_country": "UK", "region": "UK", "investors": "20VC, Collaborative Fund (new); Balderton Capital, LowerCarbon Capital (existing)", "description": "British energy platform combining software, trading, financing and storage optimisation; a Series B extension took total funding to about €214M.", "source_url": "https://www.eu-startups.com/2026/06/londons-fuse-energy-secures-e25-million-series-b-extension-as-it-plans-32000-sq-ft-london-hq/", "source_name": "EU-Startups"}, {"name": "Atana Elements", "sector": "Supply chain", "stage": "Seed", "amount": "$27.5M", "amount_usd_m": 27.5, "date": "2026-06-02", "hq_city": "United States", "hq_country": "USA", "region": "US", "investors": "Lowercarbon Capital (lead)", "description": "Critical-minerals company working on lithium and battery-relevant elements. Tracxn records the round as a Series B; it is a seed.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Tracxn stage label ('Series B') is wrong — this is a seed."}, {"name": "encosa", "sector": "Storage", "stage": "Seed", "amount": "€25M", "amount_usd_m": 28, "date": "2026-06-01", "hq_city": "Munich", "hq_country": "Germany", "region": "Europe", "investors": "Realyze Ventures (lead), Verve Ventures, Bayern Kapital, Blum Ventures", "description": "Battery-storage platform for German SMEs that raised a large seed round to scale its all-in-one BESS offering toward a VPP-capable multi-site energy platform.", "source_url": "https://www.eu-startups.com/2026/06/munich-based-encosa-raises-e25-million-to-bring-battery-storage-to-german-smes/", "source_name": "EU-Startups"}, {"name": "Evotrex", "sector": "Transport", "stage": "Series A", "amount": "$30M", "amount_usd_m": 30, "date": "2026-06-01", "hq_city": "California", "hq_country": "USA", "region": "US", "investors": "GSR United Capital, Forebright Concerto Capital, Unique Capital, Pegasus Capital, TTGG Ventures, ChunJia Capital, Thundersoft", "description": "Electric recreational and utility vehicle maker, $46M raised across two rounds following a $16M pre-A in November 2025.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Investor base is overwhelmingly China-linked — relevant to any US supply-chain or policy-sensitive read. Month-level date."}, {"name": "Cuprum Metals", "sector": "Supply chain", "stage": "Series A", "amount": "$19.4M", "amount_usd_m": 19.4, "date": "2026-06-01", "hq_city": "Boulder City, NV", "hq_country": "USA", "region": "US", "investors": "Lundin Family Office (lead), Woodline Partners, BHP Ventures", "description": "Copper extraction company, $22.1M raised in total. Explicitly not a bioleaching process — the absence of microbes is the company's stated differentiator, contrary to Tracxn's description.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Tracxn describes the process as bioleaching, which the company denies. Month-level date."}, {"name": "Eddy Grid", "sector": "Trading", "stage": "Series A", "amount": "€7.5M", "amount_usd_m": 9, "date": "2026-05-28", "hq_city": "Utrecht", "hq_country": "Netherlands", "region": "Europe", "investors": "Graduate Ventures, Volve Capital", "description": "Dutch energy-optimisation startup that raised its Series A after reaching 500 MW under management to expand automated renewable and battery asset trading into Germany.", "source_url": "https://kurrant.com/kurrantly-news/dutch-energy-optimizer-eddy-grid-raises-e7-5m/", "source_name": "Kurrant"}, {"name": "Thea Energy", "sector": "Gen", "stage": "Series B", "amount": "$100M", "amount_usd_m": 100, "date": "2026-05-27", "hq_city": "Princeton, NJ", "hq_country": "USA", "region": "US", "investors": "US Innovative Technology Fund (lead), Lowercarbon Capital, Hitachi Ventures, Climate Capital", "description": "Stellarator fusion startup expanding magnet manufacturing and preparing to site its Eos large-scale integrated stellarator demonstration device.", "source_url": "https://techcrunch.com/2026/05/27/with-a-new-100m-raise-princetons-thea-energy-is-now-a-top-funded-fusion-startup/", "source_name": "TechCrunch"}, {"name": "Focused Energy", "sector": "Gen", "stage": "Series A", "amount": "$240M", "amount_usd_m": 240, "date": "2026-05-27", "hq_city": "Darmstadt", "hq_country": "Germany", "region": "Europe", "investors": "RWE (lead), SPRIND, European Innovation Council Fund, Prime Movers Lab", "description": "Laser-fusion startup that raised the largest fully-secured Series A in fusion history to repurpose a decommissioned RWE nuclear site in Biblis as a laser fusion power plant.", "source_url": "https://apnews.com/press-release/business-wire/focused-energy-raises-240-million-in-series-a-financing-3976e1624cd44932965cfbe2e513bf7b", "source_name": "AP News"}, {"name": "Caudal Energy", "sector": "Gen", "stage": "Seed", "amount": "£4.3M", "amount_usd_m": 6, "date": "2026-05-27", "hq_city": "Oxford", "hq_country": "UK", "region": "UK", "investors": "Oxford Science Enterprises + Empirical Ventures (lead), Zero Carbon Capital, Creator Fund", "description": "Oxford spin-out (formerly Porpoise Power) developing fin-inspired oscillating-foil tidal power systems, targeting first commercial deployment in 2028.", "source_url": "https://tech.eu/2026/05/27/caudal-energy-raises-ps43m-to-scale-fin-inspired-tidal-power-technology/", "source_name": "Tech.eu"}, {"name": "GridCARE", "sector": "T&D", "stage": "Series A", "amount": "$64M", "amount_usd_m": 64, "date": "2026-05-14", "hq_city": "Palo Alto, CA", "hq_country": "USA", "region": "US", "investors": "Sutter Hill Ventures (lead), John Doerr, National Grid Partners, Emerson Collective", "description": "Physics-based AI platform that finds unused capacity on the existing grid so AI data-centre developers can interconnect in months rather than years.", "source_url": "https://mgrid.org/2026/05/14/gridcare-raises-64-million-to-cut-ai-data-center-grid-connection-waits-from-years-to-months/", "source_name": "mGrid"}, {"name": "Iceotope", "sector": "Efficiency", "stage": "Series B", "amount": "$26M", "amount_usd_m": 26, "date": "2026-05-14", "hq_city": "Sheffield", "hq_country": "UK", "region": "UK", "investors": "Two Seas Capital + Barclays Climate Ventures (lead), Northern Gritstone, British Business Bank", "description": "Precision chassis-based liquid-cooling company replacing air cooling in AI data centres with dielectric fluid circulation to cut energy and water use.", "source_url": "https://thenextweb.com/news/iceotope-26m-series-b-liquid-cooling-ai", "source_name": "The Next Web"}, {"name": "Haven Energy", "sector": "Trading", "stage": "Series A", "amount": "$40M", "amount_usd_m": 40, "date": "2026-05-08", "hq_city": "Los Angeles, CA", "hq_country": "USA", "region": "US", "investors": "Giant Ventures (lead), Turtle Hill Capital, Comcast Ventures, Lerer Hippeau", "description": "Residential solar-and-battery aggregator building a virtual power plant from distributed home assets, partnering with California community-choice utilities.", "source_url": "https://vctavern.com/haven-energy-raises-40m-to-expand-residential-solar-batteries-and-virtual-power-plants/", "source_name": "VC Tavern"}, {"name": "Star Catcher Industries", "sector": "Gen", "stage": "Series A", "amount": "$65M", "amount_usd_m": 65, "date": "2026-05-01", "hq_city": "Jacksonville, FL", "hq_country": "USA", "region": "US", "investors": "B Capital (lead), Shield Capital + Cerberus Ventures (co-lead), GreatPoint Ventures, Helena, Oceans Ventures", "description": "Oversubscribed round for a constellation that harvests solar energy in orbit and beams it optically to the existing solar arrays of client satellites, claiming up to 10x more available power with no receiver retrofit.", "source_url": "https://star-catcher.com/", "source_name": "Company and press coverage", "note": "Orbital energy infrastructure — included as a boundary case; it does not touch a terrestrial grid. Month-level date."}, {"name": "American Terawatt", "sector": "T&D", "stage": "Private placement", "amount": "$52.6M", "amount_usd_m": 52.6, "date": "2026-05-01", "hq_city": "San Francisco, CA", "hq_country": "USA", "region": "US", "investors": "Not disclosed (SEC Form D private placement)", "description": "Vertically integrated developer building a private 525 kV multi-terminal HVDC network for large industrial and AI compute loads, targeting 14 GW of capacity by 2030 — routing around the interconnection queue rather than through it.", "source_url": "https://americanterawatt.com/", "source_name": "Dealroom / SEC Form D", "note": "Form D private placement, not a priced venture round; Tracxn's 'Series C' label is wrong. Month-level date."}, {"name": "Pollen", "sector": "Transport", "stage": "Seed", "amount": "€3.2M", "amount_usd_m": 3.76, "date": "2026-05-01", "hq_city": "Lisbon", "hq_country": "Portugal", "region": "Europe", "investors": "Pale Blue Dot + Mustard Seed Maze (co-lead)", "description": "Battery swapping hardware for light electric vehicles. Tec Labs spinout with Iberian and Swedish backers.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Appears inside a Tracxn Country=United States screen despite being Portuguese. Month-level date."}, {"name": "Kimbal", "sector": "T&D", "stage": "Series B", "amount": "$22M", "amount_usd_m": 22, "date": "2026-04-30", "hq_city": "New Delhi", "hq_country": "India", "region": "India", "investors": "GEF Capital Partners (lead), Niveshaay", "description": "Smart-grid and advanced metering infrastructure company raising Series B to expand its 10M+ endpoint AMI platform and begin international market entry.", "source_url": "https://www.business-standard.com/companies/start-ups/kimbal-raises-22-mn-series-b-led-by-gef-to-expand-grid-tech-globally-126043000993_1.html", "source_name": "Business Standard"}, {"name": "Decade Energy", "sector": "Transport", "stage": "Series A", "amount": "€22M", "amount_usd_m": 25, "date": "2026-04-23", "hq_city": "Paris", "hq_country": "France", "region": "Europe", "investors": "Eiffel Investment Group + SET Ventures (lead), Ananda Impact Ventures, Contrarian Ventures", "description": "Zero-capex depot-electrification company (from the Volta Trucks team) deploying BESS and EV truck charging across France and expanding to Germany, the Nordics and Poland.", "source_url": "https://www.eu-startups.com/2026/04/decade-energy-founded-by-the-team-behind-volta-trucks-secures-e22-million-to-scale-europes-depot-power-infrastructure/", "source_name": "EU-Startups"}, {"name": "Humble Robotics", "sector": "Transport", "stage": "Seed", "amount": "$24M", "amount_usd_m": 24, "date": "2026-04-21", "hq_city": "San Francisco, CA", "hq_country": "USA", "region": "US", "investors": "Eclipse (lead), Energy Impact Partners, RedBlue Capital", "description": "Autonomous electric delivery vehicles, out of stealth after roughly 20 hires in six months.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Boundary case: autonomy rather than electrification is the primary value proposition."}, {"name": "Aliste Technologies", "sector": "Efficiency", "stage": "Pre-Series A", "amount": "₹30 Cr", "amount_usd_m": 3.2, "date": "2026-04-16", "hq_city": "Noida", "hq_country": "India", "region": "India", "investors": "Big Global JSC / Bitexco Group (lead), YourNest Venture Capital, HBeon Labs", "description": "Enterprise energy-management and IoT platform acting as a smart layer over existing buildings, managing 150,000+ IoT assets across 20+ cities and about 3 million units of energy a month.", "source_url": "https://entrackr.com/snippets/aliste-technologies-raises-rs-30-cr-in-pre-series-a-led-by-big-global-jsc-11730913", "source_name": "Entrackr", "note": "Blended equity and debt round; the split is not disclosed."}, {"name": "Critical Loop", "sector": "T&D", "stage": "Series A", "amount": "$26M", "amount_usd_m": 26, "date": "2026-04-13", "hq_city": "Los Angeles, CA", "hq_country": "USA", "region": "US", "investors": "Conifer Infrastructure Partners (lead), Better Ventures, Climate Capital", "description": "Industrial power company deploying modular 1 MW battery-and-software microgrids to connect industrial sites, airports and data centres to the grid in days.", "source_url": "https://criticalloop.com/news/blog/critical-loop-raises-26m-series-a-to-accelerate-grid-interconnection", "source_name": "Critical Loop"}, {"name": "Astranova Mobility", "sector": "Transport", "stage": "Series A", "amount": "$6.4M", "amount_usd_m": 6.4, "date": "2026-04-10", "hq_city": "Gurgaon", "hq_country": "India", "region": "India", "investors": "IvyCap Ventures (lead), Asian Development Bank, Advantedge Founders, Trucks Venture Capital", "description": "Commercial EV financing and asset-management platform (formerly Electrifi Mobility) that has enabled financing for over 25,000 electric vehicles from two-wheelers to heavy-duty trucks.", "source_url": "https://www.autocarpro.in/news/astranova-mobility-raises-rs-60-cr-in-series-a-round-led-by-ivycap-ventures-132063", "source_name": "Autocar Professional"}, {"name": "WorkOnGrid", "sector": "T&D", "stage": "Seed", "amount": "$2.6M", "amount_usd_m": 2.6, "date": "2026-04-07", "hq_city": "Bengaluru", "hq_country": "India", "region": "India", "investors": "Transition VC (lead), Indian Angel Network", "description": "AI-native operations-intelligence platform for power and water utilities, scaling its data lakehouse and agentic AI for 20+ global clients.", "source_url": "https://www.workongrid.com/blog/press-release-workongrid-raises-inr-22-5-crore-led-by-transition-venture-capital-to-scale-ai-native-intelligence-for-global-utilities", "source_name": "WorkOnGrid"}, {"name": "Sora Fuel", "sector": "Fuels", "stage": "Unlabelled", "amount": "$14.6M", "amount_usd_m": 14.6, "date": "2026-04-01", "hq_city": "Cambridge, MA", "hq_country": "USA", "region": "US", "investors": "Spero Ventures + Inspired Capital (co-lead), Engine Ventures, Wireframe Ventures, Climate Capital, Voyager Ventures", "description": "Synthetic aviation fuel from air, water and renewable electricity, using a bipolar-membrane bicarbonate electrolyser that skips the thermal sorbent regeneration behind over 90% of conventional DAC cost. Claims capture below $50/tonne.", "source_url": "https://sorafuel.com/", "source_name": "Company and press coverage", "note": "Tracxn describes this as an oil & gas exploration company — the opposite of what it does. Month-level date."}, {"name": "AMPERA", "sector": "Gen", "stage": "Strategic", "amount": "$10M", "amount_usd_m": 10, "date": "2026-04-01", "hq_city": "Palm Beach Gardens, FL", "hq_country": "USA", "region": "US", "investors": "Scorpio Tankers (NYSE: STNG); Super Micro Computer holds a reported 11% stake", "description": "Subcritical thorium reactor developer using 3D-printed containerised modules. The investment is tied to a maritime collaboration rather than a conventional priced round.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Strategic corporate investment; no conventional priced round is public. Month-level date."}, {"name": "Alderbuck Energy", "sector": "Supply chain", "stage": "Series A", "amount": "$6M", "amount_usd_m": 6, "date": "2026-04-01", "hq_city": "San Diego, CA", "hq_country": "USA", "region": "US", "investors": "Not publicly disclosed", "description": "Medium-voltage solid-state transformers. Separately part of an $8.5M pilot award with UC San Diego and SDG&E for work at the San Diego Supercomputer Center — a project award, not company equity.", "source_url": "https://tracxn.com/", "source_name": "San Diego Business Journal", "note": "Month-level date; no lead investor disclosed."}, {"name": "Bacancy Systems", "sector": "Supply chain", "stage": "Series A", "amount": "₹40 Cr", "amount_usd_m": 4.5, "date": "2026-03-30", "hq_city": "Ahmedabad", "hq_country": "India", "region": "India", "investors": "Sabre Partners + Greenstone Capital (co-lead)", "description": "Embedded electronics and power systems manufacturer building battery management systems, CCS2 controllers, DC fast chargers and motor controllers for EV makers, now expanding into railway electronics.", "source_url": "https://evreporter.com/bacancy-systems-raises-%E2%82%B940-crore-in-series-a-funding-led-by-sabre-partners-and-greenstone-capital/", "source_name": "EVreporter"}, {"name": "Scalvy", "sector": "Supply chain", "stage": "Series A", "amount": "$13.9M", "amount_usd_m": 13.9, "date": "2026-03-26", "hq_city": "Austin, TX", "hq_country": "USA", "region": "US", "investors": "Silicon Badia (co-lead), Azolla Ventures, Climate Capital, Skyriver Ventures", "description": "Distributed power-delivery company whose Power Neuron modular power-electronics platform enables compact megawatt-scale conversion for AI data centres, storage and mobility.", "source_url": "https://www.prnewswire.com/news-releases/scalvy-raises-13-9m-series-a-to-solve-the-power-delivery-bottleneck-for-ai-data-centers-grid-and-mobility-302725233.html", "source_name": "PR Newswire"}, {"name": "Applied Atomics", "sector": "Gen", "stage": "Seed", "amount": "$8.3M", "amount_usd_m": 8.3, "date": "2026-03-25", "hq_city": "Anchorage, AK", "hq_country": "USA", "region": "US", "investors": "Transition VC (lead), Alpaca VC, Morpheus Ventures, Launch Alaska, Acequia Capital", "description": "Oversubscribed seed for co-located medium modular reactors using proven light-water technology. Company states this takes total funding to $12M in its first 12 months.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": ""}, {"name": "Euler Motors", "sector": "Transport", "stage": "Series E", "amount": "$47M", "amount_usd_m": 47, "date": "2026-03-24", "hq_city": "New Delhi", "hq_country": "India", "region": "India", "investors": "Lightrock (lead), Hero MotoCorp, Blume Ventures", "description": "Electric commercial vehicle manufacturer for last-mile logistics, holding roughly 22% share of India four-wheel electric cargo, scaling production toward 2,000 vehicles a month.", "source_url": "https://evreporter.com/euler-motors-raises-inr-437-5-crore-in-series-e-funding/", "source_name": "EVreporter", "note": "Equity tranche only. A separate Rs 250 crore of debt from BlackSoil, Trifecta, InnoVen and Alteria closed alongside and is excluded."}, {"name": "Pranos Fusion", "sector": "Gen", "stage": "Seed", "amount": "$6.8M", "amount_usd_m": 6.8, "date": "2026-03-24", "hq_city": "Bengaluru", "hq_country": "India", "region": "India", "investors": "pi Ventures + Ankur Capital (co-lead), Industrial47, Lalit Keshre and Razorpay founders (angels)", "description": "Compact magnetic-confinement fusion startup building an integrated tokamak stack of plasma-control software, a compact test reactor and high-temperature superconducting magnets. Co-incubated at JNCASR with ITER collaboration.", "source_url": "https://yourstory.com/2026/03/deeptech-startup-pranos-fusion-funding-pi-ventures-ankur-capital", "source_name": "YourStory"}, {"name": "PADO AI Orchestration", "sector": "Efficiency", "stage": "Seed", "amount": "$6M", "amount_usd_m": 6, "date": "2026-03-19", "hq_city": "Malibu, CA", "hq_country": "USA", "region": "US", "investors": "NovaWave Capital (lead), an LG NOVA-supported fund", "description": "Orchestrates power, compute and cooling inside data-centre facilities. Unveiled by LG Electronics in May 2025 as an LG NOVA venture rather than founded independently.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Corporate venture-studio origin; the seed lead is an LG-affiliated fund."}, {"name": "Halcyon", "sector": "T&D", "stage": "Series A", "amount": "$21M", "amount_usd_m": 21, "date": "2026-03-16", "hq_city": "San Francisco, CA", "hq_country": "USA", "region": "US", "investors": "Energize Capital (lead), Congruent Ventures, Obvious Ventures", "description": "AI platform helping energy developers, operators and investors query large, continuously evolving grid and energy datasets to speed decisions.", "source_url": "https://halcyon.io/blog/machine-readable/series-a", "source_name": "Halcyon"}, {"name": "Newtrace", "sector": "Fuels", "stage": "Seed", "amount": "$6.3M", "amount_usd_m": 6.3, "date": "2026-03-10", "hq_city": "Bengaluru", "hq_country": "India", "region": "India", "investors": "HDFC Bank + Mitsui Sumitomo Insurance VC (co-lead), Surge (Peak XV), Speciale Invest", "description": "Green-hydrogen electrolyser startup commercialising low-cost electrode technology, targeting partners such as BPCL and ONGC.", "source_url": "https://bioenergytimes.com/bengaluru-startup-newtrace-raises-6-3-million-to-expand-green-hydrogen-technology/", "source_name": "BioEnergy Times"}, {"name": "UniverCell", "sector": "Supply chain", "stage": "Series B", "amount": "€30M", "amount_usd_m": 34, "date": "2026-03-05", "hq_city": "Flintbek", "hq_country": "Germany", "region": "Europe", "investors": "DeepTech & Climate Fonds + IKA + WIKA (co-lead), European Innovation Council Fund", "description": "German battery-cell manufacturer scaling its solvent-free dry-electrode coating process to produce premium cylindrical cells for space, medical and defence markets.", "source_url": "https://thenextweb.com/news/univercell-series-b-dry-coating-europe-battery", "source_name": "The Next Web"}, {"name": "Vor Systems", "sector": "Software & fintech", "stage": "Pre-seed", "amount": "$3M", "amount_usd_m": 3, "date": "2026-03-05", "hq_city": "Seattle, WA", "hq_country": "USA", "region": "US", "investors": "Gigascale Capital (lead), Virta Ventures, angels including Christopher Payne and Titiaan Palazzi", "description": "Transaction software for clean energy assets. Tracxn labels the round a seed; the company, Business Wire and CB Insights all call it a pre-seed.", "source_url": "https://tracxn.com/", "source_name": "Business Wire", "note": ""}, {"name": "Photoncycle", "sector": "Storage", "stage": "Series A", "amount": "€15M", "amount_usd_m": 17, "date": "2026-03-04", "hq_city": "Oslo", "hq_country": "Norway", "region": "Europe", "investors": "NordicNinja + Voima Ventures (lead), Lifeline Ventures, Eviny Ventures", "description": "Norwegian startup commercialising a solid-state hydrogen-based seasonal storage system that stores summer solar surplus for winter household heating and power.", "source_url": "https://tech.eu/2026/03/04/photoncycle-raises-eur15m-to-scale-seasonal-energy-storage-in-europe/", "source_name": "Tech.eu"}, {"name": "EGI Battery", "sector": "Supply chain", "stage": "Seed", "amount": "$10M", "amount_usd_m": 10, "date": "2026-03-03", "hq_city": "Ann Arbor, MI", "hq_country": "USA", "region": "US", "investors": "TSV Capital (lead), undisclosed US family offices", "description": "Battery cell developer with a manufacturing campus in Michigan. Preqin characterises the chemistry as semi-solid-state lithium-ion and silicon-rich, which is more specific than any company release.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": ""}, {"name": "Distill Energy", "sector": "Trading", "stage": "Seed", "amount": "$2.17M", "amount_usd_m": 2.17, "date": "2026-03-02", "hq_city": "Boulder, CO", "hq_country": "USA", "region": "US", "investors": "Not publicly disclosed", "description": "Probabilistic nodal price, congestion and curtailment forecasting built on a forward-evolving grid model, on the argument that most power-market investment decisions rest on a single point forecast that hides failure scenarios.", "source_url": "https://distill.energy/", "source_name": "Company and press coverage", "note": ""}, {"name": "ALSO", "sector": "Transport", "stage": "Series C", "amount": "$200M", "amount_usd_m": 200, "date": "2026-03-01", "hq_city": "Palo Alto, CA", "hq_country": "USA", "region": "US", "investors": "Greenoaks (lead), Prysm Capital, DoorDash (strategic)", "description": "Rivian spin-out building small electric vehicles on a shared modular platform, valued above $1B after the round. Total raised is $505M including $105M of launch funding from Rivian and Eclipse.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Month-level date; exact announcement day not disclosed."}, {"name": "Fieldston Power", "sector": "Gen", "stage": "Growth", "amount": "$28M", "amount_usd_m": 28, "date": "2026-03-01", "hq_city": "Bronx, NY", "hq_country": "USA", "region": "US", "investors": "NineDot Energy; other participants not disclosed", "description": "Community solar developer that leases rooftops on rent-stabilised NYC buildings, replaces the ageing roof at its own cost, sells generation to Con Edison and routes bill credits to energy-burdened tenants as a 20% discount.", "source_url": "https://www.fieldstonpower.com/", "source_name": "citybiz / Bisnow", "note": "Financing for building decarbonisation. Tracxn still shows only the $600K 2024 seed. Month-level date."}, {"name": "Emerald AI", "sector": "T&D", "stage": "Strategic", "amount": "$25M", "amount_usd_m": 25, "date": "2026-03-01", "hq_city": "Washington, DC", "hq_country": "USA", "region": "US", "investors": "Energy Impact Partners (lead), NVentures (NVIDIA), Eaton, GE Vernova, Salesforce, Samsung, Siemens, In-Q-Tel", "description": "Software that throttles flexible AI workloads during grid stress while protecting latency-sensitive jobs, turning a static data-centre load into a dispatchable one so operators can jump interconnection queues. ~$68M raised in 16 months.", "source_url": "https://www.emeraldai.co/", "source_name": "Company and press coverage", "note": "Third round in 16 months; company labels it 'strategic'. Month-level date."}, {"name": "Voltify", "sector": "Transport", "stage": "Seed", "amount": "$30M", "amount_usd_m": 30, "date": "2026-03-01", "hq_city": "Philadelphia, PA", "hq_country": "USA", "region": "US", "investors": "Aleph + Fortescue (co-lead), theDOCK, Menomadin Foundation, J-Impact Fund", "description": "Electrification of heavy transport, backed jointly by an Israeli venture firm and Fortescue's strategic arm — an unusually large seed for the segment.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Month-level date; exact announcement day not disclosed."}, {"name": "Elementium Materials", "sector": "Supply chain", "stage": "Seed", "amount": "$11M", "amount_usd_m": 11, "date": "2026-03-01", "hq_city": "Somerville, MA", "hq_country": "USA", "region": "US", "investors": "Not fully disclosed; Greentown Labs previously the only named backer", "description": "Battery materials company, with a $100K NSF Energy Storage Engine SuperBoost grant sitting on top of the equity.", "source_url": "https://www.axios.com/", "source_name": "Axios", "note": "Tracxn carries this company twice in the same result set — once correctly and once at a Texas address. Month-level date."}, {"name": "Hybrid Greentech", "sector": "Trading", "stage": "Series B", "amount": "€15M+", "amount_usd_m": 17, "date": "2026-02-23", "hq_city": "Copenhagen", "hq_country": "Denmark", "region": "Europe", "investors": "Nordic Alpha Partners", "description": "Danish virtual-power-plant operator and balance-responsible party expanding its cloud platform that connects battery storage and renewables for multi-market trading.", "source_url": "https://www.eu-startups.com/2026/02/danish-startup-hybrid-greentech-attracts-e15-million-investment-to-accelerate-european-grid-flexibility-rollout/", "source_name": "EU-Startups"}, {"name": "Statiq", "sector": "Transport", "stage": "Growth", "amount": "$18M", "amount_usd_m": 18, "date": "2026-02-19", "hq_city": "New Delhi", "hq_country": "India", "region": "India", "investors": "Tenacity Ventures (lead), Y Combinator, Shell Ventures, RCD Holdings", "description": "EV charging network running over 10,000 proprietary AC and DC chargers across 100+ Indian cities, expanding highway fast-charging and piloting hardware exports to the UAE.", "source_url": "https://evreporter.com/statiq-raises-18-million-in-equity-and-debt-funding-round/", "source_name": "EVreporter", "note": "Blended equity and debt round; the split is not disclosed. Company was last labelled Series A in 2022, and this round carries no stage label."}, {"name": "Heron Power", "sector": "T&D", "stage": "Series B", "amount": "$140M", "amount_usd_m": 140, "date": "2026-02-18", "hq_city": "Scotts Valley, CA", "hq_country": "USA", "region": "US", "investors": "a16z American Dynamism + Breakthrough Energy Ventures (co-lead), Capricorn, EIP", "description": "Power-electronics company building solid-state transformers that let renewables and AI data centres connect directly to medium-voltage transmission without conventional transformers.", "source_url": "https://techcrunch.com/2026/02/18/heron-power-raises-140m-to-ramp-production-of-grid-altering-tech/", "source_name": "TechCrunch"}, {"name": "DG Matrix", "sector": "T&D", "stage": "Series A", "amount": "$60M", "amount_usd_m": 60, "date": "2026-02-18", "hq_city": "Morrisville, NC", "hq_country": "USA", "region": "US", "investors": "Engine Ventures (lead), ABB, Chevron Technology Ventures, Clean Energy Ventures", "description": "Solid-state transformer startup building a modular Power Router for AI data centres, microgrids and EV fleet charging that integrates multiple energy sources in one unit.", "source_url": "https://techcrunch.com/2026/02/18/dg-matrix-raises-60m-to-make-data-center-power-smarter/", "source_name": "TechCrunch"}, {"name": "Inertia Enterprises", "sector": "Gen", "stage": "Series A", "amount": "$450M", "amount_usd_m": 450, "date": "2026-02-11", "hq_city": "Livermore, CA", "hq_country": "USA", "region": "US", "investors": "Bessemer Venture Partners (lead), GV, Threshold Ventures, Neo, IQT", "description": "Laser-based inertial-confinement fusion startup commercialising NIF-proven physics with its Thunderwall grid-scale laser and mass-manufactured fuel targets.", "source_url": "https://www.globenewswire.com/news-release/2026/02/11/3236274/0/en/Inertia-raises-450-million-to-commercialize-the-only-proven-fusion-science.html", "source_name": "GlobeNewswire"}, {"name": "Project Omega", "sector": "Fuels", "stage": "Seed", "amount": "$12M", "amount_usd_m": 12, "date": "2026-02-11", "hq_city": "Newport, RI", "hq_country": "USA", "region": "US", "investors": "Starship Ventures (lead), Mantis Ventures, Buckley Ventures, Decisive Point, Slow Ventures", "description": "Spent nuclear fuel recycling, oversubscribed at a reported ~$50M valuation set before a working prototype existed. ARPA-E contract and research partnerships with PNNL and Idaho National Laboratory.", "source_url": "https://tracxn.com/", "source_name": "Forbes / company", "note": ""}, {"name": "Tem", "sector": "Trading", "stage": "Series B", "amount": "$75M", "amount_usd_m": 75, "date": "2026-02-10", "hq_city": "London", "hq_country": "UK", "region": "UK", "investors": "Lightspeed Venture Partners (lead), Hitachi Ventures, Atomico, AlbionVC, Allianz", "description": "AI-native energy-transaction platform (the 'Stripe of energy') matching electricity generators and business buyers, cutting energy bills by up to 30%.", "source_url": "https://techcrunch.com/2026/02/09/tem-raises-75m-to-remake-electricity-markets-using-ai/", "source_name": "TechCrunch"}, {"name": "Sparkz", "sector": "Supply chain", "stage": "Series A", "amount": "$20.2M", "amount_usd_m": 20.2, "date": "2026-02-06", "hq_city": "Sacramento, CA", "hq_country": "USA", "region": "US", "investors": "Jack Abraham (lead), Empros Capital Partners, Community Equity Partners", "description": "US manufacturer of lithium iron phosphate cathode active material building a domestic LFP battery supply chain for EV, grid-storage and defence customers.", "source_url": "https://sparkz.energy/series-a-20m-raised/", "source_name": "Sparkz"}, {"name": "Capalo AI", "sector": "Trading", "stage": "Series A", "amount": "€11M", "amount_usd_m": 12, "date": "2026-02-06", "hq_city": "Helsinki", "hq_country": "Finland", "region": "Europe", "investors": "Heartcore Capital (lead), Tesi, VentureFriends, PROfounders, Inventure", "description": "Finnish AI startup scaling a virtual-power-plant platform that optimises trading and dispatch of battery storage across European electricity markets.", "source_url": "https://tech.eu/2026/02/06/capalo-ai-raises-eur11m-to-expand-battery-storage-optimization/", "source_name": "Tech.eu"}, {"name": "newcleo", "sector": "Gen", "stage": "Series B", "amount": "€75M", "amount_usd_m": 85, "date": "2026-02-04", "hq_city": "Paris", "hq_country": "France", "region": "Europe", "investors": "Cementir Holding, NextChem, Danieli Holdings (new); Kairos Partners, CERN Pension Fund", "description": "Advanced-nuclear company developing liquid-lead-cooled small modular reactors, raising a further Series B tranche to advance Italian R&D and its fourth-generation reactor roadmap.", "source_url": "https://www.globenewswire.com/news-release/2026/02/04/3231904/0/en/newcleo-raises-over-USD-125-million-in-2025-to-support-next-phase-of-international-growth.html", "source_name": "GlobeNewswire", "note": "Tranche within a wider multi-year raise; cited release recaps 2025 capital."}, {"name": "AssetCool", "sector": "T&D", "stage": "Series A", "amount": "£10M", "amount_usd_m": 13, "date": "2026-01-31", "hq_city": "Leeds", "hq_country": "UK", "region": "UK", "investors": "Energy Impact Partners (lead), Extantia Capital, Mercia Ventures, Northern Gritstone", "description": "University of Manchester spin-out using robotics and advanced photonic coatings to raise the power-carrying capacity of existing overhead transmission lines.", "source_url": "https://mycapital.co.uk/assetcool-raises-10-million-series-a-to-scale-robotic-and-coating-solutions-for-global-power-grids/", "source_name": "MyCapital"}, {"name": "Enerzolve", "sector": "T&D", "stage": "Seed", "amount": "$5.1M", "amount_usd_m": 5.1, "date": "2026-01-21", "hq_city": "Bengaluru", "hq_country": "India", "region": "India", "investors": "Jungle Ventures + Kae Capital (co-lead), Zetwerk and Unacademy founders (angels)", "description": "Deep-tech startup building India-specific embedded hardware and firmware for grid protection, smart meters and power-quality analysers.", "source_url": "https://economictimes.indiatimes.com/tech/funding/energy-startup-enerzolve-raises-5-1-million-led-by-jungle-ventures-kae-capital/articleshow/127004183.cms", "source_name": "Economic Times"}, {"name": "Aerem Solutions", "sector": "Gen", "stage": "Series B", "amount": "$15M", "amount_usd_m": 15, "date": "2026-01-21", "hq_city": "Mumbai", "hq_country": "India", "region": "India", "investors": "SMBC Asia Rising Fund (lead), British International Investment, Blume Ventures, SE Ventures", "description": "Full-stack distributed-solar platform expanding its installer network and financing to accelerate MSME and household solar adoption across India.", "source_url": "https://yourstory.com/2026/01/funding-aerem-15m-distributed-solar-network-across-india", "source_name": "YourStory"}, {"name": "Fleetzero", "sector": "Transport", "stage": "Series A", "amount": "$43M", "amount_usd_m": 43, "date": "2026-01-16", "hq_city": "Houston, TX", "hq_country": "USA", "region": "US", "investors": "Obvious Ventures (lead), Maersk Growth, Breakthrough Energy Ventures, Y Combinator", "description": "Marine-technology company selling electric and hybrid propulsion systems for commercial ships and developing unmanned cargo-vessel technology.", "source_url": "https://www.prnewswire.com/news-releases/fleetzero-raises-43-million-series-a-from-obvious-ventures-maersk-growth-breakthrough-energy-ventures-8090-ventures-and-others-to-scale-shipping-electrification-and-autonomy-302663447.html", "source_name": "PR Newswire"}, {"name": "Type One Energy", "sector": "Gen", "stage": "Series B", "amount": "$87M", "amount_usd_m": 87, "date": "2026-01-14", "hq_city": "Madison, WI", "hq_country": "USA", "region": "US", "investors": "Breakthrough Energy Ventures (lead), Doral Energy-Tech Ventures, TDK Ventures", "description": "Stellarator fusion startup raising toward a larger Series B; its Infinity Two power-plant design targets 350 MW output around 2030.", "source_url": "https://techcrunch.com/2026/01/14/bill-gates-backed-type-one-energy-raises-87m-ahead-of-250m-series-b/", "source_name": "TechCrunch"}, {"name": "Jetson", "sector": "Efficiency", "stage": "Series A", "amount": "$50M", "amount_usd_m": 50, "date": "2026-01-13", "hq_city": "Englewood, NJ", "hq_country": "USA", "region": "US", "investors": "Eclipse (lead), 8VC, Activate Capital, Active Impact", "description": "Vertically integrated home-electrification company offering all-electric heat-pump systems with instant online pricing, one-day installation and built-in rebate management.", "source_url": "https://jetsonhome.com/us/press/jetson-raises-50-m-series-a-to-expand-home-electrification-across-new-u-s-markets", "source_name": "Jetson Home"}, {"name": "Accelsius", "sector": "Efficiency", "stage": "Series B", "amount": "$65M", "amount_usd_m": 65, "date": "2026-01-12", "hq_city": "Austin, TX", "hq_country": "USA", "region": "US", "investors": "Johnson Controls (lead), Legrand", "description": "Two-phase direct-to-chip liquid-cooling pioneer scaling its NeuCool platform for gigawatt-class AI data centres, claiming 35% OpEx savings over single-phase cooling.", "source_url": "https://www.businesswire.com/news/home/20260112588650/en/Accelsius-Closes-%2465-Million-Series-B-Funding-Led-by-Johnson-Controls-Legrand-Joining-Round-to-Scale-Liquid-Cooling-for-Gigawatt-Class-AI-Factories", "source_name": "Business Wire"}, {"name": "CVector", "sector": "Ops", "stage": "Seed", "amount": "$5M", "amount_usd_m": 5, "date": "2026-01-01", "hq_city": "Providence, RI", "hq_country": "USA", "region": "US", "investors": "Powerhouse Ventures (lead), Fusion Fund, Hitachi Ventures, Myriad Venture Partners, Schematic Ventures", "description": "Oversubscribed seed for industrial and energy operations software. $6.5M raised in total following a $1.5M pre-seed in mid-2025.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Month-level date; exact announcement day not disclosed."}, {"name": "Karman Industries", "sector": "Industry & heat", "stage": "Series A", "amount": "$20M", "amount_usd_m": 20, "date": "2026-01-01", "hq_city": "Signal Hill, CA", "hq_country": "USA", "region": "US", "investors": "Riot Ventures (lead), Space VC, 8090 Industries, Wonder Ventures, Sunflower Capital", "description": "High-temperature industrial heat pumps for process heat decarbonisation. ~$30-31.5M raised in total across three rounds.", "source_url": "https://tracxn.com/", "source_name": "LA Business Journal", "note": "Tracxn dates the Series A to September 2025; the LA Business Journal and CB Insights place it in January 2026. Month-level date."}, {"name": "Liminal Energy", "sector": "Storage", "stage": "Platform commitment", "amount": "$200M", "amount_usd_m": 200, "date": "2026-01-01", "hq_city": "Golden, CO", "hq_country": "USA", "region": "US", "investors": "NGP Energy Capital Management; management team contribution", "description": "Capital commitment to a newly formed storage developer, drawn down against projects. NGP is a traditionally oil-and-gas-focused PE firm that searched for three years before backing a storage team.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Platform capital commitment, not a venture round; Tracxn's 'Late Stage' label is the wrong frame. Month-level date."}, {"name": "Smart Joules", "sector": "Efficiency", "stage": "Series B", "amount": "$10M", "amount_usd_m": 10, "date": "2025-12-10", "hq_city": "New Delhi", "hq_country": "India", "region": "India", "investors": "SVL SME Neev II Fund / SBI Ventures (lead), Waaree Renewable Technologies, Spectrum Impact", "description": "Energy-efficiency-as-a-service company raising Series B to scale financed efficiency, cooling-as-a-service and AI building management across Indian industry.", "source_url": "https://www.vccircle.com/energyefficiency-startup-smart-joules-raises-10mn-in-series-b", "source_name": "VCCircle"}, {"name": "Quilt", "sector": "Efficiency", "stage": "Series B", "amount": "$20M", "amount_usd_m": 20, "date": "2025-12-08", "hq_city": "Redwood City, CA", "hq_country": "USA", "region": "US", "investors": "Energy Impact Partners (lead), Galvanize, Gradient Ventures, Lowercarbon Capital", "description": "Design-first heat-pump startup pushing over-the-air firmware updates that improved installed-unit performance, expanding across 16 US states.", "source_url": "https://techcrunch.com/2025/12/08/heat-pump-startup-quilt-raises-20m-series-b-to-expand-sales/", "source_name": "TechCrunch"}, {"name": "Spark Cleantech", "sector": "Fuels", "stage": "Series A", "amount": "€30M", "amount_usd_m": 34, "date": "2025-12-04", "hq_city": "Paris", "hq_country": "France", "region": "Europe", "investors": "360 Capital + Taranis (lead), Innovacom, Asterion Ventures", "description": "Deep-tech startup using pulsed plasmolysis to convert natural gas into hydrogen and solid carbon for heavy industry, cutting emissions by up to 85%.", "source_url": "https://tech.eu/2025/12/04/spark-cleantech-closes-eur30m-for-heavy-industry-decarbonisation/", "source_name": "Tech.eu"}, {"name": "Addis Energy", "sector": "Fuels", "stage": "Seed", "amount": "$8.3M", "amount_usd_m": 8.3, "date": "2025-12-01", "hq_city": "Somerville, MA", "hq_country": "USA", "region": "US", "investors": "At One Ventures (lead), Engine Ventures, Pillar VC, Voyager Ventures", "description": "Oversubscribed seed for subsurface ammonia production, using the earth as a reactor. $17.3M raised in total following a $4.25M pre-seed in January 2025.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Month-level date; exact announcement day not disclosed."}, {"name": "Neuron Energy", "sector": "Supply chain", "stage": "Pre-Series B", "amount": "₹31 Cr", "amount_usd_m": 3.5, "date": "2025-11-27", "hq_city": "Mumbai", "hq_country": "India", "region": "India", "investors": "Equanimity Ventures, Rajiv Dadlani Group, Thackersay Family Office, Chona Family Office (co-lead)", "description": "Lithium-ion battery manufacturer supplying two-, three-wheeler and light commercial EV makers, funding expansion to 3 GWh capacity and an automated plant at Chakan for four-wheelers and e-buses.", "source_url": "https://evreporter.com/neuron-energy-announces-inr-31-crore-funding-in-pre-series-b-round/", "source_name": "EVreporter", "note": "Tracxn dates this company latest round to Aug 2025; that entry is the Aug 2024 Series A. The in-window round is this Nov 2025 pre-Series B."}, {"name": "Enerzi", "sector": "Fuels", "stage": "Seed", "amount": "₹16.5 Cr", "amount_usd_m": 2, "date": "2025-11-27", "hq_city": "Belagavi", "hq_country": "India", "region": "India", "investors": "Capital-A (lead), 8x Ventures, angel investors", "description": "Deep-tech manufacturer using microwave plasma reactors to split methane into clean hydrogen with solid carbon nanopowder as a co-product, alongside industrial microwave heating systems.", "source_url": "https://entrackr.com/snippets/enerzi-raises-rs-165-cr-in-seed-round-led-by-capital-a-10813557", "source_name": "Entrackr"}, {"name": "C.Scale", "sector": "Carbon", "stage": "Pre-seed", "amount": "$2M", "amount_usd_m": 2, "date": "2025-11-01", "hq_city": "San Francisco, CA", "hq_country": "USA", "region": "US", "investors": "Active Impact Investments + Wireframe Ventures (co-lead), Third Derivative", "description": "Carbon measurement and accounting. The company and CB Insights call this a pre-seed; Tracxn logs it as a seed.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Month-level date; exact announcement day not disclosed."}, {"name": "Modal Motors", "sector": "Supply chain", "stage": "Seed", "amount": "$2M", "amount_usd_m": 2, "date": "2025-10-23", "hq_city": "Farmington Hills, MI", "hq_country": "USA", "region": "US", "investors": "Centrepolis Accelerator, Michigan Office of Future Mobility and Electrification", "description": "Yokeless electric motors with a 3D flux-path stator that can be built without rare-earth magnets and with aluminium rather than copper windings — designing out the materials constraint rather than mining around it.", "source_url": "https://modalmotors.com/", "source_name": "Automotive World / Charged EVs", "note": "Accelerator and state-agency money rather than institutional venture."}, {"name": "Vertical Semiconductor", "sector": "Supply chain", "stage": "Seed", "amount": "$11M", "amount_usd_m": 11, "date": "2025-10-15", "hq_city": "Cambridge, MA", "hq_country": "USA", "region": "US", "investors": "Playground Global (lead), JIMCO Technology Ventures, milemark capital, Shin-Etsu Chemical, Northeast Microelectronics Coalition", "description": "Vertical GaN power devices for higher-density power conversion. Part of a dense US power-electronics cluster spanning materials, devices, controllers and systems.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": ""}, {"name": "Fuuse", "sector": "Transport", "stage": "Series A", "amount": "£6M", "amount_usd_m": 8, "date": "2025-10-13", "hq_city": "Lancaster", "hq_country": "UK", "region": "UK", "investors": "YFM Equity Partners (lead), Par Equity", "description": "EV-charging management software platform that optimises scheduling, energy use and payments for businesses and public charge-point operators across the UK.", "source_url": "https://www.startupmag.co.uk/funding/fuuse-raised-6000000/", "source_name": "Startup Magazine"}, {"name": "Base Power", "sector": "Storage", "stage": "Series C", "amount": "$1B", "amount_usd_m": 1000, "date": "2025-10-08", "hq_city": "Austin, TX", "hq_country": "USA", "region": "US", "investors": "Addition (lead), Valor Equity Partners, Thrive Capital, a16z, Lightspeed, CapitalG", "description": "Residential battery company leasing oversized home batteries to Texas and Illinois homeowners and dispatching stored energy to the grid as a virtual power plant.", "source_url": "https://www.businesswire.com/news/home/20251008106005/en/Base-Power-Raises-%241-Billion-Series-C-to-Build-the-Future-of-American-Power", "source_name": "Business Wire"}, {"name": "Corintis", "sector": "Efficiency", "stage": "Series A", "amount": "$24M", "amount_usd_m": 24, "date": "2025-09-29", "hq_city": "Lausanne", "hq_country": "Switzerland", "region": "Europe", "investors": "BlueYard Capital (lead), Founderful, Acequia Capital, XTX Ventures", "description": "Swiss EPFL spinout scaling microfluidic in-chip cooling for AI data centres, demonstrating with Microsoft roughly 3x better heat removal than traditional cold plates.", "source_url": "https://www.datacenterdynamics.com/en/news/corintis-raises-24m-to-support-development-of-microfluidic-cooling-systems/", "source_name": "DCD"}, {"name": "OXCCU", "sector": "Fuels", "stage": "Series B", "amount": "£20.75M", "amount_usd_m": 28, "date": "2025-09-29", "hq_city": "Oxford", "hq_country": "UK", "region": "UK", "investors": "Orlen VC, Safran Corporate Ventures, IAGi Ventures, Aramco Ventures, Eni Next", "description": "Oxford spin-out using a patented iron-based catalyst to convert waste carbon into sustainable aviation fuel in a single step, with a demo plant at Oxford Airport.", "source_url": "https://www.newswire.ca/news-releases/oxccu-raises-28m-in-series-b-funding-to-scale-sustainable-aviation-fuel-from-waste-carbon-876671791.html", "source_name": "Newswire"}, {"name": "Anode", "sector": "Storage", "stage": "Seed", "amount": "$9M", "amount_usd_m": 9, "date": "2025-09-26", "hq_city": "San Francisco, CA", "hq_country": "USA", "region": "US", "investors": "Eclipse (lead)", "description": "Trailer-mounted mobile battery systems replacing diesel gensets in the temporary power rental market, optimised for energy density per truckload to cut transport cost by up to 30%.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": ""}, {"name": "GridStrong", "sector": "T&D", "stage": "Seed", "amount": "$10M", "amount_usd_m": 10, "date": "2025-09-17", "hq_city": "New York, NY", "hq_country": "USA", "region": "US", "investors": "Congruent Ventures (lead), Energize Capital, Engie Renewables North America (strategic)", "description": "Oversubscribed round for NERC compliance and interconnection software for transmission-connected assets, with strategic participation from Engie and other major utilities.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": ""}, {"name": "Fourth Power", "sector": "Storage", "stage": "Series A", "amount": "$20M", "amount_usd_m": 20, "date": "2025-09-16", "hq_city": "Boston, MA", "hq_country": "USA", "region": "US", "investors": "Munich Re Ventures (lead), DCVC, Breakthrough Energy Ventures", "description": "Thermal long-duration storage company heating carbon blocks to 2,400 degrees C and converting the light via thermophotovoltaic cells to dispatchable power under $25/kWh.", "source_url": "https://www.businesswire.com/news/home/20250916363021/en/Fourth-Power-Raises-%2420-Million-to-Commercialize-Low-Cost-Utility-Scale-Energy-Storage-Solution", "source_name": "Business Wire"}, {"name": "Offgrid Energy Labs", "sector": "Storage", "stage": "Series A", "amount": "$15M", "amount_usd_m": 15, "date": "2025-09-01", "hq_city": "Noida", "hq_country": "India", "region": "India", "investors": "Archean Chemicals (lead), Ankur Capital", "description": "IIT Kanpur-incubated deep-tech startup commercialising ZincGel, a zinc-bromine alternative to lithium-ion for long-duration stationary storage.", "source_url": "https://techcrunch.com/2025/09/01/indias-offgrid-raises-15m-to-make-lithium-optional-for-battery-storage/", "source_name": "TechCrunch"}, {"name": "Ultraviolette", "sector": "Transport", "stage": "Series E", "amount": "$21M", "amount_usd_m": 21, "date": "2025-08-12", "hq_city": "Bengaluru", "hq_country": "India", "region": "India", "investors": "TDK Ventures (lead), Zoho Corporation, Lingotto (formerly Exor Capital)", "description": "Electric performance motorcycle manufacturer expanding its F77 line across ten European markets and scaling Indian retail from 20 cities toward 100.", "source_url": "https://techcrunch.com/2025/08/11/tdk-backs-ultraviolette-with-21m-to-take-india-made-electric-motorcycles-global/", "source_name": "TechCrunch"}, {"name": "PeroCycle", "sector": "Supply chain", "stage": "Seed", "amount": "€4.5M", "amount_usd_m": 5, "date": "2025-08-07", "hq_city": "Cambridge", "hq_country": "UK", "region": "UK", "investors": "Cambridge Future Tech, Anglo American", "description": "University of Birmingham spin-out commercialising closed-loop carbon recycling that converts CO2 to CO within steelmaking to cut fossil feedstock use.", "source_url": "https://www.eu-startups.com/2025/08/british-recycling-startup-perocycle-opens-e4-5-million-round-to-decarbonise-steelmaking/", "source_name": "EU-Startups"}, {"name": "AiGent", "sector": "T&D", "stage": "Seed", "amount": "$6M", "amount_usd_m": 6, "date": "2025-08-01", "hq_city": "Houston, TX", "hq_country": "USA", "region": "US", "investors": "Zero Infinity Partners (ZIP), CIV", "description": "Behind-the-meter power for data centres, closed unusually quickly according to both investors.", "source_url": "https://tracxn.com/", "source_name": "Company and press coverage", "note": "Month-level date; exact announcement day not disclosed."}, {"name": "Stargate Hydrogen", "sector": "Fuels", "stage": "Series A", "amount": "€11M", "amount_usd_m": 12, "date": "2025-07-28", "hq_city": "Tallinn", "hq_country": "Estonia", "region": "Europe", "investors": "Repsol Corporate Ventures (strategic), earlier Series A investors", "description": "Estonian alkaline-electrolyser manufacturer that closed its Series A with strategic backing from Repsol to expand its 140 MW/yr factory and commercial operations.", "source_url": "https://stargatehydrogen.com/news/repsol-investment/", "source_name": "Stargate Hydrogen"}, {"name": "Enlite", "sector": "Efficiency", "stage": "Series A", "amount": "$5.3M", "amount_usd_m": 5.3, "date": "2025-07-28", "hq_city": "Bengaluru", "hq_country": "India", "region": "India", "investors": "Avaana Capital (lead), Claypond Capital", "description": "Building-automation startup raising Rs 46 crore Series A to expand its edge-AI, cloud and wireless building-management platform deployed across 25M+ sq ft.", "source_url": "https://incubees.com/enlite-raises-rs-46-cr-series-a-funding-from-avaana-capital/", "source_name": "Incubees"}];
+const PAGE = 12;
+const SECTORS = ['Supply chain','Gen','Storage','Fuels','T&D','Trading','Efficiency','Transport','Industry & heat','Ops','Software & fintech','Carbon'];
+const REGIONS = ['US','Europe','UK','India'];
+const RLAB = {US:'U.S.',Europe:'Europe',UK:'U.K.',India:'India'};
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+let S = {cat:'all', region:'all', q:'', sort:'latest', page:1, charts:false};
 
-// classification: 1 = breakthrough, 2 = hybrid, 3 = incremental
-// breakthroughScore: 0 (pure breakthrough) to 100 (pure incremental)
-// maturityYears: approx years since first startups
-// fundingM: total sector funding in $M (approximate)
-// startupCount: approximate number of active startups
-// prominent: notable startups/companies
+const fmtDate = i => {const p=i.split('-');return +p[2]+' '+MON[+p[1]-1]+' '+p[0];};
+const fmtM = v => v>=1000 ? '$'+(v/1000).toFixed(v%1000?1:0)+'B' : '$'+Math.round(v)+'M';
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-const DATA = [
-  // GENERATION
-  { name: "Perovskite / Tandem Cells", sector: "Generation & Production", sub: "Solar", bs: 18, maturity: 12, funding: 800, count: 35, classification: 1, prominent: ["Oxford PV","Tandem PV","Swift Solar","CubicPV","Caelux"] },
-  { name: "Building-Integrated PV", sector: "Generation & Production", sub: "Solar", bs: 55, maturity: 18, funding: 400, count: 25, classification: 2, prominent: ["Ubiquitous Energy","Mitrex","SunMan","Heliatek"] },
-  { name: "Floating Solar", sector: "Generation & Production", sub: "Solar", bs: 65, maturity: 12, funding: 300, count: 20, classification: 3, prominent: ["Ciel & Terre","Ocean Sun","SolarDuck","Swimsol"] },
-  { name: "Solar Panel Recycling", sector: "Generation & Production", sub: "Solar", bs: 70, maturity: 8, funding: 150, count: 15, classification: 3, prominent: ["SOLARCYCLE","We Recycle Solar","Envaris","TG Companies"] },
-  { name: "Offshore Floating Turbines", sector: "Generation & Production", sub: "Wind", bs: 35, maturity: 15, funding: 600, count: 12, classification: 2, prominent: ["Principle Power","BW Ideol","Gazelle Wind","Hexicon"] },
-  { name: "Airborne / Kite Wind", sector: "Generation & Production", sub: "Wind", bs: 12, maturity: 18, funding: 250, count: 8, classification: 1, prominent: ["Makani (ended)","Kitepower","SkySails","Windlift"] },
-  { name: "Blade Recycling", sector: "Generation & Production", sub: "Wind", bs: 75, maturity: 7, funding: 80, count: 10, classification: 3, prominent: ["REGEN Fiber","Global Fiberglass","Carbon Rivers"] },
-  { name: "Enhanced Geothermal (EGS)", sector: "Generation & Production", sub: "Geothermal", bs: 20, maturity: 10, funding: 2200, count: 18, classification: 1, prominent: ["Fervo Energy","Eavor","Quaise","Sage Geosystems","Zanskar"] },
-  { name: "Closed-Loop Geothermal", sector: "Generation & Production", sub: "Geothermal", bs: 22, maturity: 8, funding: 500, count: 8, classification: 1, prominent: ["Eavor","GreenFire Energy","CeraPhi"] },
-  { name: "Tidal & Wave Energy", sector: "Generation & Production", sub: "Marine", bs: 15, maturity: 22, funding: 400, count: 15, classification: 1, prominent: ["Orbital Marine","CalWave","Eco Wave Power","Mocean Energy"] },
-  { name: "Small / Micro Hydro", sector: "Generation & Production", sub: "Marine", bs: 72, maturity: 25, funding: 200, count: 20, classification: 3, prominent: ["Natel Energy","Turbulent"] },
-  { name: "Osmotic Power", sector: "Generation & Production", sub: "Marine", bs: 5, maturity: 15, funding: 50, count: 4, classification: 1, prominent: ["Sweetch Energy","REDstack"] },
-  { name: "Waste-to-Energy Gasification", sector: "Generation & Production", sub: "Biomass", bs: 45, maturity: 20, funding: 600, count: 30, classification: 2, prominent: ["Sierra Energy","Aries Clean","Synova","PowerHouse Energy"] },
-  { name: "Algae Biofuels", sector: "Generation & Production", sub: "Biomass", bs: 10, maturity: 20, funding: 400, count: 12, classification: 1, prominent: ["Viridos","Algenol","Sapphire (ended)","Solazyme"] },
-  { name: "Biochar & Pyrolysis", sector: "Generation & Production", sub: "Biomass", bs: 50, maturity: 15, funding: 300, count: 25, classification: 2, prominent: ["Pacific Biochar","Charm Industrial","Carbon Gold"] },
-  { name: "Methane Leak Detection", sector: "Generation & Production", sub: "Gas", bs: 62, maturity: 10, funding: 500, count: 20, classification: 3, prominent: ["Kairos Aerospace","GHGSat","Qube Technologies","Kuva Systems"] },
-  { name: "Flare Gas Capture", sector: "Generation & Production", sub: "Gas", bs: 55, maturity: 8, funding: 300, count: 12, classification: 2, prominent: ["Crusoe Energy"] },
-  { name: "Small Modular Reactors", sector: "Generation & Production", sub: "Nuclear", bs: 25, maturity: 15, funding: 3500, count: 25, classification: 1, prominent: ["NuScale","Kairos Power","X-energy","Oklo","TerraPower","Last Energy"] },
-  { name: "Nuclear Fusion", sector: "Generation & Production", sub: "Nuclear", bs: 5, maturity: 20, funding: 9800, count: 77, classification: 1, prominent: ["Commonwealth Fusion","Helion","TAE Tech","Pacific Fusion","Tokamak Energy"] },
-  { name: "Advanced Fuel Cycle", sector: "Generation & Production", sub: "Nuclear", bs: 20, maturity: 12, funding: 400, count: 10, classification: 1, prominent: ["Curio","Deep Isolation","Moltex","Transmutex"] },
-  { name: "Green Electrolysis", sector: "Generation & Production", sub: "Hydrogen", bs: 30, maturity: 15, funding: 5000, count: 60, classification: 2, prominent: ["Plug Power","ITM Power","Nel ASA","Electric Hydrogen","Ohmium"] },
-  { name: "Turquoise Hydrogen", sector: "Generation & Production", sub: "Hydrogen", bs: 15, maturity: 8, funding: 500, count: 10, classification: 1, prominent: ["Monolith","C-Zero","Modern Hydrogen","Ekona"] },
-  { name: "Space-Based Solar", sector: "Generation & Production", sub: "Emerging", bs: 2, maturity: 5, funding: 100, count: 5, classification: 1, prominent: ["Virtus Solis","Space Solar","Solaris"] },
-  { name: "Thermoelectric / Waste Heat", sector: "Generation & Production", sub: "Emerging", bs: 30, maturity: 18, funding: 200, count: 15, classification: 2, prominent: ["Alphabet Energy","Gentherm","Evident Thermoelectrics"] },
-
-  // STORAGE
-  { name: "Solid-State Batteries", sector: "Energy Storage", sub: "Li-Ion", bs: 12, maturity: 15, funding: 4200, count: 40, classification: 1, prominent: ["QuantumScape","Solid Power","SES AI","Factorial","Ilika","ProLogium"] },
-  { name: "Silicon Anode R&D", sector: "Energy Storage", sub: "Li-Ion", bs: 28, maturity: 12, funding: 2500, count: 20, classification: 2, prominent: ["Sila Nano","Enovix","Enevate","Group14","Amprius"] },
-  { name: "Battery Mgmt Systems", sector: "Energy Storage", sub: "Li-Ion", bs: 72, maturity: 18, funding: 600, count: 40, classification: 3, prominent: ["Qnovo","Dukosi","Brill Power","Twaice"] },
-  { name: "Sodium-Ion Batteries", sector: "Energy Storage", sub: "Beyond Li", bs: 25, maturity: 10, funding: 800, count: 25, classification: 2, prominent: ["Natron Energy","Tiamat Energy","Peak Energy","HiNa Battery"] },
-  { name: "Iron-Air Batteries", sector: "Energy Storage", sub: "Beyond Li", bs: 10, maturity: 8, funding: 1500, count: 10, classification: 1, prominent: ["Form Energy","Ore Energy"] },
-  { name: "Flow Batteries (Zinc/Vanadium)", sector: "Energy Storage", sub: "Beyond Li", bs: 22, maturity: 22, funding: 700, count: 20, classification: 2, prominent: ["Eos Energy","Invinity","ESS Inc.","Primus Power","CellCube"] },
-  { name: "Compressed Air (CAES)", sector: "Energy Storage", sub: "Mechanical", bs: 35, maturity: 20, funding: 300, count: 8, classification: 2, prominent: ["Hydrostor","Augwind","Storelectric"] },
-  { name: "Gravity-Based Storage", sector: "Energy Storage", sub: "Mechanical", bs: 18, maturity: 10, funding: 1300, count: 15, classification: 1, prominent: ["Energy Vault","Gravitricity","Advanced Rail Energy","ARES","Gravity Power","Gravity Storage (Germany)"] },
-  { name: "Thermal storage / Industrial heat storage", sector: "Energy Storage", sub: "Mechanical", bs: 32, maturity: 18, funding: 600, count: 15, classification: 2, prominent: ["Rondo Energy","Antora Energy","Brenmiller"] },
-  { name: "Liquid Air (LAES)", sector: "Energy Storage", sub: "Mechanical", bs: 20, maturity: 12, funding: 200, count: 4, classification: 1, prominent: ["Highview Power","Sumitomo SHI"] },
-  { name: "Hydrogen Underground Storage", sector: "Energy Storage", sub: "Long Duration", bs: 25, maturity: 8, funding: 400, count: 10, classification: 1, prominent: ["Storengy","H2 Energy"] },
-  { name: "Ammonia as Carrier", sector: "Energy Storage", sub: "Long Duration", bs: 20, maturity: 10, funding: 500, count: 12, classification: 1, prominent: ["Starfire Energy","Amogy","GenH2","First Ammonia"] },
-  { name: "Second-Life Batteries", sector: "Energy Storage", sub: "Lifecycle", bs: 65, maturity: 10, funding: 300, count: 20, classification: 3, prominent: ["Moment Energy","B2U Storage","ReJoule","RePurpose Energy"] },
-  { name: "Battery Recycling", sector: "Energy Storage", sub: "Lifecycle", bs: 55, maturity: 12, funding: 5000, count: 30, classification: 2, prominent: ["Redwood Materials","Li-Cycle","Ascend Elements","Battery Resources"] },
-  { name: "Battery-as-a-Service", sector: "Energy Storage", sub: "Lifecycle", bs: 68, maturity: 8, funding: 400, count: 15, classification: 3, prominent: ["Ample","Gogoro","Zoomo","BATT","Oyika"] },
-
-  // TRANSMISSION & DISTRIBUTION
-  { name: "HVDC Technology", sector: "Transmission & Distribution", sub: "Grid Infra", bs: 30, maturity: 15, funding: 300, count: 8, classification: 2, prominent: ["SuperNode"] },
-  { name: "Grid-Enhancing Tech (DLR)", sector: "Transmission & Distribution", sub: "Grid Infra", bs: 50, maturity: 10, funding: 400, count: 12, classification: 2, prominent: ["LineVision","Ampacimon","Heimdall Power","Smart Wires"] },
-  { name: "Superconducting Cables", sector: "Transmission & Distribution", sub: "Grid Infra", bs: 10, maturity: 20, funding: 200, count: 6, classification: 1, prominent: ["VEIR","SuperOx"] },
-  { name: "AI Grid Balancing", sector: "Transmission & Distribution", sub: "Software", bs: 55, maturity: 10, funding: 800, count: 30, classification: 2, prominent: ["Camus Energy","Utilidata","Kevala","GridBeyond"] },
-  { name: "Digital Twin Grid Ops", sector: "Transmission & Distribution", sub: "Software", bs: 48, maturity: 8, funding: 300, count: 15, classification: 2, prominent: ["Camus Energy","Kevala","GridOS"] },
-  { name: "DERMS", sector: "Transmission & Distribution", sub: "Software", bs: 62, maturity: 12, funding: 600, count: 25, classification: 3, prominent: ["Camus Energy","Leap","Virtual Peaker"] },
-  { name: "Renewable Forecasting", sector: "Transmission & Distribution", sub: "Software", bs: 58, maturity: 12, funding: 400, count: 15, classification: 2, prominent: ["Tomorrow.io","Reuniwatt","Solcast","Nnergix"] },
-  { name: "Microgrid-as-a-Service", sector: "Transmission & Distribution", sub: "Distributed", bs: 52, maturity: 12, funding: 500, count: 20, classification: 2, prominent: ["Scale Microgrid","Enchanted Rock","BoxPower","Odyssey"] },
-  { name: "P2P Energy Trading", sector: "Transmission & Distribution", sub: "Distributed", bs: 28, maturity: 8, funding: 150, count: 5, classification: 1, prominent: ["Power Ledger"] },
-  { name: "Virtual Power Plants", sector: "Transmission & Distribution", sub: "Distributed", bs: 48, maturity: 10, funding: 700, count: 25, classification: 2, prominent: ["Leap","Voltus","GridBeyond"] },
-
-  // EFFICIENCY
-  { name: "Smart Building Energy", sector: "Energy Efficiency & Demand", sub: "Buildings", bs: 65, maturity: 15, funding: 800, count: 40, classification: 3, prominent: ["BrainBox AI","Parity","Measurabl"] },
-  { name: "Heat Pump Optimization", sector: "Energy Efficiency & Demand", sub: "Buildings", bs: 55, maturity: 10, funding: 400, count: 20, classification: 2, prominent: ["BlocPower","Sealed"] },
-  { name: "Intelligent Insulation", sector: "Energy Efficiency & Demand", sub: "Buildings", bs: 30, maturity: 8, funding: 150, count: 10, classification: 2, prominent: ["Hempitecture"] },
-  { name: "Occupancy-Aware HVAC", sector: "Energy Efficiency & Demand", sub: "Buildings", bs: 62, maturity: 10, funding: 300, count: 15, classification: 3, prominent: ["Brainbox AI"] },
-  { name: "Industrial Electrification", sector: "Energy Efficiency & Demand", sub: "Industrial", bs: 22, maturity: 8, funding: 800, count: 15, classification: 1, prominent: ["Rondo Energy","Antora Energy","Electra"] },
-  { name: "Waste Heat Recovery", sector: "Energy Efficiency & Demand", sub: "Industrial", bs: 42, maturity: 18, funding: 300, count: 15, classification: 2, prominent: ["Echogen","Orcan Energy","Kanin Energy"] },
-  { name: "AI Energy Auditing", sector: "Energy Efficiency & Demand", sub: "Industrial", bs: 68, maturity: 8, funding: 200, count: 20, classification: 3, prominent: ["Verdigris","Enertiv","GridPoint"] },
-  { name: "Demand Response Platforms", sector: "Energy Efficiency & Demand", sub: "DR", bs: 65, maturity: 15, funding: 600, count: 25, classification: 3, prominent: ["Voltus"] },
-  { name: "EV Smart Charging / V2G", sector: "Energy Efficiency & Demand", sub: "DR", bs: 42, maturity: 10, funding: 500, count: 25, classification: 2, prominent: ["Fermata Energy","Nuvve","ev.energy"] },
-  { name: "Time-of-Use SaaS", sector: "Energy Efficiency & Demand", sub: "DR", bs: 72, maturity: 8, funding: 150, count: 12, classification: 3, prominent: ["Arcadia"] },
-
-  // TRADING
-  { name: "AI Energy Trading", sector: "Energy Trading & Markets", sub: "Wholesale", bs: 50, maturity: 10, funding: 400, count: 15, classification: 2, prominent: ["GridBeyond"] },
-  { name: "Retail Electricity Marketplace", sector: "Energy Trading & Markets", sub: "Wholesale", bs: 72, maturity: 12, funding: 300, count: 15, classification: 3, prominent: ["Energy Ogre"] },
-  { name: "PPA Platforms", sector: "Energy Trading & Markets", sub: "Wholesale", bs: 68, maturity: 10, funding: 200, count: 10, classification: 3, prominent: ["LevelTen","Pexapark"] },
-  { name: "Carbon Credit / MRV", sector: "Energy Trading & Markets", sub: "Carbon", bs: 48, maturity: 10, funding: 800, count: 40, classification: 2, prominent: ["Pachama","Sylvera","BeZero","Isometric"] },
-  { name: "REC Platforms", sector: "Energy Trading & Markets", sub: "Carbon", bs: 72, maturity: 12, funding: 150, count: 10, classification: 3, prominent: ["REsurety","M-RETS","FlexiDAO"] },
-  { name: "Scope 3 Tracking SaaS", sector: "Energy Trading & Markets", sub: "Carbon", bs: 62, maturity: 7, funding: 400, count: 25, classification: 3, prominent: ["Watershed","Persefoni","Carbonfact","Plan A"] },
-
-  // TRANSPORT
-  { name: "Ultra-Fast Charging", sector: "Electrification & Transport", sub: "EV Infra", bs: 60, maturity: 10, funding: 1500, count: 35, classification: 3, prominent: ["Kempower","Electra","Gravity"] },
-  { name: "Charging Mgmt Software", sector: "Electrification & Transport", sub: "EV Infra", bs: 70, maturity: 10, funding: 500, count: 30, classification: 3, prominent: ["ChargeLab","Ampcontrol"] },
-  { name: "Wireless Charging", sector: "Electrification & Transport", sub: "EV Infra", bs: 18, maturity: 12, funding: 300, count: 10, classification: 1, prominent: ["WiTricity","Electreon","HEVO","Momentum Dynamics"] },
-  { name: "Fleet Electrification", sector: "Electrification & Transport", sub: "EV Infra", bs: 58, maturity: 8, funding: 600, count: 20, classification: 2, prominent: ["Zeem Solutions","Synop","RideCo"] },
-  { name: "H2 Refueling Stations", sector: "Electrification & Transport", sub: "H2 Mobility", bs: 38, maturity: 12, funding: 500, count: 15, classification: 2, prominent: ["FirstElement Fuel","H2 Mobility","Hydrogen Refueling Solutions"] },
-  { name: "Fuel Cells Heavy Transport", sector: "Electrification & Transport", sub: "H2 Mobility", bs: 28, maturity: 15, funding: 1500, count: 20, classification: 2, prominent: ["Loop Energy","Hyvia"] },
-  { name: "Sustainable Aviation Fuel", sector: "Electrification & Transport", sub: "Aviation", bs: 22, maturity: 12, funding: 2000, count: 25, classification: 1, prominent: ["LanzaJet","Twelve","Alder Fuels","SynHelion"] },
-  { name: "Electric Marine Propulsion", sector: "Electrification & Transport", sub: "Aviation", bs: 25, maturity: 10, funding: 400, count: 15, classification: 1, prominent: ["Boundary Layer","Candela","Corvus Energy","Fleetzero"] },
-  { name: "E-Fuels (Power-to-Liquid)", sector: "Electrification & Transport", sub: "Aviation", bs: 12, maturity: 8, funding: 600, count: 12, classification: 1, prominent: ["HIF Global","Infinium","Synhelion","INERATEC"] },
-
-  // OPS
-  { name: "Drone/Satellite Inspection", sector: "Operations & Services", sub: "Monitoring", bs: 60, maturity: 10, funding: 400, count: 25, classification: 3, prominent: ["Raptor Maps","DroneDeploy","SkySpecs","Above Surveying"] },
-  { name: "Predictive Maintenance AI", sector: "Operations & Services", sub: "Monitoring", bs: 58, maturity: 12, funding: 500, count: 30, classification: 2, prominent: ["Presight","Sedge","Augury"] },
-  { name: "Digital Twin Energy Assets", sector: "Operations & Services", sub: "Monitoring", bs: 48, maturity: 8, funding: 300, count: 15, classification: 2, prominent: ["Akselos","Cosmo Tech"] },
-  { name: "AR Field Technician Tools", sector: "Operations & Services", sub: "Field", bs: 50, maturity: 8, funding: 150, count: 10, classification: 2, prominent: ["Fieldbit","Librestream","ScopeAR"] },
-  { name: "Robotic Inspection", sector: "Operations & Services", sub: "Field", bs: 38, maturity: 10, funding: 300, count: 12, classification: 2, prominent: ["Gecko Robotics","Invert Robotics","ANYbotics"] },
-  { name: "Energy Workforce Mgmt", sector: "Operations & Services", sub: "Field", bs: 75, maturity: 12, funding: 200, count: 15, classification: 3, prominent: ["Grid4C","FieldRoutes"] },
-  { name: "OT/SCADA Security", sector: "Operations & Services", sub: "Cyber", bs: 52, maturity: 12, funding: 1000, count: 20, classification: 2, prominent: ["Dragos","Claroty","Nozomi Networks","Xage Security"] },
-  { name: "Grid Resilience / Threat", sector: "Operations & Services", sub: "Cyber", bs: 48, maturity: 8, funding: 300, count: 12, classification: 2, prominent: ["Fortress Info"] },
-
-  // CARBON
-  { name: "Direct Air Capture (DAC)", sector: "Carbon Management", sub: "Capture", bs: 8, maturity: 15, funding: 2300, count: 40, classification: 1, prominent: ["Climeworks","Carbon Engineering","Heirloom","Aircapture","Noya"] },
-  { name: "Point-Source Capture", sector: "Carbon Management", sub: "Capture", bs: 40, maturity: 20, funding: 1200, count: 30, classification: 2, prominent: ["Carbon Clean","Svante","ION Clean Energy","Aker Carbon"] },
-  { name: "Ocean Carbon Removal", sector: "Carbon Management", sub: "Capture", bs: 5, maturity: 5, funding: 200, count: 15, classification: 1, prominent: ["Ebb Carbon","Equatic","Vesta"] },
-  { name: "CO2 to Building Materials", sector: "Carbon Management", sub: "Utilization", bs: 22, maturity: 12, funding: 600, count: 15, classification: 1, prominent: ["CarbonCure","Solidia","CarbiCrete","Cambridge Electric Cement"] },
-  { name: "CO2 to Chemicals/Fuels", sector: "Carbon Management", sub: "Utilization", bs: 15, maturity: 12, funding: 500, count: 12, classification: 1, prominent: ["Twelve","LanzaTech"] },
-  { name: "Carbon Mineralization", sector: "Carbon Management", sub: "Utilization", bs: 12, maturity: 8, funding: 500, count: 18, classification: 1, prominent: ["44.01","CarbonBuilt","Carbfix"] },
-  { name: "Geological Sequestration", sector: "Carbon Management", sub: "Storage", bs: 40, maturity: 18, funding: 500, count: 12, classification: 2, prominent: ["Storegga"] },
-  { name: "Enhanced Weathering", sector: "Carbon Management", sub: "Storage", bs: 10, maturity: 6, funding: 200, count: 12, classification: 1, prominent: ["Lithos Carbon","UNDO","Eion","Mati Carbon"] },
-  { name: "Biochar Sequestration", sector: "Carbon Management", sub: "Storage", bs: 38, maturity: 12, funding: 250, count: 20, classification: 2, prominent: ["Charm Industrial","Pacific Biochar","Carbon Gold","Carbofex"] },
-
-  // DATA
-  { name: "Utility Data Aggregation", sector: "Data, Software & Fintech", sub: "Data", bs: 65, maturity: 12, funding: 300, count: 15, classification: 3, prominent: ["UtilityAPI","Pelm"] },
-  { name: "Energy Analytics (C&I)", sector: "Data, Software & Fintech", sub: "Data", bs: 62, maturity: 12, funding: 400, count: 20, classification: 3, prominent: ["Parity","EnergyCAP","Facilio"] },
-  { name: "Geospatial Energy Siting", sector: "Data, Software & Fintech", sub: "Data", bs: 52, maturity: 8, funding: 200, count: 10, classification: 2, prominent: ["Anderson Optimization","Siteline"] },
-  { name: "Climate Project Finance", sector: "Data, Software & Fintech", sub: "Fintech", bs: 55, maturity: 10, funding: 500, count: 20, classification: 2, prominent: ["Banyan Infrastructure","Crux","Kyte"] },
-  { name: "Green Bond / Debt", sector: "Data, Software & Fintech", sub: "Fintech", bs: 62, maturity: 10, funding: 200, count: 10, classification: 3, prominent: ["Aligned Climate"] },
-  { name: "Community Solar Finance", sector: "Data, Software & Fintech", sub: "Fintech", bs: 65, maturity: 10, funding: 2000, count: 15, classification: 3, prominent: ["Arcadia","Perch Energy","Nexamp","Common Energy"] },
-  { name: "Energy Asset Tokenization", sector: "Data, Software & Fintech", sub: "Fintech", bs: 18, maturity: 5, funding: 80, count: 8, classification: 1, prominent: ["WePower","SunExchange"] },
-  { name: "Permitting Automation", sector: "Data, Software & Fintech", sub: "Regulatory", bs: 60, maturity: 6, funding: 200, count: 12, classification: 3, prominent: ["Paces"] },
-  { name: "ESG Reporting SaaS", sector: "Data, Software & Fintech", sub: "Regulatory", bs: 68, maturity: 8, funding: 800, count: 40, classification: 3, prominent: ["Watershed","Persefoni","Plan A","Sweep","Normative","Greenly"] },
-  { name: "Tariff Analysis Tools", sector: "Data, Software & Fintech", sub: "Regulatory", bs: 72, maturity: 10, funding: 100, count: 8, classification: 3, prominent: ["GridX"] }
-];
-
-let activeFilters = new Set();
-let currentView = 'scatter';
-let activeBubble = null;
-
-function init() {
-  renderStats();
-  renderControls();
-  renderScatter();
-  renderTable();
-  setupTooltip();
-}
-
-function renderStats() {
-  const totalFunding = DATA.reduce((s, d) => s + d.funding, 0);
-  const totalStartups = DATA.reduce((s, d) => s + d.count, 0);
-  const breakthroughCount = DATA.filter(d => d.classification === 1).length;
-  const incrementalCount = DATA.filter(d => d.classification === 3).length;
-
-  document.getElementById('stats-row').innerHTML = `
-    <div class="stat-card"><div class="stat-value">${DATA.length}</div><div class="stat-label">Technology Areas Mapped</div></div>
-    <div class="stat-card"><div class="stat-value">$${Math.round(totalFunding/1000)}B+</div><div class="stat-label">Total Funding Tracked</div></div>
-    <div class="stat-card"><div class="stat-value">${breakthroughCount}</div><div class="stat-label">Breakthrough Areas</div></div>
-    <div class="stat-card"><div class="stat-value">${incrementalCount}</div><div class="stat-label">Incremental Areas</div></div>
-  `;
-}
-
-function renderControls() {
-  const container = document.getElementById('controls');
-  let html = `<button class="filter-btn active" data-filter="all">All Sectors</button>`;
-  for (const [name, info] of Object.entries(SECTORS)) {
-    html += `<button class="filter-btn" data-filter="${name}"><span class="filter-dot" style="background:${info.color}"></span>${info.short}</button>`;
+function hit(d){
+  if(S.cat!=='all' && d.sector!==S.cat) return false;
+  if(S.region!=='all' && d.region!==S.region) return false;
+  if(S.q){
+    const q=S.q.toLowerCase();
+    const hay=(d.name+' '+d.investors+' '+d.description+' '+d.hq_city+' '+d.sector+' '+d.stage).toLowerCase();
+    if(!hay.includes(q)) return false;
   }
-  html += `<div class="view-toggle">
-    <button class="view-btn active" data-view="scatter">Scatter</button>
-    <button class="view-btn" data-view="table">Table</button>
-  </div>`;
-  container.innerHTML = html;
-
-  container.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter;
-      if (filter === 'all') {
-        activeFilters.clear();
-        container.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      } else {
-        container.querySelector('[data-filter="all"]').classList.remove('active');
-        if (activeFilters.has(filter)) {
-          activeFilters.delete(filter);
-          btn.classList.remove('active');
-          if (activeFilters.size === 0) {
-            container.querySelector('[data-filter="all"]').classList.add('active');
-          }
-        } else {
-          activeFilters.add(filter);
-          btn.classList.add('active');
-        }
-      }
-      updateVisibility();
-    });
-  });
-
-  container.querySelectorAll('.view-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      container.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentView = btn.dataset.view;
-      document.getElementById('chart-view').style.display = currentView === 'scatter' ? 'block' : 'none';
-      document.getElementById('table-view').style.display = currentView === 'table' ? 'block' : 'none';
-    });
-  });
+  return true;
+}
+function countFor(dim,val){
+  return DEALS.filter(d=>{
+    if(dim!=='cat' && S.cat!=='all' && d.sector!==S.cat) return false;
+    if(dim!=='region' && S.region!=='all' && d.region!==S.region) return false;
+    if(dim==='cat' && val!=='all' && d.sector!==val) return false;
+    if(dim==='region' && val!=='all' && d.region!==val) return false;
+    if(S.q){const q=S.q.toLowerCase();
+      if(!(d.name+' '+d.investors+' '+d.description+' '+d.hq_city+' '+d.sector+' '+d.stage).toLowerCase().includes(q)) return false;}
+    return true;
+  }).length;
+}
+function filtered(){
+  let a = DEALS.filter(hit);
+  const s=S.sort;
+  if(s==='latest') a.sort((x,y)=>y.date.localeCompare(x.date));
+  else if(s==='oldest') a.sort((x,y)=>x.date.localeCompare(y.date));
+  else if(s==='largest') a.sort((x,y)=>y.amount_usd_m-x.amount_usd_m);
+  else if(s==='smallest') a.sort((x,y)=>x.amount_usd_m-y.amount_usd_m);
+  else if(s==='az') a.sort((x,y)=>x.name.localeCompare(y.name));
+  return a;
 }
 
-function isVisible(d) {
-  if (activeFilters.size === 0) return true;
-  return activeFilters.has(d.sector);
+function chip(label,n,on,cls){
+  return '<button class="chip '+cls+(on?' on':'')+'" data-v="'+esc(label)+'">'+esc(label)+
+         '<span class="n">'+n+'</span></button>';
+}
+function drawChips(){
+  let h = chip('All',countFor('cat','all'),S.cat==='all','');
+  SECTORS.forEach(s=>h+=chip(s,countFor('cat',s),S.cat===s,''));
+  const cc=document.getElementById('cats'); cc.innerHTML=h;
+  cc.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
+    const v=b.dataset.v; S.cat=(v==='All')?'all':v; S.page=1; render();});
+
+  let r = chip('All',countFor('region','all'),S.region==='all','rg');
+  REGIONS.forEach(x=>r+=chip(x,countFor('region',x),S.region===x,'rg'));
+  const rc=document.getElementById('regs'); rc.innerHTML=r;
+  rc.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
+    const v=b.dataset.v; S.region=(v==='All')?'all':v; S.page=1; render();});
 }
 
-function updateVisibility() {
-  document.querySelectorAll('.bubble').forEach(el => {
-    const idx = parseInt(el.dataset.idx);
-    const d = DATA[idx];
-    el.classList.toggle('dimmed', !isVisible(d));
-  });
+function drawCharts(arr){
+  // capital by sector
+  const cap={}, cnt={};
+  SECTORS.forEach(s=>{cap[s]=0;cnt[s]=0;});
+  arr.forEach(d=>{cap[d.sector]+=d.amount_usd_m;cnt[d.sector]++;});
+  const rows=SECTORS.map(s=>[s,cap[s],cnt[s]]).filter(r=>r[2]>0).sort((a,b)=>b[1]-a[1]);
+  const max=Math.max(...rows.map(r=>r[1]),1);
+  document.getElementById('c1').innerHTML = rows.map((r,i)=>
+    '<div class="bar'+(i===0?' top':'')+'"><span class="nm">'+esc(r[0])+'</span>'+
+    '<span class="track"><span class="fill" style="width:'+(r[1]/max*100).toFixed(1)+'%"></span></span>'+
+    '<span class="vl">'+fmtM(r[1])+'</span></div>').join('') || '<p class="vl">No data</p>';
 
-  document.querySelectorAll('#table-view tbody tr').forEach(tr => {
-    const idx = parseInt(tr.dataset.idx);
-    const d = DATA[idx];
-    tr.style.display = isVisible(d) ? '' : 'none';
-  });
+  // monthly deal flow
+  const buckets={};
+  arr.forEach(d=>{const k=d.date.slice(0,7); buckets[k]=(buckets[k]||0)+1;});
+  const keys=Object.keys(buckets).sort();
+  if(!keys.length){document.getElementById('c2').innerHTML='';return;}
+  const lo=keys[0], hi=keys[keys.length-1];
+  const span=[]; let [y,m]=lo.split('-').map(Number);
+  const [ey,em]=hi.split('-').map(Number);
+  while(y<ey||(y===ey&&m<=em)){span.push(y+'-'+String(m).padStart(2,'0')); m++; if(m>12){m=1;y++;}}
+  const mx=Math.max(...Object.values(buckets),1);
+  document.getElementById('c2').innerHTML =
+    '<div class="spark">'+span.map(k=>{const v=buckets[k]||0;
+      return '<span class="col" style="height:'+(v/mx*100)+'%" title="'+MON[+k.slice(5)-1]+' '+k.slice(0,4)+': '+v+' deals"></span>';}).join('')+'</div>'+
+    '<div class="sparklab"><span>'+MON[+lo.slice(5)-1]+' '+lo.slice(0,4)+'</span>'+
+    '<span>peak '+mx+'/mo</span><span>'+MON[+hi.slice(5)-1]+' '+hi.slice(0,4)+'</span></div>';
 }
 
-function fundingToSize(f) {
-  return Math.max(10, Math.min(48, 8 + Math.sqrt(f) * 0.55));
-}
-
-function renderScatter() {
-  const plot = document.getElementById('plot-area');
-  plot.innerHTML = '';
-
-  // grid lines
-  for (let i = 0; i <= 4; i++) {
-    const h = document.createElement('div');
-    h.className = 'grid-line-h';
-    h.style.top = (i * 25) + '%';
-    plot.appendChild(h);
+function drawPager(total){
+  const pages=Math.max(1,Math.ceil(total/PAGE));
+  const el=document.getElementById('pager');
+  if(pages<2){el.innerHTML='';return;}
+  let h='<button class="pgbtn" data-g="prev"'+(S.page===1?' disabled':'')+'>Prev</button>';
+  const show=new Set([1,pages,S.page,S.page-1,S.page+1]);
+  let last=0;
+  for(let p=1;p<=pages;p++){
+    if(!show.has(p))continue;
+    if(p-last>1)h+='<span class="gap">&middot;&middot;&middot;</span>';
+    h+='<button class="pgbtn'+(p===S.page?' on':'')+'" data-g="'+p+'">'+p+'</button>';
+    last=p;
   }
-  for (let i = 0; i <= 4; i++) {
-    const v = document.createElement('div');
-    v.className = 'grid-line-v';
-    v.style.left = (i * 25) + '%';
-    plot.appendChild(v);
-  }
-
-  const center = document.createElement('div');
-  center.className = 'center-line-v';
-  plot.appendChild(center);
-
-  // Jitter for overlapping
-  const positions = [];
-  DATA.forEach((d, i) => {
-    const baseX = d.bs;
-    const baseY = d.maturity;
-    let x = baseX;
-    let y = baseY;
-
-    // simple collision avoidance
-    for (let attempt = 0; attempt < 10; attempt++) {
-      let collision = false;
-      for (const p of positions) {
-        const dx = (x - p.x);
-        const dy = (y - p.y) * 2;
-        if (Math.sqrt(dx*dx + dy*dy) < 4) {
-          collision = true;
-          break;
-        }
-      }
-      if (!collision) break;
-      x = baseX + (Math.random() - 0.5) * 6;
-      y = baseY + (Math.random() - 0.5) * 2;
-    }
-    positions.push({ x, y });
-
-    const size = fundingToSize(d.funding);
-    const color = SECTORS[d.sector]?.color || '#888';
-
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble';
-    bubble.dataset.idx = i;
-    bubble.style.width = size + 'px';
-    bubble.style.height = size + 'px';
-    bubble.style.left = `calc(${x}% - ${size/2}px)`;
-    // maturity: 0 = top (newer), 25 = bottom (mature)
-    const yPct = Math.min(95, Math.max(2, (d.maturity / 28) * 100));
-    bubble.style.top = `calc(${yPct}% - ${size/2}px)`;
-    bubble.style.background = `radial-gradient(circle at 35% 35%, ${color}dd, ${color}88)`;
-    bubble.style.border = `1.5px solid ${color}`;
-    bubble.style.zIndex = Math.round(100 - size);
-
-    const label = document.createElement('span');
-    label.className = 'bubble-label';
-    label.textContent = d.name.length > 22 ? d.name.slice(0,20) + '...' : d.name;
-    bubble.appendChild(label);
-
-    bubble.addEventListener('mouseenter', (e) => showTooltip(e, d));
-    bubble.addEventListener('mousemove', (e) => moveTooltip(e));
-    bubble.addEventListener('mouseleave', hideTooltip);
-
-    plot.appendChild(bubble);
+  h+='<button class="pgbtn" data-g="next"'+(S.page===pages?' disabled':'')+'>Next</button>';
+  el.innerHTML=h;
+  el.querySelectorAll('.pgbtn').forEach(b=>b.onclick=()=>{
+    const g=b.dataset.g;
+    S.page = g==='prev'?Math.max(1,S.page-1) : g==='next'?Math.min(pages,S.page+1) : +g;
+    render(); document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
   });
 }
 
-function renderTable() {
-  const container = document.getElementById('table-view');
-  const sorted = DATA.map((d,i) => ({...d, idx: i})).sort((a,b) => a.bs - b.bs);
-
-  let html = `<div class="table-wrapper"><table>
-    <thead><tr>
-      <th>Technology</th>
-      <th>Sector</th>
-      <th>Classification</th>
-      <th>Score</th>
-      <th>Maturity (Yrs)</th>
-      <th>Funding</th>
-      <th>Startups</th>
-      <th>Prominent Players</th>
-    </tr></thead><tbody>`;
-
-  sorted.forEach(d => {
-    const classLabel = d.classification === 1 ? 'Breakthrough' : d.classification === 3 ? 'Incremental' : 'Hybrid';
-    const classCSS = d.classification === 1 ? 'class-breakthrough' : d.classification === 3 ? 'class-incremental' : 'class-hybrid';
-
-    html += `<tr data-idx="${d.idx}">
-      <td style="font-weight:500">${d.name}</td>
-      <td><span style="color:${SECTORS[d.sector]?.color}">${SECTORS[d.sector]?.short}</span></td>
-      <td><span class="class-badge ${classCSS}">${classLabel}</span></td>
-      <td>${d.bs}/100</td>
-      <td>~${d.maturity} yrs</td>
-      <td>$${d.funding >= 1000 ? (d.funding/1000).toFixed(1) + 'B' : d.funding + 'M'}</td>
-      <td>~${d.count}</td>
-      <td><div class="startup-list">${d.prominent.map(s => `<span class="startup-pill">${s}</span>`).join('')}</div></td>
-    </tr>`;
-  });
-
-  html += '</tbody></table></div>';
-  container.innerHTML = html;
+function card(d){
+  return '<article class="card"><div class="top"><h2>'+esc(d.name)+'</h2>'+
+    '<span class="amt">'+esc(d.amount)+'</span></div>'+
+    '<div class="meta"><span class="pill sec">'+esc(d.sector)+'</span>'+
+    '<span class="pill stg">'+esc(d.stage)+'</span>'+
+    '<span class="pill rgn">'+esc(d.hq_city)+', '+esc(RLAB[d.region]||d.region)+'</span></div>'+
+    '<p class="desc">'+esc(d.description)+'</p>'+
+    (d.note?'<p class="note">'+esc(d.note)+'</p>':'')+
+    '<div class="inv"><b>Investors</b>'+esc(d.investors)+'</div>'+
+    '<div class="foot"><span>'+fmtDate(d.date)+'</span>'+
+    '<a href="'+esc(d.source_url)+'" target="_blank" rel="noopener">'+esc(d.source_name)+' &rarr;</a></div></article>';
 }
 
-function setupTooltip() {}
+function render(){
+  drawChips();
+  const arr=filtered(), total=arr.length;
+  const cap=arr.reduce((s,d)=>s+d.amount_usd_m,0);
+  const pages=Math.max(1,Math.ceil(total/PAGE));
+  if(S.page>pages)S.page=pages;
 
-function showTooltip(e, d) {
-  const tip = document.getElementById('tooltip');
-  const classLabel = d.classification === 1 ? 'Breakthrough' : d.classification === 3 ? 'Incremental' : 'Hybrid';
-  const classCSS = d.classification === 1 ? 'class-breakthrough' : d.classification === 3 ? 'class-incremental' : 'class-hybrid';
-  const color = SECTORS[d.sector]?.color || '#888';
+  const scope=(S.cat==='all'?'all sectors':S.cat)+(S.region==='all'?'':' &middot; '+(RLAB[S.region]||S.region))+(S.q?' &middot; "'+esc(S.q)+'"':'');
+  document.getElementById('resline').innerHTML = total
+    ? '<b>'+total+'</b> round'+(total===1?'':'s')+' &middot; <b>'+fmtM(cap)+'</b> disclosed &middot; '+scope+
+      (pages>1?' &middot; page '+S.page+' of '+pages:'')
+    : 'No rounds match &middot; '+scope;
 
-  tip.innerHTML = `
-    <div class="tooltip-classification ${classCSS}">${classLabel}</div>
-    <div class="tooltip-name">${d.name}</div>
-    <div class="tooltip-sector" style="color:${color}">${d.sector} / ${d.sub}</div>
-    <div class="tooltip-grid">
-      <div class="tooltip-item"><label>Spectrum Score</label><span>${d.bs}/100</span></div>
-      <div class="tooltip-item"><label>Maturity</label><span>~${d.maturity} yrs</span></div>
-      <div class="tooltip-item"><label>Total Funding</label><span>$${d.funding >= 1000 ? (d.funding/1000).toFixed(1) + 'B' : d.funding + 'M'}</span></div>
-      <div class="tooltip-item"><label>Active Startups</label><span>~${d.count}</span></div>
-    </div>
-    <div class="tooltip-startups-label">Prominent Players</div>
-    <div class="tooltip-startups">${d.prominent.map(s => `<span class="startup-tag">${s}</span>`).join('')}</div>
-  `;
+  const g=document.getElementById('grid');
+  g.innerHTML = total
+    ? arr.slice((S.page-1)*PAGE,(S.page-1)*PAGE+PAGE).map(card).join('')
+    : '<div class="empty" style="grid-column:1/-1"><h3>Nothing here</h3><p>Try clearing the search or widening the filters.</p></div>';
 
-  tip.classList.add('visible');
-  moveTooltip(e);
+  if(S.charts) drawCharts(arr);
+  drawPager(total);
 }
 
-function moveTooltip(e) {
-  const tip = document.getElementById('tooltip');
-  const w = tip.offsetWidth;
-  const h = tip.offsetHeight;
-  let x = e.clientX + 16;
-  let y = e.clientY - 20;
-  if (x + w > window.innerWidth - 20) x = e.clientX - w - 16;
-  if (y + h > window.innerHeight - 20) y = window.innerHeight - h - 20;
-  if (y < 10) y = 10;
-  tip.style.left = x + 'px';
-  tip.style.top = y + 'px';
-}
-
-function hideTooltip() {
-  document.getElementById('tooltip').classList.remove('visible');
-}
-
-init();
+// wire controls
+const inp=document.getElementById('q');
+let t; inp.oninput=()=>{clearTimeout(t);t=setTimeout(()=>{S.q=inp.value.trim();S.page=1;render();},160);};
+document.getElementById('clr').onclick=()=>{inp.value='';S.q='';S.page=1;render();inp.focus();};
+document.getElementById('sort').onchange=e=>{S.sort=e.target.value;S.page=1;render();};
+const ct=document.getElementById('ctgl');
+ct.onclick=()=>{S.charts=!S.charts;ct.classList.toggle('on',S.charts);
+  document.getElementById('charts').classList.toggle('show',S.charts);
+  ct.textContent=S.charts?'Hide charts':'Show charts';
+  if(S.charts)drawCharts(filtered());};
+render();
 </script>
 </body>
 </html>
