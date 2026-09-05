@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'self'">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Positive Energy Podcast &middot; Energy Digest</title>
+<meta name="description" content="Positive Energy: conversations with founders, investors and operators building the energy transition.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="brand" href="../"><span class="mark"></span>Energy Digest</a>
+  <div class="navlinks">
+    <a class="pill" href="../tracker/">Fundraising Tracker</a>
+    <a class="pill" href="./" aria-current="page">Podcast</a>
+    <a class="pill sub" href="https://yadavrohit.substack.com/subscribe/?utm_source=bigbook.vc&amp;utm_medium=referral&amp;utm_campaign=energy-digest">Subscribe</a>
+  </div>
+</div></nav>
+
+<!-- ============ HERO ============ -->
+<header class="pod-hero"><div class="wrap grid">
+  <div>
+    <p class="eyebrow lab" style="text-align:left">Positive Energy</p>
+    <h1>Conversations with the people building the energy transition.</h1>
+    <p class="lede">Founders, investors and operators on what is actually getting built,
+    financed and deployed, and what keeps stalling.</p>
+  </div>
+
+  <div>
+    <div class="deck" id="deck" aria-label="Recent episodes"></div>
+  </div>
+</div></header>
+
+<!-- ============ LISTING ============ -->
+<main class="wrap pod-list" id="episodes">
+  <h2 class="head lab">All episodes</h2>
+  <div class="epcards" id="epcards"></div>
+  <div class="empty" id="empty" hidden>
+    No episodes published yet. Add one to the <code>EPISODES</code> array in this file.
+  </div>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <a href="../">Home</a>
+</div></footer>
+
+<script>
+/* ============================================================
+   EPISODES: the single source of truth for this page.
+
+   To publish a new episode:
+     1. Copy podcast/episodes/_template.html to
+        podcast/episodes/your-slug.html and fill it in.
+     2. Add an entry to the TOP of this array.
+     3. Crop the guest portrait to assets/img/people/<name>.jpg
+        (README has the crop geometry). That portrait is used in the
+        episode page's Guest rail, not on this listing.
+
+   slug   must match the episode filename without .html, and
+          assets/img/art/<slug>.svg must exist: it is the artwork
+          shown both here and in that episode's own hero
+   name / role / company render as: Name | Role, Company
+   photo  portrait filename without .jpg, for the episode page
+   deck   true puts this episode's artwork in the hero cascade.
+          Keep four. The artwork is assets/img/art/<slug>.svg,
+          the same drawing used in that episode's own hero.
+   ============================================================ */
+var EPISODES = [
+  {
+    num: 9, slug: 'energy-transformation-is-not-about',
+    title: 'The Once in a Century Energy Transformation',
+    name: 'Dong-Su Kim', role: 'CEO and Board Member', company: 'LG Technology Ventures',
+    date: '2026-06-01', duration: '39 min', photo: 'dong-su-kim',
+    blurb: 'The battery chemistry landscape, why so many well funded battery startups failed, and where startups in the West can still win.'
+  },
+  {
+    num: 8, slug: 'ai-broke-the-grid-now-it-has-to-save',
+    title: 'AI Broke the Grid. Now It Has to Save It.',
+    name: 'Sean Kelly', role: 'Co-founder and CEO', company: 'Amperon',
+    date: '2026-06-03', duration: '38 min', photo: 'sean-kelly',
+    blurb: 'Forecasting went from a 15-day trading tool to grid-critical infrastructure, and the 50 to 100 hours a year that decide whether the lights stay on.'
+  },
+  {
+    num: 7, slug: '6-gw-of-flexible-power-on-autopilot',
+    title: '6 GW of Flexible Power on Autopilot',
+    name: 'J\u00FCrgen Mayerhofer', role: 'Co-founder and CEO', company: 'enspired',
+    date: '2026-06-08', duration: '53 min', photo: 'jurgen-mayerhofer', deck: true,
+    blurb: 'Trading six gigawatts and a hundred thousand orders a day with nobody in the loop, and why the bottleneck is culture rather than code.'
+  },
+  {
+    num: 6, slug: 'the-battery-that-runs-at-2400c',
+    title: 'The Battery That Runs at 2,400\u00B0C',
+    name: 'Arvin Ganesan', role: 'CEO', company: 'Fourth Power',
+    date: '2026-05-28', duration: '29 min', photo: 'arvin-ganesan',
+    blurb: 'Long duration storage built from petroleum coke, and why supply chain has become the real proxy for whether a hardware company can scale.'
+  },
+  {
+    num: 5, slug: 'energy-stopped-being-a-climate-bet',
+    title: 'Energy Stopped Being a Climate Bet. It\u2019s a Sovereignty Bet Now.',
+    name: 'Jan Lozek', role: 'Co-founder and Managing Director', company: 'Future Energy Ventures',
+    date: '2026-06-09', duration: '43 min', photo: 'jan-lozek',
+    blurb: 'Why the energy transition became Europe\u2019s defence strategy, and why the durable returns sit in the intelligence layer rather than the assets.'
+  },
+  {
+    num: 4, slug: 'the-gas-station-is-becoming-a-power',
+    title: 'The Gas Station Is Becoming a Power Plant',
+    name: 'Anurag Kamal', role: 'Co-founder and CEO', company: 'ElectricFish',
+    date: '2026-06-09', duration: '35 min', photo: 'anurag-kamal', deck: true,
+    blurb: 'ElectricFish is building a two-way grid, 400 kWh at a time, by putting the battery, charger and software in one box on a forecourt.'
+  },
+  {
+    num: 3, slug: 'the-grid-got-a-d-plus-the-prosumer',
+    title: 'The Grid Got a D-Plus. The Prosumer Era Begins.',
+    name: 'Gareth Evans', role: 'Founder and CEO', company: 'VECKTA',
+    date: '2026-05-21', duration: '34 min', photo: 'gareth-evans',
+    blurb: 'Why power delivery rather than generation is the real bottleneck, and what energy tech founders need to know in 2026.'
+  },
+  {
+    num: 2, slug: 'the-mega-round-era-of-robotics',
+    title: 'The Mega Round Era of Robotics',
+    name: 'Sanjay Aggarwal', role: 'Venture Partner', company: 'F Prime Capital',
+    date: '2026-05-13', duration: '37 min', photo: 'sanjay-aggarwal', deck: true,
+    blurb: 'The 2026 State of Robotics: where the money is flowing, where humanoids actually stand, and why the US and China are splitting into parallel markets.'
+  },
+  {
+    num: 1, slug: 'the-solar-breakthrough-that-could',
+    title: 'The Solar Breakthrough That Could Power the AI Boom',
+    name: 'Scott Wharton', role: 'CEO', company: 'Tandem PV',
+    date: '2026-04-30', duration: '24 min', photo: 'scott-wharton', deck: true,
+    blurb: 'Perovskite-on-silicon tandem panels, why three quarters of solar cost is not the panel, and what the AI demand curve does to the grid.'
+  }
+];
+
+(function(){
+  var esc = function(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  };
+  var pad = function(n){ return (n < 10 ? '0' : '') + n; };
+
+  /* ---------- listing ----------
+     Blocks of three: one tall card plus two wide ones, the tall card
+     alternating sides. Leftovers fall back to full-width wide cards. */
+  var MIC  = '<svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11z"/></svg>';
+
+  function card(ep, kind){
+    var img = '../assets/img/art/' + esc(ep.slug) + '.svg';
+    return '<a class="mo ' + kind + '" href="episodes/' +
+             encodeURIComponent(ep.slug) + '.html">' +
+        '<span class="shot"><img src="' + img + '" alt="" loading="lazy">' +
+          (ep.duration ? '<span class="dur">' + MIC + esc(ep.duration) + '</span>' : '') +
+        '</span>' +
+        '<span class="body">' +
+          '<span class="kick">Episode ' + pad(ep.num) + '</span>' +
+          '<h3>' + esc(ep.title) + '</h3>' +
+          '<span class="when"><b>' + esc(ep.name) + '</b>' +
+            (ep.role || ep.company
+              ? ' <em>|</em> ' + esc(ep.role) +
+                (ep.company ? ', ' + esc(ep.company) : '')
+              : '') + '</span>' +
+          (ep.blurb ? '<span class="blurb">' + esc(ep.blurb) + '</span>' : '') +
+          '<span class="go"><i>&rarr;</i> Listen</span>' +
+        '</span>' +
+      '</a>';
+  }
+
+  var list = document.getElementById('epcards');
+  if(!EPISODES.length){
+    document.getElementById('empty').hidden = false;
+  } else {
+    var html = '', side = 'left';
+    for(var i = 0; i < EPISODES.length; i += 3){
+      var block = EPISODES.slice(i, i + 3);
+      if(block.length === 3){
+        html += '<div class="mosaic" data-side="' + side + '">' +
+                  card(block[0], 'tall') +
+                  '<div class="mostack">' +
+                    card(block[1], 'w1') +
+                    card(block[2], 'w2') +
+                  '</div>' +
+                '</div>';
+        side = (side === 'left') ? 'right' : 'left';
+      } else {
+        /* 1 or 2 left over: run them full width rather than break the rhythm */
+        html += '<div class="mosaic" data-side="left" style="grid-template-columns:1fr">' +
+                  '<div class="mostack">' +
+                    block.map(function(e){ return card(e, 'w1'); }).join('') +
+                  '</div>' +
+                '</div>';
+      }
+    }
+    list.innerHTML = html;
+  }
+
+  /* ---------- hero cascade ----------
+     Four square tiles that arrive one after another and stay put.
+     No rotation: the sequence is the animation. */
+  var picks = EPISODES.filter(function(e){ return e.deck; }).slice(0, 4);
+  var deck  = document.getElementById('deck');
+  if(!picks.length || !deck){ if(deck) deck.style.display = 'none'; return; }
+
+  /* oldest at the back of the trail, newest at the front */
+  picks.slice().reverse().forEach(function(ep, i){
+    var a = document.createElement('a');
+    a.href = 'episodes/' + encodeURIComponent(ep.slug) + '.html';
+    a.setAttribute('data-i', i);
+    a.innerHTML =
+      '<img src="../assets/img/art/' + esc(ep.slug) + '.svg" alt="' + esc(ep.title) + '">' +
+      '<span class="cap">EP ' + pad(ep.num) + ' &middot; ' +
+        esc(ep.name) + '</span>';
+    deck.appendChild(a);
+  });
+
+  var tiles = [].slice.call(deck.children);
+  function reveal(){
+    tiles.forEach(function(t, i){
+      setTimeout(function(){ t.classList.add('in'); }, 140 + i * 190);
+    });
+  }
+  /* start when the hero is actually on screen */
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(en){
+      if(en[0].isIntersecting){ reveal(); io.disconnect(); }
+    }, { threshold: 0.25 });
+    io.observe(deck);
+  } else {
+    reveal();
+  }
+})();
+</script>
+</body>
+</html>

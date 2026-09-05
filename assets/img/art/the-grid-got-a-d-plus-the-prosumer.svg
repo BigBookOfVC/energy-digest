@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rooftops generating power">
+        <defs><linearGradient id="the-grid-got-a-d-plus-the-prosumer-g3" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#E9CC6F"/><stop offset=".54" stop-color="#D99114"/>
+          <stop offset="1" stop-color="#12756E"/></linearGradient></defs>
+        <rect width="800" height="600" fill="url(#the-grid-got-a-d-plus-the-prosumer-g3)"/>
+        <!-- a skyline of rooftops, each one panelled -->
+        <g fill="#100F0D" opacity=".26">
+          <rect x="40"  y="360" width="150" height="200"/>
+          <rect x="210" y="300" width="120" height="260"/>
+          <rect x="350" y="400" width="170" height="160"/>
+          <rect x="540" y="330" width="110" height="230"/>
+          <rect x="670" y="420" width="110" height="140"/>
+        </g>
+        <g fill="#F7EFE7" opacity=".62">
+          <path d="M46 352 L184 336 L184 356 L46 372 Z"/>
+          <path d="M216 292 L324 278 L324 296 L216 310 Z"/>
+          <path d="M356 392 L514 374 L514 394 L356 412 Z"/>
+          <path d="M546 322 L644 310 L644 328 L546 340 Z"/>
+          <path d="M676 412 L774 400 L774 418 L676 430 Z"/>
+        </g>
+        <circle cx="650" cy="120" r="46" fill="#F7EFE7" opacity=".58"/>
+      </svg>

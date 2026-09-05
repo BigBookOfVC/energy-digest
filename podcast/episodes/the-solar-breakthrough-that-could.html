@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; frame-src https://www.youtube-nocookie.com; base-uri 'none'; form-action 'none'; frame-ancestors 'self'">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>The Solar Breakthrough That Could Power the AI Boom &middot; Positive Energy</title>
+<meta name="description" content="Scott Wharton, CEO of Tandem PV, on perovskite-on-silicon tandem panels, why 75% of solar cost isn't the panel, and what the AI demand curve does to the grid.">
+<meta property="og:title" content="The Solar Breakthrough That Could Power the AI Boom">
+<meta property="og:description" content="Why a one-micron layer of perovskite, a new Fremont factory, and half a billion in orders before the first sale might be the real answer to AI's energy crunch.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Styles inlined while the episode design is still moving.
+   Once locked, these move to assets/site.css and this <style>
+   block gets replaced by a <link>.
+   ============================================================ */
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --cream:#F7EFE7; --card:#FCF8F3; --sunk:#F1E8DC;
+  --ink:#100F0D; --soft:rgba(16,15,13,.60); --faint:rgba(16,15,13,.40);
+  --rule:rgba(16,15,13,.16); --hair:rgba(16,15,13,.09);
+  --accent:#B0730F; --teal:#12756E;
+  --shadow:0 1px 2px rgba(16,15,13,.05),0 14px 34px -18px rgba(16,15,13,.26);
+  --maxw:1200px;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,3.4vw,40px)}
+.lab{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:.66rem;
+  letter-spacing:.17em;text-transform:uppercase}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:60;background:rgba(247,239,231,.88);
+  backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--hair)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',Georgia,serif;
+  font-weight:600;font-size:1.26rem;letter-spacing:-.01em}
+.brand .mark{width:12px;height:12px;background:var(--accent);border-radius:2px;
+  transform:rotate(45deg);flex:none}
+.navlinks{display:flex;gap:9px}
+.pill{border:1px solid var(--rule);border-radius:999px;background:transparent;
+  padding:9px 17px;font-family:'IBM Plex Mono',monospace;font-size:.66rem;
+  letter-spacing:.13em;text-transform:uppercase;white-space:nowrap;
+  transition:background .18s,border-color .18s,color .18s}
+.pill:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.pill[aria-current="page"]{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+@media(max-width:640px){
+  .nav .wrap{height:auto;padding-top:13px;padding-bottom:13px;flex-wrap:wrap}
+  .pill{padding:8px 12px;font-size:.6rem;letter-spacing:.1em}
+}
+
+/* HERO */
+.hero{padding:clamp(28px,5vw,64px) 0 clamp(28px,4vw,52px);border-bottom:1px solid var(--hair)}
+.hero .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.82fr);
+  gap:clamp(24px,4vw,56px);align-items:end}
+.hero .backlink{color:var(--soft);display:inline-block;margin-bottom:clamp(28px,5vw,64px)}
+.hero .backlink:hover{color:var(--ink)}
+.hero .eyebrow{color:var(--accent);margin-bottom:14px}
+.hero h1{font-family:'Fraunces',Georgia,serif;font-weight:600;
+  font-size:clamp(2.1rem,4.9vw,3.85rem);line-height:1.02;letter-spacing:-.028em;max-width:17ch}
+.hero .standfirst{margin-top:18px;font-size:clamp(1rem,1.35vw,1.14rem);
+  color:var(--soft);max-width:50ch}
+.hero .facts{display:flex;gap:22px;flex-wrap:wrap;margin-top:24px;color:var(--faint)}
+.hero .art{border-radius:14px;overflow:hidden;box-shadow:var(--shadow);
+  border:1px solid var(--hair);aspect-ratio:4/3;background:var(--sunk)}
+.hero .art img,.hero .art svg{width:100%;height:100%;object-fit:cover}
+@media(max-width:860px){
+  .hero .grid{grid-template-columns:1fr}
+  .hero .art{order:-1;aspect-ratio:16/9}
+  .hero .backlink{margin-bottom:22px}
+}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:212px minmax(0,1fr);
+  gap:clamp(28px,4.6vw,64px);
+  /* padding-block only: the padding shorthand would cancel .wrap's inline padding */
+  padding-block:clamp(32px,5vw,60px)}
+@media(max-width:960px){.layout{grid-template-columns:1fr;gap:32px}}
+
+.rail{position:sticky;top:88px;align-self:start;display:flex;flex-direction:column;gap:30px}
+@media(max-width:960px){
+  /* stack the rail rather than letting it wrap into a row: Share, Guest, Host
+     and Newsletter each get their own line, and the column is held to a
+     readable width instead of running the full page. */
+  .rail{position:static;flex-direction:column;gap:26px;
+    padding-bottom:30px;border-bottom:1px solid var(--hair)}
+  .rail > div{max-width:52ch}
+}
+.rail h2{color:var(--faint);margin-bottom:13px}
+.share{display:flex;gap:8px}
+.share a{width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);
+  display:grid;place-items:center;transition:background .16s,border-color .16s}
+.share a:hover{background:var(--ink);border-color:var(--ink)}
+.share a:hover svg{stroke:var(--cream)}
+.share svg{width:15px;height:15px;stroke:var(--ink);stroke-width:1.7;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;transition:stroke .16s}
+
+.person{display:flex;gap:11px;align-items:flex-start;margin-bottom:15px}
+.person:last-child{margin-bottom:0}
+.person .av{width:38px;height:38px;border-radius:50%;flex:none;background:var(--sunk);
+  border:1px solid var(--hair);display:grid;place-items:center;overflow:hidden;
+  font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--soft)}
+/* when a headshot exists it covers the circle; the initials underneath are the
+   fallback for anyone we do not have a photo of yet */
+.person .av.photo{background-size:cover;background-position:center top;
+  font-size:0;color:transparent;border-color:rgba(16,15,13,.14)}
+.person .nm{font-weight:600;font-size:.9rem;line-height:1.3}
+.person .rl{font-size:.8rem;color:var(--soft);line-height:1.35;margin-top:2px}
+.person .nm a:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* the real X mark is a filled glyph, not two strokes */
+.share svg.x{fill:var(--ink);stroke:none;width:13px;height:13px}
+.share a:hover svg.x{fill:var(--cream);stroke:none}
+
+/* newsletter block, closing the rail */
+.railsub{border-top:1px solid var(--rule);padding-top:22px}
+.railsub h2{color:var(--faint);margin-bottom:10px}
+.railsub p{font-size:.82rem;line-height:1.5;color:var(--soft);margin-bottom:14px}
+.railsub a{display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--accent);border-radius:999px;padding:9px 16px;
+  font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);
+  transition:background .18s,color .18s}
+.railsub a:hover{background:var(--accent);color:var(--card);text-decoration:none}
+.railsub a span{transition:transform .18s}
+.railsub a:hover span{transform:translateX(3px)}
+@media(max-width:960px){.railsub{max-width:52ch}}
+.person .rl a:hover{text-decoration:underline;text-underline-offset:3px}
+
+.col{min-width:0;display:flex;flex-direction:column;gap:clamp(28px,3.6vw,46px)}
+
+.quote{background:var(--card);border-left:3px solid var(--accent);
+  border-radius:0 12px 12px 0;padding:clamp(22px,3vw,34px) clamp(22px,3.2vw,38px);
+  font-family:'Fraunces',Georgia,serif;font-weight:500;
+  font-size:clamp(1.15rem,1.9vw,1.5rem);line-height:1.42;letter-spacing:-.012em}
+.quote cite{display:block;margin-top:16px;font-family:'IBM Plex Mono',monospace;
+  font-style:normal;font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--soft)}
+
+.video{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+  background:var(--sunk);border:1px solid var(--hair);box-shadow:var(--shadow)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+/* Click-to-load facade. Nothing is requested from Google until the visitor
+   presses play; the real iframe is created on click. */
+.video .facade{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;
+  background:none;cursor:pointer;display:block;overflow:hidden}
+.video .facade img{width:100%;height:100%;object-fit:cover;display:block}
+.video .facade .pl{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:74px;height:74px;border-radius:50%;background:rgba(16,15,13,.8);
+  display:grid;place-items:center;transition:transform .22s,background .22s}
+.video .facade .pl:after{content:"";border-left:21px solid var(--cream);
+  border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:6px}
+.video .facade:hover .pl{transform:translate(-50%,-50%) scale(1.07);background:var(--ink)}
+.video .facade:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.video .fc-note{position:absolute;left:0;right:0;bottom:0;padding:30px 14px 11px;
+  background:linear-gradient(to top,rgba(16,15,13,.82),rgba(16,15,13,0));
+  color:rgba(247,239,231,.9);font-family:'IBM Plex Mono',monospace;font-size:.58rem;
+  letter-spacing:.1em;text-transform:uppercase;text-align:left;line-height:1.45}
+
+.panel{background:var(--card);border:1px solid var(--hair);border-radius:14px;
+  padding:clamp(24px,3.2vw,38px);box-shadow:var(--shadow)}
+.panel-head{display:flex;align-items:center;gap:16px;margin-bottom:22px;color:var(--faint)}
+.panel-head:after{content:"";flex:1;height:1px;background:var(--rule)}
+
+.prose p{margin-bottom:15px;max-width:70ch}
+.prose p:last-child{margin-bottom:0}
+.prose strong{font-weight:600}
+.prose a:hover{text-decoration:underline;text-underline-offset:3px}
+
+.covers{list-style:none;margin-top:26px;display:grid;gap:11px}
+.covers .lead{color:var(--soft);margin-bottom:4px}
+.covers li{display:flex;gap:12px;align-items:flex-start;font-size:.96rem;max-width:68ch}
+.covers li .tick{width:17px;height:17px;flex:none;margin-top:3px;border-radius:4px;
+  background:var(--teal);display:grid;place-items:center}
+.covers li .tick:after{content:"";width:8px;height:4.5px;margin-top:-2px;
+  border-left:2px solid var(--card);border-bottom:2px solid var(--card);transform:rotate(-45deg)}
+
+/* numbers strip */
+/* Four across, or two. Never three: auto-fit landed on a 3-up at some widths
+   and the fourth cell wrapped onto a row of its own, leaving a dead half. */
+.figures{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-auto-rows:auto;gap:1px;background:var(--rule);border:1px solid var(--rule);
+  border-radius:14px;overflow:hidden}
+@media(max-width:820px){.figures{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Each cell is a two-row subgrid sharing the parent's row tracks, so the
+   figure row is as tall as the tallest figure and every caption starts on
+   the same line no matter how many lines its number takes. */
+/* NB: direct-child selector. A bare ".figures div" also matches .n and .k,
+   which then inherit the cell padding and throw the captions out of line. */
+.figures > div{background:var(--card);padding:22px 20px;
+  display:grid;grid-template-rows:subgrid;grid-row:span 2;row-gap:12px;
+  align-content:start}
+.figures .n{padding:0;font-family:'Fraunces',Georgia,serif;font-weight:600;
+  font-size:clamp(1.45rem,2.2vw,1.9rem);letter-spacing:-.02em;line-height:1.08;
+  color:var(--accent);align-self:start;text-wrap:balance}
+.figures .k{padding:0;font-size:.82rem;color:var(--soft);line-height:1.35;align-self:start}
+/* Fallback for engines without subgrid: reserve two lines on the figure. */
+@supports not (grid-template-rows: subgrid){
+  .figures > div{display:block}
+  .figures .n{min-height:2.16em;display:block}
+  .figures .k{margin-top:12px}
+}
+
+.chapters{list-style:none;display:grid;gap:0}
+.chapters li{display:flex;gap:18px;padding:11px 0;border-bottom:1px solid var(--hair)}
+.chapters li:last-child{border-bottom:0}
+.chapters .t{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--accent);
+  flex:none;min-width:54px;background:none;border:0;padding:0;cursor:pointer;
+  text-align:left;border-bottom:1px solid transparent;transition:border-color .15s}
+.chapters .t:hover{border-bottom-color:var(--accent)}
+.chapters li.active{background:rgba(176,115,15,.07);border-radius:6px;
+  margin:0 -10px;padding-left:10px;padding-right:10px}
+.chap-note{margin-top:16px;font-size:.78rem;color:var(--faint)}
+.chap-note code{font-family:'IBM Plex Mono',monospace;font-size:.9em}
+
+.mgroup{color:var(--faint);margin:32px 0 16px;padding-top:20px;
+  border-top:1px solid var(--rule)}
+.mgroup:first-of-type{margin-top:0;padding-top:0;border-top:0}
+.mentioned li{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.mlink{display:inline-flex;gap:9px;align-items:baseline}
+.mlink.nolink{color:var(--ink)}
+a.mlink:hover .mn{text-decoration:underline;text-underline-offset:3px}
+/* link marker: linked names carry a small arrow so they read as clickable
+   even with underlines suppressed until hover.
+   The arrow sits on the anchor, outside .mn, so the hover underline
+   never runs through it. */
+a.mlink::after{content:"\2197";margin-left:-4px;font-size:.74em;line-height:1;
+  color:var(--accent);opacity:.6;font-weight:400;
+  transition:opacity .15s,transform .15s}
+a.mlink:hover::after{opacity:1;transform:translate(1px,-1px)}
+/* internal destinations point sideways rather than off-site */
+a.mlink[href^="../"]::after{content:"\2192"}
+a.mlink[href^="../"]:hover::after{transform:translateX(2px)}
+
+.mentioned .mn{font-weight:500}
+.mentioned .mt{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--accent);
+  background:none;border:0;padding:0;cursor:pointer;border-bottom:1px solid transparent}
+.mentioned .mt:hover{border-bottom-color:var(--accent)}
+.mentioned .mnote{flex-basis:100%;font-size:.84rem;color:var(--soft);line-height:1.45}
+
+.mentioned{list-style:none;display:grid;gap:10px}
+.mentioned a{display:inline-flex;gap:9px;align-items:baseline}
+.mentioned .kind{font-family:'IBM Plex Mono',monospace;font-size:.62rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--faint);flex:none;min-width:78px}
+
+.subscribe{border-top:1px solid var(--hair);padding:clamp(28px,4vw,44px) 0 0;
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.subscribe .lab{color:var(--faint)}
+.subscribe .opts{display:flex;gap:9px;flex-wrap:wrap}
+.subscribe .opts a{border:1px solid var(--rule);border-radius:999px;padding:8px 16px;
+  font-size:.84rem;font-weight:500;transition:background .16s,border-color .16s,color .16s}
+.subscribe .opts a:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+.more{padding-block:clamp(30px,4vw,52px) clamp(52px,7vw,84px)}
+.more-head{display:flex;align-items:center;gap:16px;margin-bottom:22px;color:var(--faint)}
+.more-head:after{content:"";flex:1;height:1px;background:var(--rule)}
+.morelist{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));
+  gap:clamp(14px,1.8vw,20px)}
+.mini{display:flex;gap:14px;background:var(--card);border:1px solid var(--hair);
+  border-radius:12px;padding:14px;transition:transform .2s cubic-bezier(.2,.7,.3,1),border-color .2s}
+.mini:hover{transform:translateY(-3px);border-color:var(--rule)}
+.mini .thumb{width:62px;height:62px;border-radius:8px;flex:none;background:var(--sunk);
+  border:1px solid var(--hair);display:grid;place-items:center;
+  font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:1rem;color:var(--accent)}
+.mini .mbody{min-width:0;display:flex;flex-direction:column;gap:5px}
+.mini .ser{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--faint)}
+.mini .mt{font-size:.9rem;font-weight:500;line-height:1.3}
+.mini .dur{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--soft);margin-top:auto}
+
+.foot{border-top:1px solid var(--hair);padding:32px 0 44px;color:var(--soft);font-size:.86rem}
+.foot .wrap{display:flex}
+.foot a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="brand" href="../../"><span class="mark"></span>Energy Digest</a>
+  <div class="navlinks">
+    <a class="pill" href="../../tracker/">Fundraising Tracker</a>
+    <a class="pill" href="../" aria-current="page">Podcast</a>
+    <a class="pill sub" href="https://yadavrohit.substack.com/subscribe/?utm_source=bigbook.vc&amp;utm_medium=referral&amp;utm_campaign=energy-digest">Subscribe</a>
+  </div>
+</div></nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero"><div class="wrap">
+  <a class="backlink lab" href="../">&larr; All episodes</a>
+  <div class="grid">
+    <div>
+      <p class="eyebrow lab">Positive Energy &middot; Episode 01</p>
+      <h1>The Solar Breakthrough That Could Power the AI Boom</h1>
+      <p class="standfirst">Why a one-micron layer of perovskite, a new Fremont factory,
+      and half a billion dollars in orders before the first sale might be the real answer
+      to AI&rsquo;s energy crunch.</p>
+      <div class="facts lab">
+        <span>30 April 2026</span>
+        <span>24 min</span>
+        <span>Guest &middot; Scott Wharton</span>
+      </div>
+    </div>
+    <div class="art">
+      <!-- TODO: replace with the episode still or a Tandem PV factory photo -->
+      <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Solar array illustration">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#E9CC6F"/><stop offset=".52" stop-color="#D99114"/>
+          <stop offset="1" stop-color="#12756E"/></linearGradient></defs>
+        <rect width="800" height="600" fill="url(#g)"/>
+        <g fill="#100F0D" opacity=".24">
+          <path d="M40 420 L300 372 L300 452 L40 512 Z"/>
+          <path d="M330 368 L560 328 L560 400 L330 448 Z"/>
+          <path d="M590 324 L790 290 L790 354 L590 396 Z"/>
+        </g>
+        <g fill="#100F0D" opacity=".16">
+          <path d="M120 300 L330 268 L330 322 L120 358 Z"/>
+          <path d="M360 266 L560 236 L560 286 L360 318 Z"/>
+        </g>
+        <circle cx="648" cy="126" r="52" fill="#F7EFE7" opacity=".62"/>
+      </svg>
+    </div>
+  </div>
+</div></header>
+
+<!-- ============ BODY ============ -->
+<div class="wrap layout">
+
+  <aside class="rail">
+    <div>
+      <h2 class="lab">Share</h2>
+      <div class="share">
+        <a href="https://yadavrohit.substack.com/p/the-solar-breakthrough-that-could?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" aria-label="Read on Substack"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></a>
+        <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyadavrohit.substack.com%2Fp%2Fthe-solar-breakthrough-that-could%3Futm_source%3Dbigbook.vc%26utm_medium%3Dreferral%26utm_campaign%3Denergy-digest" aria-label="Share on X"><svg class="x" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fyadavrohit.substack.com%2Fp%2Fthe-solar-breakthrough-that-could%3Futm_source%3Dbigbook.vc%26utm_medium%3Dreferral%26utm_campaign%3Denergy-digest" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4"/></svg></a>
+        <a href="mailto:?subject=The%20Solar%20Breakthrough%20That%20Could%20Power%20the%20AI%20Boom&body=https%3A%2F%2Fyadavrohit.substack.com%2Fp%2Fthe-solar-breakthrough-that-could%3Futm_source%3Dbigbook.vc%26utm_medium%3Dreferral%26utm_campaign%3Denergy-digest" aria-label="Share by email"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="lab">Guest</h2>
+      <div class="person">
+        <div class="av photo" style="background-image:url('../../assets/img/people/scott-wharton.jpg')">SW</div>
+        <div>
+          <div class="nm"><a href="https://www.linkedin.com/in/scottwharton/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Scott Wharton</a></div>
+          <div class="rl">CEO, <a href="https://www.tandempv.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Tandem PV</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="lab">Host</h2>
+      <div class="person">
+        <div class="av photo" style="background-image:url('../../assets/img/people/rohit-yadav.jpg')">RY</div>
+        <div>
+          <div class="nm"><a href="https://www.linkedin.com/in/rohityadav23/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Rohit Yadav</a></div>
+          <div class="rl">Investments Thought Leader, <a href="https://bigbook.vc/">Big Book of VC</a></div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="railsub">
+      <h2 class="lab">Newsletter</h2>
+      <p>Don&rsquo;t miss the next one. New episodes, new rounds and the analysis
+      behind them, straight to your inbox.</p>
+      <a href="https://yadavrohit.substack.com/subscribe/?utm_source=bigbook.vc&amp;utm_medium=referral&amp;utm_campaign=energy-digest">Subscribe <span>&rarr;</span></a>
+    </div>
+  </aside>
+
+  <main class="col">
+
+    <blockquote class="quote">
+      In the US today, roughly 75 to 80 percent of the cost of a utility-scale solar
+      deployment is not the panel. Almost every popular debate about cheaper panels
+      is optimising the wrong variable.
+      <cite>From the conversation</cite>
+    </blockquote>
+
+    <div class="video">
+      <button class="facade" id="facade" type="button"
+              data-video="EPotVWmBkIo" data-title="The Solar Breakthrough That Could Power the AI Boom"
+              aria-label="Play episode: The Solar Breakthrough That Could Power the AI Boom">
+        <img src="../../assets/img/art/the-solar-breakthrough-that-could.svg" alt="">
+        <span class="pl" aria-hidden="true"></span>
+        <span class="fc-note">Press play to load the video. Nothing is requested from YouTube until you do.</span>
+      </button>
+    </div>
+
+    <div class="figures">
+      <div><div class="n">29.7%</div><div class="k">Panel efficiency in internal testing, against roughly 22% for conventional</div></div>
+      <div><div class="n">&lt;1%</div><div class="k">Annual degradation in accelerated lifetime tests</div></div>
+      <div><div class="n">$87M</div><div class="k">Raised to date, from Eclipse, Constellation Energy, the DOE and the CEC</div></div>
+      <div><div class="n">$500M+</div><div class="k">Signed letters of intent, ahead of the first commercial sale</div></div>
+    </div>
+
+    <section class="panel">
+      <h2 class="panel-head lab">About the episode</h2>
+      <div class="prose">
+        <p>The US energy demand curve has gone vertical. Data centres, AI training runs,
+        electrification and manufacturing reshoring are all pulling on the grid at once,
+        while interconnection queues stretch into the next decade and the political argument
+        stays stuck on nuclear restarts and gas peakers.</p>
+
+        <p>In this episode Rohit Yadav sits down with <strong>Scott Wharton, CEO of
+        <a href="https://www.tandempv.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Tandem PV</a></strong>, whose 65,000 square foot
+        Fremont factory opened this year. Tandem&rsquo;s bet is not to replace silicon but to
+        stack on top of it: a perovskite layer roughly one micron thick, about a hundredth
+        of a human hair, coated onto the top glass of an otherwise conventional panel. The
+        cheaper silicon gets, the better their economics get.</p>
+
+        <p>The conversation moves from that chemistry out to the things that actually govern
+        deployment: where solar cost really sits, why Texas is now outbuilding California,
+        what Solyndra should have taught the sector about sequencing capital, and why the
+        claim that America has forgotten how to manufacture does not survive contact with
+        the Bay Area talent pool.</p>
+      </div>
+
+      <ul class="covers">
+        <li class="lead">The conversation covers:</li>
+        <li><span class="tick"></span><span>Don&rsquo;t fight the commodity, ride on top of it: why head-on silicon replacement is the strategy that keeps killing solar startups.</span></li>
+        <li><span class="tick"></span><span>About 75&ndash;80% of a US utility-scale deployment&rsquo;s cost is land, labour, permitting and balance of system, not the panel.</span></li>
+        <li><span class="tick"></span><span>Why efficiency, not panel price, is the lever that attacks the whole cost stack, and why that matters most where interconnection is the bottleneck.</span></li>
+        <li><span class="tick"></span><span>Texas is deploying roughly three times as much solar as California this year, because deregulation made it faster to build.</span></li>
+        <li><span class="tick"></span><span>The funding discipline lesson: match each round to a specific de-risking milestone rather than jumping from R&amp;D to a gigafab.</span></li>
+        <li><span class="tick"></span><span>Why the &ldquo;Americans can&rsquo;t manufacture&rdquo; myth is wrong, and what the Fremont factory proves.</span></li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-head lab">Chapters</h2>
+      <ul class="chapters">
+        <li><button class="t" data-t="0">00:00</button><span>Intro: AI, data centres and the vertical demand curve</span></li>
+        <li><button class="t" data-t="61">01:01</button><span>Can solar alone close the energy gap?</span></li>
+        <li><button class="t" data-t="153">02:33</button><span>Solar vs nuclear vs natural gas: the baseload question</span></li>
+        <li><button class="t" data-t="269">04:29</button><span>Utility-scale vs rooftop: where the real growth is</span></li>
+        <li><button class="t" data-t="406">06:46</button><span>Perovskites explained: the solar panel sandwich</span></li>
+        <li><button class="t" data-t="482">08:02</button><span>Three paths forward: optimise, replace, or stack</span></li>
+        <li><button class="t" data-t="635">10:35</button><span>Lessons from Solyndra and how to avoid the same trap</span></li>
+        <li><button class="t" data-t="768">12:48</button><span>Efficiency, durability, manufacturability</span></li>
+        <li><button class="t" data-t="830">13:50</button><span>From lab to factory: the manufacturing playbook</span></li>
+        <li><button class="t" data-t="951">15:51</button><span>Advice for energy hardtech founders</span></li>
+        <li><button class="t" data-t="1071">17:51</button><span>The grid bottleneck and the politics of permitting</span></li>
+        <li><button class="t" data-t="1238">20:38</button><span>What the OB-3 bill really did for solar</span></li>
+        <li><button class="t" data-t="1326">22:06</button><span>Global view: China, Pakistan, India and the cost-driven shift</span></li>
+      </ul>
+      <p class="chap-note">Click a timestamp to jump the player to that point.</p>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-head lab">Mentioned</h2>
+
+      <h3 class="mgroup lab">Companies &amp; investors</h3>
+      <ul class="mentioned">
+        <li><a href="https://www.tandempv.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Company</span><span class="mn">Tandem PV</span></a><button class="mt" data-t="19">00:19</button><span class="mnote">Perovskite-on-silicon tandem panels; Fremont demonstration factory</span></li>
+        <li><a href="https://en.wikipedia.org/wiki/Solyndra?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Company</span><span class="mn">Solyndra</span></a><button class="mt" data-t="667">11:07</button><span class="mnote">Cited as the head-on-commodity failure the sector still learns from</span></li>
+        <li><a href="https://www.firstsolar.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Company</span><span class="mn">First Solar</span></a><button class="mt" data-t="1249">20:49</button><span class="mnote">Named as the leading US manufacturer; stock more than doubled after OB-3</span></li>
+        <li><a href="https://eclipse.capital/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Investor</span><span class="mn">Eclipse</span></a><button class="mt" data-t="969">16:09</button><span class="mnote">Led the $50M Series A; roughly $10B under management</span></li>
+        <li><a href="https://www.anthropic.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Company</span><span class="mn">Anthropic</span></a><button class="mt" data-t="1123">18:43</button><span class="mnote">Cited alongside OpenAI as AI labs running into power constraints</span></li>
+        <li><a href="https://openai.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Company</span><span class="mn">OpenAI</span></a><button class="mt" data-t="1123">18:43</button><span class="mnote">The other AI lab named as running out of power</span></li>
+        <li><a href="https://www.ces.tech/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Event</span><span class="mn">CES 2026</span></a><button class="mt" data-t="406">06:46</button><span class="mnote">Solar umbrellas, as an example of perovskite spreading into consumer uses</span></li>
+      </ul>
+
+      <h3 class="mgroup lab">People</h3>
+      <ul class="mentioned">
+        <li><a href="https://www.linkedin.com/in/scottwharton/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Guest</span><span class="mn">Scott Wharton</span></a><button class="mt" data-t="19">00:19</button><span class="mnote">CEO, Tandem PV</span></li>
+        <li><a href="https://yadavrohit.substack.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Host</span><span class="mn">Rohit Yadav</span></a><button class="mt" data-t="0">00:00</button><span class="mnote">Investments Thought Leader, Big Book of VC</span></li>
+      </ul>
+
+      <h3 class="mgroup lab">Policy &amp; markets</h3>
+      <ul class="mentioned">
+        <li><span class="mlink nolink"><span class="kind">Policy</span><span class="mn">OB-3 bill</span></span><button class="mt" data-t="1249">20:49</button><span class="mnote">Consumer credits cut, manufacturing credits kept; safe harbouring runs to 2029&ndash;2030</span></li>
+        <li><span class="mlink nolink"><span class="kind">Policy</span><span class="mn">US import tariffs</span></span><button class="mt" data-t="1290">21:30</button><span class="mnote">Framed as a tailwind for reshoring manufacture</span></li>
+        <li><span class="mlink nolink"><span class="kind">Market</span><span class="mn">Texas deregulation</span></span><button class="mt" data-t="1198">19:58</button><span class="mnote">Roughly 3&times; California&rsquo;s solar rollout this year</span></li>
+        <li><span class="mlink nolink"><span class="kind">Market</span><span class="mn">China</span></span><button class="mt" data-t="1332">22:12</button><span class="mnote">More solar deployed last year than the US built in 69 years</span></li>
+        <li><span class="mlink nolink"><span class="kind">Market</span><span class="mn">Pakistan</span></span><button class="mt" data-t="1357">22:37</button><span class="mnote">Around 40% of US deployment, mostly distributed</span></li>
+        <li><span class="mlink nolink"><span class="kind">Market</span><span class="mn">India</span></span><button class="mt" data-t="1404">23:24</button><span class="mnote">Now among the top five nations by solar buildout</span></li>
+      </ul>
+
+      <h3 class="mgroup lab">Technology</h3>
+      <ul class="mentioned">
+        <li><span class="mlink nolink"><span class="kind">Technology</span><span class="mn">Perovskite-on-silicon tandem</span></span><button class="mt" data-t="406">06:46</button><span class="mnote">One micron thick, ~200&times; thinner than silicon; 2g added to a 40kg panel</span></li>
+        <li><span class="mlink nolink"><span class="kind">Technology</span><span class="mn">TOPCon, HJT</span></span><button class="mt" data-t="482">08:02</button><span class="mnote">The optimise-the-silicon path, contrasted with stacking</span></li>
+        <li><span class="mlink nolink"><span class="kind">Technology</span><span class="mn">Long-duration storage</span></span><button class="mt" data-t="159">02:39</button><span class="mnote">The winter and multi-day gap beyond four-hour batteries</span></li>
+        <li><span class="mlink nolink"><span class="kind">Technology</span><span class="mn">Green steel, ammonia, desalination</span></span><button class="mt" data-t="440">07:20</button><span class="mnote">Hard-to-abate demand that opens up as solar gets cheaper</span></li>
+      </ul>
+
+      <p class="chap-note">Timestamps jump the player. An arrow marks a name you can open; items without one have no
+      official page recorded yet.</p>
+    </section>
+
+    <div class="subscribe">
+      <span class="lab">Subscribe on</span>
+      <div class="opts">
+        <a href="https://www.youtube.com/@theonepoint?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">YouTube</a>
+        <a href="https://yadavrohit.substack.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Substack</a>
+        <a href="https://open.spotify.com/show/19LhIXECFj9i91MFCCWuTR?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Spotify</a>
+        <a href="https://podcasts.apple.com/us/podcast/the-one-point/id1644098589?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Apple Podcasts</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ============ MORE EPISODES ============ -->
+<section class="wrap more">
+  <h2 class="more-head lab">More episodes</h2>
+  <div class="morelist">
+    <a class="mini" href="the-mega-round-era-of-robotics.html">
+      <div class="thumb">02</div>
+      <div class="mbody">
+        <span class="ser">Positive Energy</span>
+        <span class="mt">The Mega Round Era of Robotics</span>
+        <span class="dur">13 May 2026</span>
+      </div>
+    </a>
+    <a class="mini" href="energy-stopped-being-a-climate-bet.html">
+      <div class="thumb">05</div>
+      <div class="mbody">
+        <span class="ser">Positive Energy</span>
+        <span class="mt">Energy Stopped Being a Climate Bet. It&rsquo;s a Sovereignty Bet Now.</span>
+        <span class="dur">9 Jun 2026</span>
+      </div>
+    </a>
+    <a class="mini" href="the-grid-got-a-d-plus-the-prosumer.html">
+      <div class="thumb">03</div>
+      <div class="mbody">
+        <span class="ser">Positive Energy</span>
+        <span class="mt">The Grid Got a D-Plus. The Prosumer Era Begins.</span>
+        <span class="dur">21 May 2026</span>
+      </div>
+    </a>
+    <a class="mini" href="energy-transformation-is-not-about.html">
+      <div class="thumb">09</div>
+      <div class="mbody">
+        <span class="ser">Positive Energy</span>
+        <span class="mt">The Once in a Century Energy Transformation</span>
+        <span class="dur">1 Jun 2026</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer class="foot"><div class="wrap">
+  <a href="../../">Home</a>
+</div></footer>
+
+<script>
+(function(){
+  /* The player is not in the page. It is built on the first click, so a visitor
+     who never presses play never contacts Google. Chapter timestamps go through
+     the same path: the first one clicked creates the player at that second. */
+  var box    = document.querySelector('.video');
+  var facade = document.getElementById('facade');
+  var VIDEO  = facade ? facade.getAttribute('data-video') : null;
+  var player = null;
+
+  function load(sec){
+    if(!VIDEO) return;
+    var src = 'https://www.youtube-nocookie.com/embed/' + VIDEO +
+              '?autoplay=1&rel=0' + (sec ? '&start=' + sec : '');
+    if(player){
+      player.src = src;
+    } else {
+      player = document.createElement('iframe');
+      player.id = 'player';
+      player.src = src;
+      player.title = facade.getAttribute('data-title') || 'Episode video';
+      player.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; fullscreen');
+      player.setAttribute('allowfullscreen','');
+      facade.replaceWith(player);
+      facade = null;
+    }
+    box.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+
+  if(facade){
+    facade.addEventListener('click', function(){ load(0); });
+  }
+
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('[data-t]');
+    if(!b) return;
+    e.preventDefault();
+    var sec = parseInt(b.getAttribute('data-t'), 10);
+    load(sec);
+    var li = document.querySelector('.chapters li.active');
+    if(li) li.classList.remove('active');
+    var btn = document.querySelector('.chapters .t[data-t="' + sec + '"]');
+    if(btn) btn.parentNode.classList.add('active');
+  });
+})();
+</script>
+</body>
+</html>

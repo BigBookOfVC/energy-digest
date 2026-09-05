@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; frame-src https://www.youtube-nocookie.com; base-uri 'none'; form-action 'none'; frame-ancestors 'self'">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>AI Broke the Grid. Now It Has to Save It. &middot; Positive Energy</title>
+<meta name="description" content="Sean Kelly of Amperon on forecasting as grid-critical infrastructure, the 50 to 100 hours that decide reliability, and why the same AI creating the demand problem is the key to solving it.">
+<meta property="og:title" content="AI Broke the Grid. Now It Has to Save It.">
+<meta property="og:description" content="Forecasting moved from a 15-day trading tool to grid-critical infrastructure. Sean Kelly on what that changes.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Styles inlined while the episode design is still moving.
+   Once locked, these move to assets/site.css and this <style>
+   block gets replaced by a <link>.
+   ============================================================ */
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --cream:#F7EFE7; --card:#FCF8F3; --sunk:#F1E8DC;
+  --ink:#100F0D; --soft:rgba(16,15,13,.60); --faint:rgba(16,15,13,.40);
+  --rule:rgba(16,15,13,.16); --hair:rgba(16,15,13,.09);
+  --accent:#B0730F; --teal:#12756E;
+  --shadow:0 1px 2px rgba(16,15,13,.05),0 14px 34px -18px rgba(16,15,13,.26);
+  --maxw:1200px;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,3.4vw,40px)}
+.lab{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:.66rem;
+  letter-spacing:.17em;text-transform:uppercase}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:60;background:rgba(247,239,231,.88);
+  backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--hair)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',Georgia,serif;
+  font-weight:600;font-size:1.26rem;letter-spacing:-.01em}
+.brand .mark{width:12px;height:12px;background:var(--accent);border-radius:2px;
+  transform:rotate(45deg);flex:none}
+.navlinks{display:flex;gap:9px}
+.pill{border:1px solid var(--rule);border-radius:999px;background:transparent;
+  padding:9px 17px;font-family:'IBM Plex Mono',monospace;font-size:.66rem;
+  letter-spacing:.13em;text-transform:uppercase;white-space:nowrap;
+  transition:background .18s,border-color .18s,color .18s}
+.pill:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.pill[aria-current="page"]{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+@media(max-width:640px){
+  .nav .wrap{height:auto;padding-top:13px;padding-bottom:13px;flex-wrap:wrap}
+  .pill{padding:8px 12px;font-size:.6rem;letter-spacing:.1em}
+}
+
+/* HERO */
+.hero{padding:clamp(28px,5vw,64px) 0 clamp(28px,4vw,52px);border-bottom:1px solid var(--hair)}
+.hero .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.82fr);
+  gap:clamp(24px,4vw,56px);align-items:end}
+.hero .backlink{color:var(--soft);display:inline-block;margin-bottom:clamp(28px,5vw,64px)}
+.hero .backlink:hover{color:var(--ink)}
+.hero .eyebrow{color:var(--accent);margin-bottom:14px}
+.hero h1{font-family:'Fraunces',Georgia,serif;font-weight:600;
+  font-size:clamp(2.1rem,4.9vw,3.85rem);line-height:1.02;letter-spacing:-.028em;max-width:17ch}
+.hero .standfirst{margin-top:18px;font-size:clamp(1rem,1.35vw,1.14rem);
+  color:var(--soft);max-width:50ch}
+.hero .facts{display:flex;gap:22px;flex-wrap:wrap;margin-top:24px;color:var(--faint)}
+.hero .art{border-radius:14px;overflow:hidden;box-shadow:var(--shadow);
+  border:1px solid var(--hair);aspect-ratio:4/3;background:var(--sunk)}
+.hero .art img,.hero .art svg{width:100%;height:100%;object-fit:cover}
+@media(max-width:860px){
+  .hero .grid{grid-template-columns:1fr}
+  .hero .art{order:-1;aspect-ratio:16/9}
+  .hero .backlink{margin-bottom:22px}
+}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:212px minmax(0,1fr);
+  gap:clamp(28px,4.6vw,64px);
+  /* padding-block only: the padding shorthand would cancel .wrap's inline padding */
+  padding-block:clamp(32px,5vw,60px)}
+@media(max-width:960px){.layout{grid-template-columns:1fr;gap:32px}}
+
+.rail{position:sticky;top:88px;align-self:start;display:flex;flex-direction:column;gap:30px}
+@media(max-width:960px){
+  /* stack the rail rather than letting it wrap into a row: Share, Guest, Host
+     and Newsletter each get their own line, and the column is held to a
+     readable width instead of running the full page. */
+  .rail{position:static;flex-direction:column;gap:26px;
+    padding-bottom:30px;border-bottom:1px solid var(--hair)}
+  .rail > div{max-width:52ch}
+}
+.rail h2{color:var(--faint);margin-bottom:13px}
+.share{display:flex;gap:8px}
+.share a{width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);
+  display:grid;place-items:center;transition:background .16s,border-color .16s}
+.share a:hover{background:var(--ink);border-color:var(--ink)}
+.share a:hover svg{stroke:var(--cream)}
+.share svg{width:15px;height:15px;stroke:var(--ink);stroke-width:1.7;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;transition:stroke .16s}
+
+.person{display:flex;gap:11px;align-items:flex-start;margin-bottom:15px}
+.person:last-child{margin-bottom:0}
+.person .av{width:38px;height:38px;border-radius:50%;flex:none;background:var(--sunk);
+  border:1px solid var(--hair);display:grid;place-items:center;overflow:hidden;
+  font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--soft)}
+/* when a headshot exists it covers the circle; the initials underneath are the
+   fallback for anyone we do not have a photo of yet */
+.person .av.photo{background-size:cover;background-position:center top;
+  font-size:0;color:transparent;border-color:rgba(16,15,13,.14)}
+.person .nm{font-weight:600;font-size:.9rem;line-height:1.3}
+.person .rl{font-size:.8rem;color:var(--soft);line-height:1.35;margin-top:2px}
+.person .nm a:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* the real X mark is a filled glyph, not two strokes */
+.share svg.x{fill:var(--ink);stroke:none;width:13px;height:13px}
+.share a:hover svg.x{fill:var(--cream);stroke:none}
+
+/* newsletter block, closing the rail */
+.railsub{border-top:1px solid var(--rule);padding-top:22px}
+.railsub h2{color:var(--faint);margin-bottom:10px}
+.railsub p{font-size:.82rem;line-height:1.5;color:var(--soft);margin-bottom:14px}
+.railsub a{display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--accent);border-radius:999px;padding:9px 16px;
+  font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);
+  transition:background .18s,color .18s}
+.railsub a:hover{background:var(--accent);color:var(--card);text-decoration:none}
+.railsub a span{transition:transform .18s}
+.railsub a:hover span{transform:translateX(3px)}
+@media(max-width:960px){.railsub{max-width:52ch}}
+.person .rl a:hover{text-decoration:underline;text-underline-offset:3px}
+
+.col{min-width:0;display:flex;flex-direction:column;gap:clamp(28px,3.6vw,46px)}
+
+.quote{background:var(--card);border-left:3px solid var(--accent);
+  border-radius:0 12px 12px 0;padding:clamp(22px,3vw,34px) clamp(22px,3.2vw,38px);
+  font-family:'Fraunces',Georgia,serif;font-weight:500;
+  font-size:clamp(1.15rem,1.9vw,1.5rem);line-height:1.42;letter-spacing:-.012em}
+.quote cite{display:block;margin-top:16px;font-family:'IBM Plex Mono',monospace;
+  font-style:normal;font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--soft)}
+
+.video{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+  background:var(--sunk);border:1px solid var(--hair);box-shadow:var(--shadow)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+/* Click-to-load facade. Nothing is requested from Google until the visitor
+   presses play; the real iframe is created on click. */
+.video .facade{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;
+  background:none;cursor:pointer;display:block;overflow:hidden}
+.video .facade img{width:100%;height:100%;object-fit:cover;display:block}
+.video .facade .pl{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:74px;height:74px;border-radius:50%;background:rgba(16,15,13,.8);
+  display:grid;place-items:center;transition:transform .22s,background .22s}
+.video .facade .pl:after{content:"";border-left:21px solid var(--cream);
+  border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:6px}
+.video .facade:hover .pl{transform:translate(-50%,-50%) scale(1.07);background:var(--ink)}
+.video .facade:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.video .fc-note{position:absolute;left:0;right:0;bottom:0;padding:30px 14px 11px;
+  background:linear-gradient(to top,rgba(16,15,13,.82),rgba(16,15,13,0));
+  color:rgba(247,239,231,.9);font-family:'IBM Plex Mono',monospace;font-size:.58rem;
+  letter-spacing:.1em;text-transform:uppercase;text-align:left;line-height:1.45}
+
+.panel{background:var(--card);border:1px solid var(--hair);border-radius:14px;
+  padding:clamp(24px,3.2vw,38px);box-shadow:var(--shadow)}
+.panel-head{display:flex;align-items:center;gap:16px;margin-bottom:22px;color:var(--faint)}
+.panel-head:after{content:"";flex:1;height:1px;background:var(--rule)}
+
+.prose p{margin-bottom:15px;max-width:70ch}
+.prose p:last-child{margin-bottom:0}
+.prose strong{font-weight:600}
+.prose a:hover{text-decoration:underline;text-underline-offset:3px}
+
+.covers{list-style:none;margin-top:26px;display:grid;gap:11px}
+.covers .lead{color:var(--soft);margin-bottom:4px}
+.covers li{display:flex;gap:12px;align-items:flex-start;font-size:.96rem;max-width:68ch}
+.covers li .tick{width:17px;height:17px;flex:none;margin-top:3px;border-radius:4px;
+  background:var(--teal);display:grid;place-items:center}
+.covers li .tick:after{content:"";width:8px;height:4.5px;margin-top:-2px;
+  border-left:2px solid var(--card);border-bottom:2px solid var(--card);transform:rotate(-45deg)}
+
+/* numbers strip */
+/* Four across, or two. Never three: auto-fit landed on a 3-up at some widths
+   and the fourth cell wrapped onto a row of its own, leaving a dead half. */
+.figures{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-auto-rows:auto;gap:1px;background:var(--rule);border:1px solid var(--rule);
+  border-radius:14px;overflow:hidden}
+@media(max-width:820px){.figures{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Each cell is a two-row subgrid sharing the parent's row tracks, so the
+   figure row is as tall as the tallest figure and every caption starts on
+   the same line no matter how many lines its number takes. */
+/* NB: direct-child selector. A bare ".figures div" also matches .n and .k,
+   which then inherit the cell padding and throw the captions out of line. */
+.figures > div{background:var(--card);padding:22px 20px;
+  display:grid;grid-template-rows:subgrid;grid-row:span 2;row-gap:12px;
+  align-content:start}
+.figures .n{padding:0;font-family:'Fraunces',Georgia,serif;font-weight:600;
+  font-size:clamp(1.45rem,2.2vw,1.9rem);letter-spacing:-.02em;line-height:1.08;
+  color:var(--accent);align-self:start;text-wrap:balance}
+.figures .k{padding:0;font-size:.82rem;color:var(--soft);line-height:1.35;align-self:start}
+/* Fallback for engines without subgrid: reserve two lines on the figure. */
+@supports not (grid-template-rows: subgrid){
+  .figures > div{display:block}
+  .figures .n{min-height:2.16em;display:block}
+  .figures .k{margin-top:12px}
+}
+
+.chapters{list-style:none;display:grid;gap:0}
+.chapters li{display:flex;gap:18px;padding:11px 0;border-bottom:1px solid var(--hair)}
+.chapters li:last-child{border-bottom:0}
+.chapters .t{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--accent);
+  flex:none;min-width:54px;background:none;border:0;padding:0;cursor:pointer;
+  text-align:left;border-bottom:1px solid transparent;transition:border-color .15s}
+.chapters .t:hover{border-bottom-color:var(--accent)}
+.chapters li.active{background:rgba(176,115,15,.07);border-radius:6px;
+  margin:0 -10px;padding-left:10px;padding-right:10px}
+.chap-note{margin-top:16px;font-size:.78rem;color:var(--faint)}
+.chap-note code{font-family:'IBM Plex Mono',monospace;font-size:.9em}
+
+.mgroup{color:var(--faint);margin:32px 0 16px;padding-top:20px;
+  border-top:1px solid var(--rule)}
+.mgroup:first-of-type{margin-top:0;padding-top:0;border-top:0}
+.mentioned li{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.mlink{display:inline-flex;gap:9px;align-items:baseline}
+.mlink.nolink{color:var(--ink)}
+a.mlink:hover .mn{text-decoration:underline;text-underline-offset:3px}
+/* link marker: linked names carry a small arrow so they read as clickable
+   even with underlines suppressed until hover.
+   The arrow sits on the anchor, outside .mn, so the hover underline
+   never runs through it. */
+a.mlink::after{content:"\2197";margin-left:-4px;font-size:.74em;line-height:1;
+  color:var(--accent);opacity:.6;font-weight:400;
+  transition:opacity .15s,transform .15s}
+a.mlink:hover::after{opacity:1;transform:translate(1px,-1px)}
+/* internal destinations point sideways rather than off-site */
+a.mlink[href^="../"]::after{content:"\2192"}
+a.mlink[href^="../"]:hover::after{transform:translateX(2px)}
+
+.mentioned .mn{font-weight:500}
+.mentioned .mt{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--accent);
+  background:none;border:0;padding:0;cursor:pointer;border-bottom:1px solid transparent}
+.mentioned .mt:hover{border-bottom-color:var(--accent)}
+.mentioned .mnote{flex-basis:100%;font-size:.84rem;color:var(--soft);line-height:1.45}
+
+.mentioned{list-style:none;display:grid;gap:10px}
+.mentioned a{display:inline-flex;gap:9px;align-items:baseline}
+.mentioned .kind{font-family:'IBM Plex Mono',monospace;font-size:.62rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--faint);flex:none;min-width:78px}
+
+.subscribe{border-top:1px solid var(--hair);padding:clamp(28px,4vw,44px) 0 0;
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.subscribe .lab{color:var(--faint)}
+.subscribe .opts{display:flex;gap:9px;flex-wrap:wrap}
+.subscribe .opts a{border:1px solid var(--rule);border-radius:999px;padding:8px 16px;
+  font-size:.84rem;font-weight:500;transition:background .16s,border-color .16s,color .16s}
+.subscribe .opts a:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+.more{padding-block:clamp(30px,4vw,52px) clamp(52px,7vw,84px)}
+.more-head{display:flex;align-items:center;gap:16px;margin-bottom:22px;color:var(--faint)}
+.more-head:after{content:"";flex:1;height:1px;background:var(--rule)}
+.morelist{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));
+  gap:clamp(14px,1.8vw,20px)}
+.mini{display:flex;gap:14px;background:var(--card);border:1px solid var(--hair);
+  border-radius:12px;padding:14px;transition:transform .2s cubic-bezier(.2,.7,.3,1),border-color .2s}
+.mini:hover{transform:translateY(-3px);border-color:var(--rule)}
+.mini .thumb{width:62px;height:62px;border-radius:8px;flex:none;background:var(--sunk);
+  border:1px solid var(--hair);display:grid;place-items:center;
+  font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:1rem;color:var(--accent)}
+.mini .mbody{min-width:0;display:flex;flex-direction:column;gap:5px}
+.mini .ser{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--faint)}
+.mini .mt{font-size:.9rem;font-weight:500;line-height:1.3}
+.mini .dur{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--soft);margin-top:auto}
+
+.foot{border-top:1px solid var(--hair);padding:32px 0 44px;color:var(--soft);font-size:.86rem}
+.foot .wrap{display:flex}
+.foot a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="brand" href="../../"><span class="mark"></span>Energy Digest</a>
+  <div class="navlinks">
+    <a class="pill" href="../../tracker/">Fundraising Tracker</a>
+    <a class="pill" href="../" aria-current="page">Podcast</a>
+    <a class="pill sub" href="https://yadavrohit.substack.com/subscribe/?utm_source=bigbook.vc&amp;utm_medium=referral&amp;utm_campaign=energy-digest">Subscribe</a>
+  </div>
+</div></nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero"><div class="wrap">
+  <a class="backlink lab" href="../">&larr; All episodes</a>
+  <div class="grid">
+    <div>
+      <p class="eyebrow lab">Positive Energy &middot; Episode 08 &middot; AI Meets the Physical World</p>
+      <h1>AI Broke the Grid. Now It Has to Save It.</h1>
+      <p class="standfirst">Forecasting went from a 15-day trading tool to grid-critical
+      infrastructure. Sean Kelly on the 50 to 100 hours a year that decide whether the
+      lights stay on.</p>
+      <div class="facts lab">
+        <span>3 June 2026</span>
+        <span>38 min</span>
+        <span>Guest &middot; Sean Kelly</span>
+      </div>
+    </div>
+    <div class="art">
+      <!-- TODO: replace with the episode still or a guest photo -->
+      <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An ensemble of forecast paths fanning out from a single point">
+        <defs><linearGradient id="g8" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#E9CC6F"/><stop offset=".52" stop-color="#D99114"/>
+          <stop offset="1" stop-color="#12756E"/></linearGradient></defs>
+        <rect width="800" height="600" fill="url(#g8)"/>
+        <!-- ensemble spaghetti: many models, one weighted answer -->
+        <g stroke="#F7EFE7" stroke-width="2.5" fill="none" opacity=".55">
+          <path d="M70 300 C 260 288 380 214 520 168 S 720 96 780 84"/>
+          <path d="M70 300 C 260 300 380 258 520 232 S 720 176 780 158"/>
+          <path d="M70 300 C 260 310 380 300 520 300 S 720 268 780 250"/>
+          <path d="M70 300 C 260 320 380 348 520 372 S 720 372 780 356"/>
+          <path d="M70 300 C 260 332 380 396 520 444 S 720 468 780 464"/>
+          <path d="M70 300 C 260 296 380 236 520 200 S 720 134 780 118"/>
+        </g>
+        <path d="M70 300 C 260 308 380 292 520 288 S 720 246 780 226"
+              stroke="#100F0D" stroke-width="6" fill="none" opacity=".5"/>
+        <circle cx="70" cy="300" r="15" fill="#F7EFE7"/>
+        <circle cx="70" cy="300" r="6" fill="#12756E"/>
+        <!-- the 50 to 100 critical hours, marked -->
+        <g fill="#100F0D" opacity=".22">
+          <rect x="486" y="120" width="34" height="360" rx="6"/>
+          <rect x="640" y="120" width="34" height="360" rx="6"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div></header>
+
+<!-- ============ BODY ============ -->
+<div class="wrap layout">
+
+  <aside class="rail">
+    <div>
+      <h2 class="lab">Share</h2>
+      <div class="share">
+        <a href="https://yadavrohit.substack.com/p/ai-broke-the-grid-now-it-has-to-save?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" aria-label="Read on Substack"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></a>
+        <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyadavrohit.substack.com%2Fp%2Fai-broke-the-grid-now-it-has-to-save%3Futm_source%3Dbigbook.vc%26utm_medium%3Dreferral%26utm_campaign%3Denergy-digest" aria-label="Share on X"><svg class="x" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fyadavrohit.substack.com%2Fp%2Fai-broke-the-grid-now-it-has-to-save%3Futm_source%3Dbigbook.vc%26utm_medium%3Dreferral%26utm_campaign%3Denergy-digest" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4"/></svg></a>
+        <a href="mailto:?subject=AI%20Broke%20the%20Grid.%20Now%20It%20Has%20to%20Save%20It.&body=https%3A%2F%2Fyadavrohit.substack.com%2Fp%2Fai-broke-the-grid-now-it-has-to-save%3Futm_source%3Dbigbook.vc%26utm_medium%3Dreferral%26utm_campaign%3Denergy-digest" aria-label="Share by email"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="lab">Guest</h2>
+      <div class="person">
+        <div class="av photo" style="background-image:url('../../assets/img/people/sean-kelly.jpg')">SK</div>
+        <div>
+          <div class="nm"><a href="https://www.linkedin.com/in/sean-kelly-0792626/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Sean Kelly</a></div>
+          <div class="rl">Co-founder and CEO, <a href="https://www.amperon.co/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Amperon</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="lab">Host</h2>
+      <div class="person">
+        <div class="av photo" style="background-image:url('../../assets/img/people/rohit-yadav.jpg')">RY</div>
+        <div>
+          <div class="nm"><a href="https://www.linkedin.com/in/rohityadav23/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Rohit Yadav</a></div>
+          <div class="rl">Investments Thought Leader, <a href="https://bigbook.vc/">Big Book of VC</a></div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="railsub">
+      <h2 class="lab">Newsletter</h2>
+      <p>Don&rsquo;t miss the next one. New episodes, new rounds and the analysis
+      behind them, straight to your inbox.</p>
+      <a href="https://yadavrohit.substack.com/subscribe/?utm_source=bigbook.vc&amp;utm_medium=referral&amp;utm_campaign=energy-digest">Subscribe <span>&rarr;</span></a>
+    </div>
+  </aside>
+
+  <main class="col">
+
+    <blockquote class="quote">
+      This isn&rsquo;t an if flexibility works. If flexibility doesn&rsquo;t work, we are
+      blacked out. That&rsquo;s the answer. Prices continue to rise and power goes out.
+      <cite>Sean Kelly</cite>
+    </blockquote>
+
+    <div class="video">
+      <button class="facade" id="facade" type="button"
+              data-video="tRV16EiFhsk" data-title="AI Broke the Grid. Now It Has to Save It."
+              aria-label="Play episode: AI Broke the Grid. Now It Has to Save It.">
+        <img src="../../assets/img/art/ai-broke-the-grid-now-it-has-to-save.svg" alt="">
+        <span class="pl" aria-hidden="true"></span>
+        <span class="fc-note">Press play to load the video. Nothing is requested from YouTube until you do.</span>
+      </button>
+    </div>
+
+    <div class="figures">
+      <div><div class="n">51M</div><div class="k">Electricity meters forecast on the platform, more than any single utility in the world</div></div>
+      <div><div class="n">6&ndash;8</div><div class="k">Models sitting under every forecast, reweighted and retrained every hour</div></div>
+      <div><div class="n">50&ndash;100</div><div class="k">Hours a year that actually decide grid reliability</div></div>
+      <div><div class="n">40,000</div><div class="k">Weather points examined hourly, across seven or eight weather vendors</div></div>
+    </div>
+
+    <section class="panel">
+      <h2 class="panel-head lab">About the episode</h2>
+      <div class="prose">
+        <p>Sean Kelly spent eleven years running power plants and trading electricity across
+        Texas and the eastern US before founding <a href="https://www.amperon.co/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Amperon</a>
+        in 2018, with AI and machine learning as the thesis from the first model rather than a
+        later addition. The company is remote-first, under a hundred people, and forecasts for
+        165 customers and 51 million meters.</p>
+
+        <p>His framing is that forecasting quietly changed job. It began as a 15-day trading
+        tool built on the ECMWF weather model, and everyone really only cared about the day
+        ahead. Now the European model runs 46 days and even 13 months out, weather volatility
+        shows up weeks in advance, and a one-in-100-year event arrives roughly every three
+        months. Winter Storm Uri, Winter Storm Fern, the Iberian blackout. Forecasting stopped
+        being a trading input and became grid-critical infrastructure.</p>
+
+        <p>The most useful analogy in the conversation is historical. Sean argues that what is
+        happening with data centres now is what happened with demand response in the early
+        2000s: pay large industrial load to be on good behaviour when told. The bottling plant
+        that swore it could never pause did pause. He expects compute to follow, and thinks the
+        projects clearing interconnection queues will be the ones that promise flexibility.</p>
+      </div>
+
+      <ul class="covers">
+        <li class="lead">The conversation covers:</li>
+        <li><span class="tick"></span><span>Why AI has to win as the grid&rsquo;s stabiliser over the next five years, because the alternative is bad reliability and bad prices.</span></li>
+        <li><span class="tick"></span><span>How forecasting evolved from a 15-day trading tool into infrastructure, as the European model stretched to 46 days and 13 months.</span></li>
+        <li><span class="tick"></span><span>Why one-in-100-year weather events now arrive every few months, and what that does to a forecast.</span></li>
+        <li><span class="tick"></span><span>Why no single forecast wins: six to eight models under every number, automatically reweighted and retrained each hour.</span></li>
+        <li><span class="tick"></span><span>Flexibility as the only real alternative to blackouts, and the 50 to 100 hours a year that actually matter.</span></li>
+        <li><span class="tick"></span><span>Data centres as demand response 2.0, echoing the early-2000s playbook of paying large load to behave.</span></li>
+        <li><span class="tick"></span><span>What is actually lagging: bureaucracy, phantom projects clogging interconnection queues, data, and talent.</span></li>
+        <li><span class="tick"></span><span>Why there will never be one global grid, and why local market expertise becomes the moat.</span></li>
+        <li><span class="tick"></span><span>Who captures the value between hyperscalers with compute, utilities guarding their data, and incumbents who cannot hire.</span></li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-head lab">Chapters</h2>
+      <ul class="chapters">
+        <li><button class="t" data-t="0">00:00</button><span>Introduction: the AI Meets the Physical World series</span></li>
+        <li><button class="t" data-t="44">00:44</button><span>What Amperon is, and why AI was the thesis from day one</span></li>
+        <li><button class="t" data-t="92">01:32</button><span>Scale and scope: 165 customers, 51 million meters, remote-first</span></li>
+        <li><button class="t" data-t="161">02:41</button><span>AI as demand driver versus AI as the grid&rsquo;s stabiliser</span></li>
+        <li><button class="t" data-t="285">04:45</button><span>A short history of forecasting: the 15-day model and the European model</span></li>
+        <li><button class="t" data-t="375">06:15</button><span>Why weather got harder: one-in-100-year events every few months</span></li>
+        <li><button class="t" data-t="450">07:30</button><span>Smart meters and electricity bills becoming mainstream conversation</span></li>
+        <li><button class="t" data-t="522">08:42</button><span>Who Amperon serves: retailers, traders, IPPs, utilities and data centres</span></li>
+        <li><button class="t" data-t="724">12:04</button><span>What&rsquo;s next: becoming an end-to-end system of insight and action</span></li>
+        <li><button class="t" data-t="861">14:21</button><span>Why the trading decision always stays with the customer</span></li>
+        <li><button class="t" data-t="999">16:39</button><span>Grid reality: data centres, volatility and demand response 2.0</span></li>
+        <li><button class="t" data-t="1157">19:17</button><span>What it means for forecasting: EVs, rooftop solar and home storage</span></li>
+        <li><button class="t" data-t="1299">21:39</button><span>The flexibility stack and the 50 to 100 hours that decide reliability</span></li>
+        <li><button class="t" data-t="1406">23:26</button><span>What&rsquo;s actually lagging: bureaucracy, interconnection queues, data and talent</span></li>
+        <li><button class="t" data-t="1559">25:59</button><span>Why there will never be one global grid</span></li>
+        <li><button class="t" data-t="1837">30:37</button><span>Who captures the value: hyperscalers, utilities, incumbents and startups</span></li>
+        <li><button class="t" data-t="1981">33:01</button><span>Amperon&rsquo;s superpowers: ensemble models, weather data and AI in the workflow</span></li>
+        <li><button class="t" data-t="2149">35:49</button><span>Closing worldview: the problem and the solution are both AI</span></li>
+      </ul>
+      <p class="chap-note">Click a timestamp to jump the player to that point.</p>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-head lab">Mentioned</h2>
+      <h3 class="mgroup lab">Companies</h3>
+      <ul class="mentioned">
+        <li><a href="https://www.amperon.co/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Company</span><span class="mn">Amperon</span></a><button class="mt" data-t="44">00:44</button><span class="mnote">Founded 2018, AI-native from the first model; 165 customers and 51 million meters</span></li>
+        <li><a href="https://octopus.energy/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Company</span><span class="mn">Octopus Energy</span></a><button class="mt" data-t="522">08:42</button><span class="mnote">Named as the best-known retail provider in the UK and Europe</span></li>
+        <li><span class="mlink nolink"><span class="kind">Company</span><span class="mn">Vistra, NRG, Constellation</span></span><button class="mt" data-t="522">08:42</button><span class="mnote">The large US retail providers Amperon started with</span></li>
+        <li><span class="mlink nolink"><span class="kind">Company</span><span class="mn">EnerNOC</span></span><button class="mt" data-t="999">16:39</button><span class="mnote">Founded the demand response model in the early 2000s</span></li>
+        <li><span class="mlink nolink"><span class="kind">Company</span><span class="mn">Emerald AI</span></span><button class="mt" data-t="1050">17:30</button><span class="mnote">Moves compute around with NVIDIA and others; Sean discloses he is an advisor. No official page recorded yet</span></li>
+        <li><a href="https://www.nvidia.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Company</span><span class="mn">NVIDIA</span></a><button class="mt" data-t="1050">17:30</button><span class="mnote">Named as the partner behind the data centre flexibility work</span></li>
+        <li><a href="https://www.tesla.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Company</span><span class="mn">Tesla</span></a><button class="mt" data-t="1157">19:17</button><span class="mnote">His own Model Y as the EV forecasting problem, and the Powerwall as home storage</span></li>
+        <li><span class="mlink nolink"><span class="kind">Company</span><span class="mn">Base Power</span></span><button class="mt" data-t="1157">19:17</button><span class="mnote">Named as the home generation player making a big push in Texas</span></li>
+        <li><a href="https://waymo.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Company</span><span class="mn">Waymo</span></a><button class="mt" data-t="1299">21:39</button><span class="mnote">Driving around his neighbourhood, as an example of new flexible load</span></li>
+      </ul>
+
+      <h3 class="mgroup lab">People</h3>
+      <ul class="mentioned">
+        <li><a href="https://www.linkedin.com/in/sean-kelly-0792626/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Guest</span><span class="mn">Sean Kelly</span></a><button class="mt" data-t="0">00:00</button><span class="mnote">Co-founder and CEO of Amperon; traded power and ran plants from 2005 to 2016</span></li>
+        <li><a href="https://www.linkedin.com/in/rohityadav23/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Host</span><span class="mn">Rohit Yadav</span></a><button class="mt" data-t="0">00:00</button><span class="mnote">Investments Thought Leader, Big Book of VC</span></li>
+        <li><span class="mlink nolink"><span class="kind">Board</span><span class="mn">Tim Healy</span></span><button class="mt" data-t="999">16:39</button><span class="mnote">EnerNOC co-founder and CEO, now on the Amperon board; the demand response lineage</span></li>
+      </ul>
+
+      <h3 class="mgroup lab">Data &amp; models</h3>
+      <ul class="mentioned">
+        <li><a href="https://www.ecmwf.int/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Institution</span><span class="mn">ECMWF</span></a><button class="mt" data-t="285">04:45</button><span class="mnote">The European model: 360 hours originally, now 46 days and a 13-month outlook</span></li>
+        <li><span class="mlink nolink"><span class="kind">Model</span><span class="mn">AIFS</span></span><button class="mt" data-t="1981">33:01</button><span class="mnote">The European AI weather model, described as really good but not better every hour</span></li>
+        <li><a href="https://www.anthropic.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Company</span><span class="mn">Anthropic</span></a><button class="mt" data-t="861">14:21</button><span class="mnote">Claude, described as a good friend and new hire in the workflow</span></li>
+        <li><a href="https://openai.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest" class="mlink"><span class="kind">Company</span><span class="mn">OpenAI</span></a><button class="mt" data-t="1981">33:01</button><span class="mnote">Named alongside Claude and Grok as tools in daily workflow</span></li>
+        <li><span class="mlink nolink"><span class="kind">Concept</span><span class="mn">Ensemble forecasting</span></span><button class="mt" data-t="1981">33:01</button><span class="mnote">Six to eight models under each forecast, weighted hour by hour; no single forecast wins</span></li>
+      </ul>
+
+      <h3 class="mgroup lab">Events &amp; markets</h3>
+      <ul class="mentioned">
+        <li><span class="mlink nolink"><span class="kind">Event</span><span class="mn">Winter Storm Uri</span></span><button class="mt" data-t="375">06:15</button><span class="mnote">The 2021 event that blacked out the Texas grid</span></li>
+        <li><span class="mlink nolink"><span class="kind">Event</span><span class="mn">Winter Storm Fern</span></span><button class="mt" data-t="375">06:15</button><span class="mnote">This winter, with 34 states at or near record highs</span></li>
+        <li><span class="mlink nolink"><span class="kind">Event</span><span class="mn">Iberian Peninsula blackout</span></span><button class="mt" data-t="375">06:15</button><span class="mnote">Cited alongside the Russian and Iran conflicts as European volatility</span></li>
+        <li><span class="mlink nolink"><span class="kind">Concept</span><span class="mn">Demand response 2.0</span></span><button class="mt" data-t="999">16:39</button><span class="mnote">Paying large load to be on good behaviour; the early-2000s playbook applied to compute</span></li>
+        <li><span class="mlink nolink"><span class="kind">Concept</span><span class="mn">Phantom interconnection projects</span></span><button class="mt" data-t="1406">23:26</button><span class="mnote">Developers filing six applications intending to build one, clogging the queue</span></li>
+        <li><span class="mlink nolink"><span class="kind">Market</span><span class="mn">ENTSO-E</span></span><button class="mt" data-t="1559">25:59</button><span class="mnote">Not enough on its own for European data; local vendors were needed per country</span></li>
+        <li><span class="mlink nolink"><span class="kind">Market</span><span class="mn">16 European countries</span></span><button class="mt" data-t="1559">25:59</button><span class="mnote">Plus 48 US states, Alberta, Ontario and Australia; every market structured differently</span></li>
+        <li><a href="../../tracker/" class="mlink"><span class="kind">Data</span><span class="mn">The Energy Digest funding tracker</span></a><button class="mt" data-t="1837">30:37</button><span class="mnote">Every disclosed energy-native round since 2024, for the who-captures-the-value question</span></li>
+      </ul>
+      <p class="chap-note">Timestamps jump the player. An arrow marks a name you can open; items without one have no official page recorded yet.</p>
+    </section>
+
+    <div class="subscribe">
+      <span class="lab">Subscribe on</span>
+      <div class="opts">
+        <a href="https://www.youtube.com/@theonepoint?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">YouTube</a>
+        <a href="https://yadavrohit.substack.com/?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Substack</a>
+        <a href="https://open.spotify.com/show/19LhIXECFj9i91MFCCWuTR?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Spotify</a>
+        <a href="https://podcasts.apple.com/us/podcast/the-one-point/id1644098589?utm_source=bigbook.vc&utm_medium=referral&utm_campaign=energy-digest">Apple Podcasts</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ============ MORE EPISODES ============ -->
+<section class="wrap more">
+  <h2 class="more-head lab">More episodes</h2>
+  <div class="morelist">
+    <a class="mini" href="6-gw-of-flexible-power-on-autopilot.html">
+      <div class="thumb">07</div>
+      <div class="mbody">
+        <span class="ser">Positive Energy</span>
+        <span class="mt">6 GW of Flexible Power on Autopilot</span>
+        <span class="dur">8 Jun 2026</span>
+      </div>
+    </a>
+    <a class="mini" href="the-battery-that-runs-at-2400c.html">
+      <div class="thumb">06</div>
+      <div class="mbody">
+        <span class="ser">Positive Energy</span>
+        <span class="mt">The Battery That Runs at 2,400&deg;C</span>
+        <span class="dur">28 May 2026</span>
+      </div>
+    </a>
+    <a class="mini" href="energy-stopped-being-a-climate-bet.html">
+      <div class="thumb">05</div>
+      <div class="mbody">
+        <span class="ser">Positive Energy</span>
+        <span class="mt">Energy Stopped Being a Climate Bet. It&rsquo;s a Sovereignty Bet Now.</span>
+        <span class="dur">9 Jun 2026</span>
+      </div>
+    </a>
+    <a class="mini" href="energy-transformation-is-not-about.html">
+      <div class="thumb">09</div>
+      <div class="mbody">
+        <span class="ser">Positive Energy</span>
+        <span class="mt">The Once in a Century Energy Transformation</span>
+        <span class="dur">1 Jun 2026</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer class="foot"><div class="wrap">
+  <a href="../../">Home</a>
+</div></footer>
+
+<script>
+(function(){
+  /* The player is not in the page. It is built on the first click, so a visitor
+     who never presses play never contacts Google. Chapter timestamps go through
+     the same path: the first one clicked creates the player at that second. */
+  var box    = document.querySelector('.video');
+  var facade = document.getElementById('facade');
+  var VIDEO  = facade ? facade.getAttribute('data-video') : null;
+  var player = null;
+
+  function load(sec){
+    if(!VIDEO) return;
+    var src = 'https://www.youtube-nocookie.com/embed/' + VIDEO +
+              '?autoplay=1&rel=0' + (sec ? '&start=' + sec : '');
+    if(player){
+      player.src = src;
+    } else {
+      player = document.createElement('iframe');
+      player.id = 'player';
+      player.src = src;
+      player.title = facade.getAttribute('data-title') || 'Episode video';
+      player.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; fullscreen');
+      player.setAttribute('allowfullscreen','');
+      facade.replaceWith(player);
+      facade = null;
+    }
+    box.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+
+  if(facade){
+    facade.addEventListener('click', function(){ load(0); });
+  }
+
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('[data-t]');
+    if(!b) return;
+    e.preventDefault();
+    var sec = parseInt(b.getAttribute('data-t'), 10);
+    load(sec);
+    var li = document.querySelector('.chapters li.active');
+    if(li) li.classList.remove('active');
+    var btn = document.querySelector('.chapters .t[data-t="' + sec + '"]');
+    if(btn) btn.parentNode.classList.add('active');
+  });
+})();
+</script>
+</body>
+</html>

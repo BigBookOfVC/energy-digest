@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Price spreads widening across a trading day">
+        <defs><linearGradient id="6-gw-of-flexible-power-on-autopilot-g7" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#E9CC6F"/><stop offset=".5" stop-color="#D99114"/>
+          <stop offset="1" stop-color="#12756E"/></linearGradient></defs>
+        <rect width="800" height="600" fill="url(#6-gw-of-flexible-power-on-autopilot-g7)"/>
+        <!-- widening spread band -->
+        <path d="M40 300 C 200 292 360 250 520 170 S 740 90 780 78 L780 128 C 740 140 620 190 520 226 S 200 322 40 330 Z"
+              fill="#F7EFE7" opacity=".5"/>
+        <path d="M40 316 C 200 330 360 380 520 448 S 740 520 780 532 L780 482 C 740 470 620 424 520 392 S 200 344 40 346 Z"
+              fill="#100F0D" opacity=".22"/>
+        <!-- millisecond ticks -->
+        <g stroke="#F7EFE7" stroke-width="3" opacity=".72" stroke-linecap="round">
+          <path d="M120 268 L120 356"/><path d="M200 250 L200 366"/><path d="M280 228 L280 380"/>
+          <path d="M360 200 L360 400"/><path d="M440 176 L440 420"/><path d="M520 148 L520 444"/>
+          <path d="M600 122 L600 470"/><path d="M680 100 L680 496"/>
+        </g>
+        <rect x="40" y="304" width="740" height="4" rx="2" fill="#100F0D" opacity=".3"/>
+      </svg>

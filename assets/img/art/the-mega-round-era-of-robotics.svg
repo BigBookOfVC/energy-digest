@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Robotics capital concentration illustration">
+        <defs><linearGradient id="the-mega-round-era-of-robotics-g2" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#E9CC6F"/><stop offset=".5" stop-color="#12756E"/>
+          <stop offset="1" stop-color="#0B4A56"/></linearGradient></defs>
+        <rect width="800" height="600" fill="url(#the-mega-round-era-of-robotics-g2)"/>
+        <!-- a few very large rounds, a long tail of small ones -->
+        <g fill="#F7EFE7" opacity=".78">
+          <circle cx="250" cy="300" r="118"/>
+          <circle cx="470" cy="232" r="74"/>
+          <circle cx="574" cy="378" r="52"/>
+        </g>
+        <g fill="#F7EFE7" opacity=".34">
+          <circle cx="646" cy="182" r="18"/><circle cx="690" cy="286" r="13"/>
+          <circle cx="654" cy="464" r="15"/><circle cx="726" cy="392" r="10"/>
+          <circle cx="120" cy="466" r="12"/><circle cx="182" cy="132" r="14"/>
+          <circle cx="86" cy="216" r="9"/> <circle cx="384" cy="472" r="16"/>
+          <circle cx="452" cy="524" r="10"/><circle cx="738" cy="512" r="12"/>
+        </g>
+      </svg>
