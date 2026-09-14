@@ -55,7 +55,7 @@
    EPISODES: the single source of truth for this page.
 
    To publish a new episode:
-     1. Copy podcast/episodes/_template.html to
+     1. Copy podcast/episodes/episode-template.html to
         podcast/episodes/your-slug.html and fill it in.
      2. Add an entry to the TOP of this array.
      3. Crop the guest portrait to assets/img/people/<name>.jpg
@@ -72,6 +72,15 @@
           the same drawing used in that episode's own hero.
    ============================================================ */
 var EPISODES = [
+  {
+    /* Set deck:false here if you would rather keep the older four tiles
+       in the hero cascade. */
+    num: 10, slug: 'nobody-buys-efficiency-so-he-sold',
+    title: 'Nobody Buys Efficiency. So He Sold Cooling.',
+    name: 'Arjun Gupta', role: 'Founder and CEO', company: 'Smart Joules',
+    date: '2026-09-14', duration: '59 min', photo: 'arjun-gupta', deck: true,
+    blurb: 'Eighteen months with no customer, a twenty hospital contract that tripled the business, and ten years of chiller data against a ten point design sheet.'
+  },
   {
     num: 9, slug: 'energy-transformation-is-not-about',
     title: 'The Once in a Century Energy Transformation',
@@ -132,7 +141,7 @@ var EPISODES = [
     num: 1, slug: 'the-solar-breakthrough-that-could',
     title: 'The Solar Breakthrough That Could Power the AI Boom',
     name: 'Scott Wharton', role: 'CEO', company: 'Tandem PV',
-    date: '2026-04-30', duration: '24 min', photo: 'scott-wharton', deck: true,
+    date: '2026-04-30', duration: '24 min', photo: 'scott-wharton',
     blurb: 'Perovskite-on-silicon tandem panels, why three quarters of solar cost is not the panel, and what the AI demand curve does to the grid.'
   }
 ];
