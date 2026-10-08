@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An intelligence layer connecting two grids">
+        <defs><linearGradient id="energy-stopped-being-a-climate-bet-g5" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#E9CC6F"/><stop offset=".5" stop-color="#D99114"/>
+          <stop offset="1" stop-color="#12756E"/></linearGradient></defs>
+        <rect width="800" height="600" fill="url(#energy-stopped-being-a-climate-bet-g5)"/>
+        <!-- two clusters, one centralised, one distributed -->
+        <g fill="#100F0D" opacity=".26">
+          <circle cx="185" cy="300" r="72"/>
+        </g>
+        <g fill="#100F0D" opacity=".22">
+          <circle cx="596" cy="212" r="22"/><circle cx="676" cy="286" r="16"/>
+          <circle cx="592" cy="356" r="19"/><circle cx="690" cy="404" r="13"/>
+          <circle cx="536" cy="284" r="14"/><circle cx="648" cy="140" r="12"/>
+          <circle cx="620" cy="468" r="15"/>
+        </g>
+        <!-- the layer between them -->
+        <g stroke="#F7EFE7" stroke-width="3.5" opacity=".82" fill="none">
+          <path d="M257 300 L370 300"/>
+          <path d="M430 300 L536 284"/><path d="M430 300 L592 356"/>
+          <path d="M430 300 L596 212"/><path d="M430 300 L620 468"/>
+          <path d="M430 300 L648 140"/><path d="M430 300 L676 286"/>
+        </g>
+        <circle cx="400" cy="300" r="34" fill="#F7EFE7" opacity=".92"/>
+        <circle cx="400" cy="300" r="13" fill="#12756E"/>
+      </svg>

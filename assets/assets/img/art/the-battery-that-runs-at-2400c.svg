@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Glowing carbon blocks radiating light onto a panel">
+        <defs>
+          <linearGradient id="the-battery-that-runs-at-2400c-g6" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#12756E"/><stop offset=".5" stop-color="#0B3F4A"/>
+            <stop offset="1" stop-color="#0A2A33"/></linearGradient>
+          <radialGradient id="the-battery-that-runs-at-2400c-glow" cx="38%" cy="50%" r="42%">
+            <stop offset="0" stop-color="#FFF3C4"/><stop offset=".45" stop-color="#E9A417"/>
+            <stop offset="1" stop-color="#E9A417" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="800" height="600" fill="url(#the-battery-that-runs-at-2400c-g6)"/>
+        <rect width="800" height="600" fill="url(#the-battery-that-runs-at-2400c-glow)"/>
+        <!-- stacked graphite blocks, glowing -->
+        <g>
+          <rect x="170" y="200" width="180" height="66" rx="6" fill="#FFE9A8" opacity=".95"/>
+          <rect x="170" y="272" width="180" height="66" rx="6" fill="#FFD873" opacity=".92"/>
+          <rect x="170" y="344" width="180" height="66" rx="6" fill="#F5B93C" opacity=".9"/>
+        </g>
+        <!-- radiated light toward the panel -->
+        <g stroke="#FFE9A8" stroke-width="3" opacity=".55">
+          <path d="M360 233 L520 233"/><path d="M360 305 L520 305"/><path d="M360 377 L520 377"/>
+        </g>
+        <!-- the thermophotovoltaic panel -->
+        <rect x="530" y="188" width="34" height="234" rx="6" fill="#F7EFE7" opacity=".92"/>
+        <g stroke="#12756E" stroke-width="2.5" opacity=".7">
+          <path d="M537 210 L557 210"/><path d="M537 250 L557 250"/><path d="M537 290 L557 290"/>
+          <path d="M537 330 L557 330"/><path d="M537 370 L557 370"/><path d="M537 400 L557 400"/>
+        </g>
+      </svg>

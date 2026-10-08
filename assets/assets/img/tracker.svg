@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Rising rounds of funding">
+  <defs>
+    <linearGradient id="trk-g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E9CC6F"/>
+      <stop offset=".52" stop-color="#D99114"/>
+      <stop offset="1" stop-color="#12756E"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#trk-g)"/>
+
+  <!-- capital stacking up, quarter by quarter -->
+  <g fill="#100F0D" opacity=".26">
+    <rect x="70"  y="392" width="62" height="128" rx="5"/>
+    <rect x="152" y="352" width="62" height="168" rx="5"/>
+    <rect x="234" y="366" width="62" height="154" rx="5"/>
+    <rect x="316" y="300" width="62" height="220" rx="5"/>
+    <rect x="398" y="322" width="62" height="198" rx="5"/>
+    <rect x="480" y="250" width="62" height="270" rx="5"/>
+    <rect x="562" y="276" width="62" height="244" rx="5"/>
+    <rect x="644" y="196" width="62" height="324" rx="5"/>
+  </g>
+
+  <!-- the trend running through them -->
+  <polyline points="101,404 183,366 265,378 347,314 429,336 511,264 593,290 675,210"
+            fill="none" stroke="#F7EFE7" stroke-width="7"
+            stroke-linecap="round" stroke-linejoin="round" opacity=".92"/>
+  <g fill="#F7EFE7">
+    <circle cx="101" cy="404" r="9"/>
+    <circle cx="347" cy="314" r="9"/>
+    <circle cx="675" cy="210" r="12"/>
+  </g>
+
+  <rect x="70" y="520" width="636" height="5" rx="2.5" fill="#100F0D" opacity=".3"/>
+</svg>
